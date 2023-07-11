@@ -8,7 +8,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     variant: {
-      options: ['primary', 'secondary', 'tertiary', 'link'],
+      options: ['primary', 'secondary', 'outlined', 'link'],
       control: { type: 'radio' },
     },
   },
@@ -58,8 +58,9 @@ export const FullWidth: Story = {
 
 export const AsLink: Story = {
   args: {
-    variant: 'primary',
     children: 'Link that looks like a button',
     as: 'a',
+    disabled: false,
+    href: '/test/href',
   },
 }
