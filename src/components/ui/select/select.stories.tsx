@@ -17,6 +17,7 @@ const meta = {
   },
   args: {
     label: '',
+    // eslint-disable-next-line no-console
     onChange: value => console.log(value),
   },
   tags: ['autodocs'],
@@ -34,7 +35,7 @@ export const Select_default: Story = {
 export const Select_for_pagination: Story = {
   args: {
     items: ['10', '20', '50', '80', '100'],
-    width: 50,
+    width: 70,
   },
 }
 
