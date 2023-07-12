@@ -31,6 +31,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
       root: clsx(s.root, className, containerProps?.className),
       search: clsx(s.searchIcon),
       error: clsx(s.error),
+      label: clsx(s.label),
     }
     const type = showPassword && inputType === 'password' ? 'text' : inputType
 
@@ -46,8 +47,8 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
       </div>
     )
 
-    const leftIcon = (
-      <div className={cNames.search}>{inputType === 'search' && <SearchIcon color={color} />}</div>
+    const leftIcon = inputType === 'search' && (
+      <div className={cNames.search}>{<SearchIcon color={color} />}</div>
     )
 
     const errorMessage = error && (
@@ -58,15 +59,15 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={cNames.root}>
-        <Typography variant="body2" color="secondary" unselectable="on">
+        <Typography className={cNames.label} variant="body2" color="secondary" unselectable="on">
           {title}
+          <div className={cNames.error}>{errorMessage}</div>
         </Typography>
         <div className={cNames.container}>
           <input ref={ref} disabled={disabled} className={cNames.input} type={type} {...rest} />
           {rightIcons}
           {leftIcon}
         </div>
-        <div className={cNames.error}>{errorMessage}</div>
       </div>
     )
   }
