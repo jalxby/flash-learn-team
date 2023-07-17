@@ -1,6 +1,7 @@
 import type { StoryObj } from '@storybook/react'
 
 import {
+  ArrowLeftIcon,
   CheckedIcon,
   CheckEmailLogo,
   ChevronDown,
@@ -12,6 +13,7 @@ import {
   LearnPackIcon,
   Logo,
   LogoutIcon,
+  Page404,
   PencilIcon,
   ProfileIcon,
   SearchIcon,
@@ -157,5 +159,16 @@ export const Star_Icon: Story = {
 export const Star_Outline_Icon: Story = {
   render: () => {
     return <StarOutlineIcon />
+  },
+}
+export const ArrowLeft_Icon: Story = {
+  render: () => {
+    return <ArrowLeftIcon />
+  },
+}
+
+export const Page404_Icon: Story = {
+  render: () => {
+    return <Page404 />
   },
 }
