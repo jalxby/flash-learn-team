@@ -1,9 +1,9 @@
-import { Layout } from '@/pages/layout'
+import { SignIn } from '@/pages/sign-in/sign-in.tsx'
 
 export const App = () => {
   return (
     <>
-      <Layout />
+      <SignIn />
     </>
   )
 }

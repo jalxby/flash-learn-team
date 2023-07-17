@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
+import { Page } from '@/components'
 import { RegistrationForm } from '@/components/auth'
-import { Page } from '@/components/ui/Page/page.tsx'
 import { useSignUpMutation } from '@/services/auth/auth.api.ts'
 import { ArgsSignUpType } from '@/services/auth/auth.api.types.ts'
 
