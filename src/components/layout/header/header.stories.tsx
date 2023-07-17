@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 
 import { Logo } from '@/assets'
-import { Avatar, AvtarDropdown, Button, Header } from '@/components'
+import { Avatar, AvatarDropdown, Button, Header } from '@/components'
 
 const meta = {
   title: 'Components/Header',
@@ -44,7 +44,7 @@ export const Header_App_User_Avatar_Dropdown_menu: Story = {
     children: (
       <>
         <Logo />
-        <AvtarDropdown
+        <AvatarDropdown
           onSignOut={() => {}}
           src={''}
           userEmail={'test@email.com'}

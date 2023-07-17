@@ -9,25 +9,25 @@ import { MenuItem } from '@/components/ui/dropdown-menu/menu-item/menu-item.tsx'
 type AvtarDropdownPropsType = {
   userName: string
   userEmail: string
-  src?: string
+  avatar?: string
   onSignOut: () => void
 }
 
-export const AvtarDropdown: FC<AvtarDropdownPropsType> = props => {
-  const { src, userName, userEmail, onSignOut } = props
+export const AvatarDropdown: FC<AvtarDropdownPropsType> = props => {
+  const { avatar, userName, userEmail, onSignOut } = props
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <DropdownMenu
         trigger={
           <button className={s.icon_button}>
-            {<Avatar src={src} userName={userName} showLabel />}
+            {<Avatar src={avatar} userName={userName} showLabel />}
           </button>
         }
       >
         <MenuItem>
           <>
-            <Avatar src={src} menuItem={s.menu_item} userName={userName} />
+            <Avatar src={avatar} menuItem={s.menu_item} userName={userName} />
             <div style={{ flexDirection: 'column' }}>
               <Typography variant={'caption'}>
                 <div>{userName}</div>

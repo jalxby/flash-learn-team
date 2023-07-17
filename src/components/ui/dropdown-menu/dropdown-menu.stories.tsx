@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/react'
 
-import { AvtarDropdown, DeckEditMenu, DropdownMenu } from '@/components'
+import { AvatarDropdown, DeckEditMenu, DropdownMenu } from '@/components'
 
 const meta = {
   title: 'Components/Dropdown-menu',
@@ -21,7 +21,7 @@ const src = 'https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128
 export const Avatar_dropdown_menu = {
   render: () => {
     return (
-      <AvtarDropdown
+      <AvatarDropdown
         src={src}
         userName={'Valera'}
         userEmail={'valera@gmail.com'}
