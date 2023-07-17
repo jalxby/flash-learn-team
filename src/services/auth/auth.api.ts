@@ -10,7 +10,10 @@ import {
 
 export const authAPI = createApi({
   reducerPath: 'authAPI',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://andri-flashcards-api.onrender.com/v1/' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://andri-flashcards-api.onrender.com/v1/',
+    credentials: 'include',
+  }),
   endpoints: build => {
     return {
       me: build.query<UserType, void>({
@@ -106,4 +109,4 @@ export const authAPI = createApi({
   },
 })
 
-export const { useMeQuery, useSignUpMutation, useSignInMutation } = authAPI
+export const { useSignOutMutation, useMeQuery, useSignUpMutation, useSignInMutation } = authAPI

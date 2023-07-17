@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components'
-import { SignIn } from '@/pages'
+import { Packs, SignIn } from '@/pages'
 
 const router = createBrowserRouter([
   {
@@ -12,10 +12,10 @@ const router = createBrowserRouter([
         path: 'sign-in',
         element: <SignIn />,
       },
-      // {
-      //   index: true,
-      //   element: <Decks />,
-      // },
+      {
+        path: 'packs',
+        element: <Packs />,
+      },
       // {
       //   path: 'login',
       //   element: <Login />,

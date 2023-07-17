@@ -12,6 +12,7 @@ export const SignIn = () => {
     signIn(data)
       .unwrap()
       .then(() => {
+        console.log(data)
         navigate('/packs')
       })
       .catch(error => {

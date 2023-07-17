@@ -15,11 +15,6 @@ export const Packs: FC<PacksProps> = () => {
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
   const [sort, setSort] = useState<Sort>(null)
-  const { data, error, isLoading } = useMeQuery()
-
-  console.log('data', data)
-  console.log('error', error)
-  console.log('isLoading', isLoading)
 
   const cNames = {
     container: clsx(s.container, 'container'),
