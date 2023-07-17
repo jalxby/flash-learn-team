@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Packs } from '@/components'
+import { Packs } from '@/pages'
 
 const meta = {
   title: 'Pages/Packs',

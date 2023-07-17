@@ -1,11 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Button } from '../button'
-
-import { Header } from './header.tsx'
-
 import { Logo } from '@/assets'
-import { Avatar, AvtarDropdown } from '@/components'
+import { Avatar, AvtarDropdown, Button, Header } from '@/components'
 
 const meta = {
   title: 'Components/Header',
