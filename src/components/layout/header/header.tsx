@@ -19,6 +19,8 @@ export const Header: FC<Props> = ({ onSignOut, userData }) => {
     container: clsx(s.container, 'container'),
   }
 
+  console.log(userData)
+
   return (
     <header className={cNames.header}>
       <div className={cNames.container}>

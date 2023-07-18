@@ -7,8 +7,8 @@ import { Avatar, DropdownMenu, Typography } from '@/components'
 import { MenuItem } from '@/components/ui/dropdown-menu/menu-item/menu-item.tsx'
 
 type AvtarDropdownPropsType = {
-  userName: string
-  userEmail: string
+  userName?: string
+  userEmail?: string
   avatar?: string
   onSignOut: () => void
 }

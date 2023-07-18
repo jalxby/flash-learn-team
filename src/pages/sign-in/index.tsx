@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { Page } from '@/components'
 import { LoginForm } from '@/components/auth'
@@ -12,11 +13,12 @@ export const SignIn = () => {
     signIn(data)
       .unwrap()
       .then(() => {
-        console.log(data)
         navigate('/packs')
+        toast.success('you are sign in successful')
       })
       .catch(error => {
-        console.log(error)
+        debugger
+        toast.error(error.data.message)
       })
   }
 

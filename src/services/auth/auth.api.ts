@@ -14,6 +14,7 @@ export const authAPI = createApi({
     baseUrl: 'https://andri-flashcards-api.onrender.com/v1/',
     credentials: 'include',
   }),
+  tagTypes: ['Me'],
   endpoints: build => {
     return {
       me: build.query<UserType, void>({
@@ -24,6 +25,7 @@ export const authAPI = createApi({
             params: {},
           }
         },
+        providesTags: ['Me'],
       }),
       refreshMe: build.mutation<any, any>({
         query: () => {
@@ -59,6 +61,7 @@ export const authAPI = createApi({
             body: { email, password },
           }
         },
+        invalidatesTags: ['Me'],
       }),
       verifyEmail: build.mutation<void, string>({
         query: code => {
@@ -85,6 +88,7 @@ export const authAPI = createApi({
             url: 'auth/logout',
           }
         },
+        invalidatesTags: ['Me'],
       }),
       recoverPassword: build.mutation<void, string>({
         query: email => {
@@ -109,4 +113,5 @@ export const authAPI = createApi({
   },
 })
 
-export const { useSignOutMutation, useMeQuery, useSignUpMutation, useSignInMutation } = authAPI
+export const { util, useSignOutMutation, useMeQuery, useSignUpMutation, useSignInMutation } =
+  authAPI
