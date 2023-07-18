@@ -2,13 +2,15 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import { ForgotPassword, Page } from '@/components'
+import { recoveryEmail } from '@/helpers/templates/emails/recoveryEmail.ts'
 import { useRecoverPasswordMutation } from '@/services/auth'
 
 export const ForgotPasswordPage = () => {
   const [passwordRecovery] = useRecoverPasswordMutation()
+  const html = recoveryEmail()
   const navigate = useNavigate()
   const onSubmit = (email: string) => {
-    passwordRecovery(email)
+    passwordRecovery({ html, email })
       .unwrap()
       .then(() => {
         navigate('/check-email', { state: email })

@@ -15,3 +15,12 @@ export type SignInResponseType = {
   accessToken: string
 }
 export type ArgRefreshMeType = Required<ArgsSignUpType>
+export type ArgRecoverPasswordType = {
+  html?: string
+  email: string
+  subject?: string
+}
+export type ArgResetPasswordType = {
+  password: string
+  token: string
+}

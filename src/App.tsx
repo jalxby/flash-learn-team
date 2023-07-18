@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Layout } from '@/components'
 import { CheckEmailPage, Packs, SignIn, SignUp } from '@/pages'
 import { ForgotPasswordPage } from '@/pages/forgot-password'
+import { UpdatePasswordPage } from '@/pages/update-password'
 import { ProtectedRoutes } from '@/protected-routes.tsx'
 
 const router = createBrowserRouter([
@@ -31,10 +32,10 @@ const router = createBrowserRouter([
         path: 'forgot_password',
         element: <ForgotPasswordPage />,
       },
-      // {
-      //   path: 'cards/:deckId',
-      //   element: <Cards />,
-      // },
+      {
+        path: 'reset-password/:token',
+        element: <UpdatePasswordPage />,
+      },
 
       {
         path: 'check-email',

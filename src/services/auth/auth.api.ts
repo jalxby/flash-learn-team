@@ -1,7 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import {
+  ArgRecoverPasswordType,
   ArgRefreshMeType,
+  ArgResetPasswordType,
   ArgsSignInType,
   ArgsSignUpType,
   SignInResponseType,
@@ -17,7 +19,7 @@ export const authAPI = createApi({
   tagTypes: ['Me'],
   endpoints: build => {
     return {
-      me: build.query<UserType, void>({
+      me: build.query<UserType | null, void>({
         query: () => {
           return {
             method: 'GET',
@@ -26,6 +28,24 @@ export const authAPI = createApi({
           }
         },
         providesTags: ['Me'],
+        async onQueryStarted(_, { dispatch, queryFulfilled, getCacheEntry }) {
+          try {
+            const res = await queryFulfilled
+            const cacheEntry = getCacheEntry()
+
+            if (JSON.stringify(cacheEntry.data) === JSON.stringify(res.data)) return
+            dispatch(
+              authAPI.util?.updateQueryData('me', undefined, draft => {
+                Object.assign(draft, res.data)
+              })
+            )
+          } catch {
+            const cacheEntry = getCacheEntry()
+
+            if (cacheEntry.data === null) return
+            dispatch(authAPI.util?.upsertQueryData('me', undefined, null))
+          }
+        },
       }),
       refreshMe: build.mutation<any, any>({
         query: () => {
@@ -90,16 +110,16 @@ export const authAPI = createApi({
         },
         invalidatesTags: ['Me'],
       }),
-      recoverPassword: build.mutation<void, string>({
-        query: email => {
+      recoverPassword: build.mutation<void, ArgRecoverPasswordType>({
+        query: ({ email, html, subject }) => {
           return {
             method: 'POST',
             url: 'auth/recover-password',
-            body: { email },
+            body: { email, html, subject },
           }
         },
       }),
-      resetPassword: build.mutation<any, { password: string; token: string }>({
+      resetPassword: build.mutation<any, ArgResetPasswordType>({
         query: ({ password, token }) => {
           return {
             method: 'POST',
@@ -120,4 +140,5 @@ export const {
   useMeQuery,
   useSignUpMutation,
   useSignInMutation,
+  useResetPasswordMutation,
 } = authAPI
