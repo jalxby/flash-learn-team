@@ -2,6 +2,7 @@ import { FC } from 'react'
 
 import { clsx } from 'clsx'
 import { Link } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 
 import s from './header.module.scss'
 

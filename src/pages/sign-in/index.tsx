@@ -17,7 +17,6 @@ export const SignIn = () => {
         toast.success('you are sign in successful')
       })
       .catch(error => {
-        debugger
         toast.error(error.data.message)
       })
   }

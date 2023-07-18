@@ -1,6 +1,7 @@
 import { FC, useState } from 'react'
 
 import { clsx } from 'clsx'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import s from './packs.module.scss'
 
@@ -8,13 +9,18 @@ import { AddNewPackModal, Button, Pagination, Sort, Table, Typography } from '@/
 import { FilterPanel } from '@/components/ui/filter-panel'
 import { columns, data as mockData } from '@/components/ui/table/table.stories.tsx'
 import { TableActions } from '@/components/ui/table-action-buttons'
+import { useMeQuery } from '@/services/auth'
 
 type PacksProps = {}
 export const Packs: FC<PacksProps> = () => {
+  const { isError } = useMeQuery()
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
   const [sort, setSort] = useState<Sort>(null)
+  const navigate = useNavigate()
+  const location = useLocation()
 
+  if (isError && location.pathname !== '/sign-in') navigate('/sign-in')
   const cNames = {
     container: clsx(s.container, 'container'),
     title: clsx(s.pageTitle),

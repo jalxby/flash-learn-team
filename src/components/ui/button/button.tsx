@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ElementType, forwardRef } from 'react'
+import { ComponentPropsWithoutRef, ElementType, ForwardedRef, forwardRef } from 'react'
 
 import { clsx } from 'clsx'
 
@@ -11,8 +11,8 @@ type ButtonProps<T> = {
 } & ComponentPropsWithoutRef<'button'>
 
 const Button = <T extends ElementType = 'button'>(
-  props: ButtonProps<T> & Omit<React.ComponentPropsWithoutRef<T>, keyof ButtonProps<T>>,
-  ref: React.ForwardedRef<any>
+  props: ButtonProps<T> & Omit<ComponentPropsWithoutRef<T>, keyof ButtonProps<T>>,
+  ref: ForwardedRef<any>
 ) => {
   const {
     variant = 'primary',

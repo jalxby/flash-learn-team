@@ -1,8 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
 
 import { Layout } from '@/components'
-import { Packs, SignIn } from '@/pages'
+import { CheckEmailPage, Packs, SignIn, SignUp } from '@/pages'
+import { ForgotPasswordPage } from '@/pages/forgot-password'
+import { ProtectedRoutes } from '@/protected-routes.tsx'
 
 const router = createBrowserRouter([
   {
@@ -14,45 +15,35 @@ const router = createBrowserRouter([
         element: <SignIn />,
       },
       {
-        path: 'packs',
-        element: <Packs />,
+        path: 'sign-up',
+        element: <SignUp />,
       },
-      // {
-      //   path: 'login',
-      //   element: <Login />,
-      // },
+      {
+        path: 'packs',
+        element: (
+          <ProtectedRoutes navigateTo={'/sign-in'}>
+            <Packs />
+          </ProtectedRoutes>
+        ),
+      },
+
+      {
+        path: 'forgot_password',
+        element: <ForgotPasswordPage />,
+      },
       // {
       //   path: 'cards/:deckId',
       //   element: <Cards />,
       // },
-      // {
-      //   path: 'sign-up',
-      //   element: <SignUpPage />,
-      // },
-      // {
-      //   path: 'profile',
-      //   element: <Profile />,
-      // },
+
+      {
+        path: 'check-email',
+        element: <CheckEmailPage />,
+      },
     ],
   },
 ])
 
 export function App() {
-  return (
-    <>
-      <RouterProvider router={router} />
-      <ToastContainer
-        position="top-left"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-    </>
-  )
+  return <RouterProvider router={router} />
 }
