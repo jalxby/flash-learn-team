@@ -22,7 +22,7 @@ const router = createBrowserRouter([
       {
         path: 'packs',
         element: (
-          <ProtectedRoutes navigateTo={'/sign-in'}>
+          <ProtectedRoutes>
             <Packs />
           </ProtectedRoutes>
         ),

@@ -1,13 +1,17 @@
 import { FC, PropsWithChildren } from 'react'
 
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useMeQuery } from '@/services/auth'
-type Props = PropsWithChildren<{ navigateTo: string }>
-export const ProtectedRoutes: FC<Props> = ({ children, navigateTo }) => {
-  const { data } = useMeQuery()
 
-  console.warn(data)
+type Props = PropsWithChildren
+export const ProtectedRoutes: FC<Props> = ({ children }) => {
+  const { data, isLoading, error } = useMeQuery()
 
-  return data ? <>{children}</> : <Navigate to={navigateTo} />
+  const navigate = useNavigate()
+
+  if (isLoading) return <div>Loading...</div>
+  if (error || !data) navigate('/sign-in')
+
+  return <>{children}</>
 }

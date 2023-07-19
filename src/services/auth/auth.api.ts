@@ -19,7 +19,7 @@ export const authAPI = createApi({
   tagTypes: ['Me'],
   endpoints: build => {
     return {
-      me: build.query<UserType | null, void>({
+      me: build.query<UserType, void>({
         query: () => {
           return {
             method: 'GET',
@@ -28,24 +28,6 @@ export const authAPI = createApi({
           }
         },
         providesTags: ['Me'],
-        async onQueryStarted(_, { dispatch, queryFulfilled, getCacheEntry }) {
-          try {
-            const res = await queryFulfilled
-            const cacheEntry = getCacheEntry()
-
-            if (JSON.stringify(cacheEntry.data) === JSON.stringify(res.data)) return
-            dispatch(
-              authAPI.util?.updateQueryData('me', undefined, draft => {
-                Object.assign(draft, res.data)
-              })
-            )
-          } catch {
-            const cacheEntry = getCacheEntry()
-
-            if (cacheEntry.data === null) return
-            dispatch(authAPI.util?.upsertQueryData('me', undefined, null))
-          }
-        },
       }),
       refreshMe: build.mutation<any, any>({
         query: () => {
@@ -81,7 +63,6 @@ export const authAPI = createApi({
             body: { email, password },
           }
         },
-        invalidatesTags: ['Me'],
       }),
       verifyEmail: build.mutation<void, string>({
         query: code => {
@@ -108,7 +89,6 @@ export const authAPI = createApi({
             url: 'auth/logout',
           }
         },
-        invalidatesTags: ['Me'],
       }),
       recoverPassword: build.mutation<void, ArgRecoverPasswordType>({
         query: ({ email, html, subject }) => {

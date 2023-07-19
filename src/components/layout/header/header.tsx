@@ -10,7 +10,7 @@ import { AvatarDropdown, Button } from '@/components'
 import { UserType } from '@/services/auth/auth.api.types.ts'
 
 export type Props = {
-  userData?: UserType | null
+  userData?: UserType
   onSignOut: () => void
 }
 export const Header: FC<Props> = ({ onSignOut, userData }) => {
@@ -19,8 +19,6 @@ export const Header: FC<Props> = ({ onSignOut, userData }) => {
     container: clsx(s.container, 'container'),
   }
 
-  console.log(userData)
-
   return (
     <header className={cNames.header}>
       <div className={cNames.container}>
@@ -28,7 +26,7 @@ export const Header: FC<Props> = ({ onSignOut, userData }) => {
           <Logo />
         </Link>
         {!userData && (
-          <Button as={'a'} href={'sign-in'}>
+          <Button as={'a'} href={'/sign-in'}>
             Sign In
           </Button>
         )}
