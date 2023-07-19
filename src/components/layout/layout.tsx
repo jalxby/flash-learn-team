@@ -9,6 +9,7 @@ export const Layout = () => {
   const { data, isLoading } = useMeQuery()
   const [signOut] = useSignOutMutation()
   const dispatch = useAppDispatch()
+
   const onSignOut = () => {
     signOut()
       .unwrap()
@@ -23,7 +24,7 @@ export const Layout = () => {
   return (
     <div>
       <Header userData={data} onSignOut={onSignOut} />
-      {isLoading ? <>{'...loading'}</> : <Outlet />}
+      <Outlet />
     </div>
   )
 }

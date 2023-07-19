@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+import { RootState } from '@/app/store.ts'
 import {
   ArgRecoverPasswordType,
   ArgRefreshMeType,
@@ -10,11 +11,20 @@ import {
   UserType,
 } from '@/services/auth/auth.api.types.ts'
 
-export const authAPI = createApi({
-  reducerPath: 'authAPI',
+export const api = createApi({
+  reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://andri-flashcards-api.onrender.com/v1/',
+    baseUrl: 'https://api.flashcards.andrii.es/v1/',
     credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.token
+
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`)
+      }
+
+      return headers
+    },
   }),
   tagTypes: ['Me'],
   endpoints: build => {
@@ -28,6 +38,15 @@ export const authAPI = createApi({
           }
         },
         providesTags: ['Me'],
+      }),
+      signOut: build.mutation<void, void>({
+        query: () => {
+          return {
+            method: 'POST',
+            url: 'auth/logout',
+          }
+        },
+        invalidatesTags: ['Me'],
       }),
       refreshMe: build.mutation<any, any>({
         query: () => {
@@ -82,14 +101,6 @@ export const authAPI = createApi({
           }
         },
       }),
-      signOut: build.mutation<void, void>({
-        query: () => {
-          return {
-            method: 'POST',
-            url: 'auth/logout',
-          }
-        },
-      }),
       recoverPassword: build.mutation<void, ArgRecoverPasswordType>({
         query: ({ email, html, subject }) => {
           return {
@@ -103,9 +114,8 @@ export const authAPI = createApi({
         query: ({ password, token }) => {
           return {
             method: 'POST',
-            url: 'auth/reset-password',
+            url: `auth/reset-password/${token}`,
             body: { password },
-            params: { token },
           }
         },
       }),
@@ -121,4 +131,4 @@ export const {
   useSignUpMutation,
   useSignInMutation,
   useResetPasswordMutation,
-} = authAPI
+} = api

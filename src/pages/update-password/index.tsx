@@ -1,17 +1,20 @@
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { CreateNewPassword, Page } from '@/components'
-import { RegistrationForm } from '@/components/auth'
-import { useResetPasswordMutation, useSignUpMutation } from '@/services/auth/auth.api.ts'
-import { ArgsSignUpType } from '@/services/auth/auth.api.types.ts'
+import { useResetPasswordMutation } from '@/services/auth/auth.api.ts'
+
 type Params = {
   token: string
 }
 export const UpdatePasswordPage = () => {
   const [resetPassword] = useResetPasswordMutation()
   const { token } = useParams<Params>()
+  const navigate = useNavigate()
   const onSubmitForm = async (password: string) => {
-    if (token) resetPassword({ password, token })
+    if (token) {
+      await resetPassword({ password, token })
+      navigate('/')
+    }
   }
 
   return (

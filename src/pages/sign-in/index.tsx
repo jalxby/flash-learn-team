@@ -14,7 +14,7 @@ export const SignIn = () => {
     signIn(data)
       .unwrap()
       .then(() => {
-        navigate('/packs')
+        navigate('/')
         toast.success('you are sign in successful')
       })
       .catch(error => {

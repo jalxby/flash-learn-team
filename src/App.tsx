@@ -20,7 +20,7 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: 'packs',
+        index: true,
         element: (
           <ProtectedRoutes>
             <Packs />
