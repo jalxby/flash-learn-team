@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/header'
 import { useMeQuery, useSignOutMutation, util } from '@/services/auth'
 
 export const Layout = () => {
-  const { data, isLoading } = useMeQuery()
+  const { data } = useMeQuery()
   const [signOut] = useSignOutMutation()
   const dispatch = useAppDispatch()
 
