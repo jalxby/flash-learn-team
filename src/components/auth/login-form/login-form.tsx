@@ -16,12 +16,7 @@ type LoginFormPropsType = {
   onSubmit: (data: Form) => void
 }
 export const LoginForm: FC<LoginFormPropsType> = ({ onSubmit }) => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    reset,
-  } = useForm<Form>({
+  const { handleSubmit, control, reset } = useForm<Form>({
     resolver: zodResolver(loginFormSchema),
     mode: 'onSubmit',
   })
@@ -29,16 +24,12 @@ export const LoginForm: FC<LoginFormPropsType> = ({ onSubmit }) => {
   // eslint-disable-next-line no-console
   const onSubmitForm = handleSubmit(data => {
     onSubmit({ email: data.email, password: data.password, rememberMe: data.rememberMe })
-    console.log('login-form', data)
     reset({
       email: '',
       password: '',
       rememberMe: false,
     })
   })
-
-  // eslint-disable-next-line no-console
-  console.log(errors)
 
   return (
     <Card className={s.card}>
@@ -82,7 +73,7 @@ export const LoginForm: FC<LoginFormPropsType> = ({ onSubmit }) => {
           Don't have an account?
         </Typography>
 
-        <Typography as={'a'} href={'/sing-up'} className={s.signUp}>
+        <Typography as={'a'} href={'/sign-up'} className={s.signUp}>
           Sign Up
         </Typography>
       </div>

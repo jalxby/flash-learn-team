@@ -13,7 +13,7 @@ import { Card } from '@/components/ui/card'
 
 type Form = z.infer<typeof forgotPasswordSchema>
 type ForgotPasswordPropsType = {
-  onSubmit: (data: Form) => void
+  onSubmit: (email: string) => void
 }
 export const ForgotPassword: FC<ForgotPasswordPropsType> = ({ onSubmit }) => {
   const {
@@ -27,7 +27,7 @@ export const ForgotPassword: FC<ForgotPasswordPropsType> = ({ onSubmit }) => {
   })
 
   const onSubmitForm = handleSubmit(data => {
-    onSubmit({ email: data.email })
+    onSubmit(data.email)
     // eslint-disable-next-line no-console
     console.log('login-form', data.email)
     reset({
@@ -64,7 +64,7 @@ export const ForgotPassword: FC<ForgotPasswordPropsType> = ({ onSubmit }) => {
           Did you remember your password?
         </Typography>
 
-        <Typography as={'a'} href={'/login'} className={s.link}>
+        <Typography as={'a'} href={'/sign-in'} className={s.link}>
           Try logging in
         </Typography>
       </div>

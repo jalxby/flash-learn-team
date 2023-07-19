@@ -11,7 +11,7 @@ import { ControlledTextField, Typography } from '@/components'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 type PropsType = {
-  onSubmit: (data: Form) => void
+  onSubmit: (password: string) => void
 }
 type Form = z.infer<typeof createNewPasswordSchema>
 export const CreateNewPassword: FC<PropsType> = ({ onSubmit }) => {
@@ -20,7 +20,7 @@ export const CreateNewPassword: FC<PropsType> = ({ onSubmit }) => {
     mode: 'onSubmit',
   })
   const onSubmitForm = handleSubmit(data => {
-    onSubmit({ newPassword: data.newPassword })
+    onSubmit(data.newPassword)
     reset({ newPassword: '' })
   })
 

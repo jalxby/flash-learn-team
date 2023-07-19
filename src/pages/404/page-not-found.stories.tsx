@@ -1,9 +1,9 @@
 import { Meta } from '@storybook/react'
 
-import { PageNotFound } from '@/pages/page-not-found/page-not-found.tsx'
+import { PageNotFound } from '@/pages/404/page-not-found.tsx'
 
 const meta = {
-  title: 'Pages/Page not found',
+  title: 'Pages/page not found',
   component: PageNotFound,
   decorators: [
     Story => (
