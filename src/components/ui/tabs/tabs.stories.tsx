@@ -15,8 +15,8 @@ const meta = {
   tags: ['autodocs'],
   args: {
     tabs: [
-      { value: 'string123', tabName: 'my packs' },
-      { value: 'string456', tabName: 'my packs' },
+      { value: 'string123', tabName: 'my decks' },
+      { value: 'string456', tabName: 'my decks' },
     ],
     defaultValue: 'string123',
     // eslint-disable-next-line no-console
@@ -39,8 +39,8 @@ export const Tabs_with_label: Story = {
 export const Disabled: Story = {
   args: {
     tabs: [
-      { value: '123', tabName: 'my packs' },
-      { value: '456', tabName: 'all packs', disabled: true },
+      { value: '123', tabName: 'my decks' },
+      { value: '456', tabName: 'all decks', disabled: true },
     ],
     defaultValue: '123',
   },
@@ -49,9 +49,9 @@ export const Disabled: Story = {
 export const Three_tabs: Story = {
   args: {
     tabs: [
-      { value: '123', tabName: 'my packs' },
-      { value: '789', tabName: 'packs' },
-      { value: '456', tabName: 'all packs' },
+      { value: '123', tabName: 'my decks' },
+      { value: '789', tabName: 'decks' },
+      { value: '456', tabName: 'all decks' },
     ],
     defaultValue: '123',
   },

@@ -2,13 +2,14 @@ import { FC } from 'react'
 
 import s from './table-action-buttons.module.scss'
 
-import { EditIcon, PlayIcon, DeleteIcon } from '@/assets'
+import { DeleteIcon, EditIcon, PlayIcon } from '@/assets'
 import { AddNewPackModal } from '@/components/ui/modal/add-new-pack-modal'
-import { DeleteDialog, ItemType } from '@/components/ui/modal/delete-dialog/delete-dialog.tsx'
+import { DeleteDialog } from '@/components/ui/modal/delete-dialog/delete-dialog.tsx'
+import { DecksItem } from '@/services/decks/decks.api.types.ts'
 
 type TableActionsProps = {
   editable?: boolean
-  item: ItemType
+  item: DecksItem
 }
 export const TableActions: FC<TableActionsProps> = ({ item, editable = true }) => {
   return (

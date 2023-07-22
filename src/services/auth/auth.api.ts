@@ -1,6 +1,3 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
-import { RootState } from '@/app/store.ts'
 import {
   ArgRecoverPasswordType,
   ArgRefreshMeType,
@@ -10,125 +7,119 @@ import {
   SignInResponseType,
   UserType,
 } from '@/services/auth/auth.api.types.ts'
+import { api } from '@/services/common'
 
-export const api = createApi({
-  reducerPath: 'api',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.flashcards.andrii.es/v1/',
-    credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token
+const authAPI = api.injectEndpoints({
+  endpoints: builder => ({
+    me: builder.query<UserType, void>({
+      query: () => {
+        return {
+          method: 'GET',
+          url: 'v1/auth/me',
+        }
+      },
+    }),
+    signOut: builder.mutation<void, void>({
+      query: () => {
+        return {
+          method: 'POST',
+          url: 'v1/auth/logout',
+        }
+      },
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          authAPI.util.updateQueryData('me', undefined, () => {
+            return {} as UserType
+          })
+        )
 
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`)
-      }
-
-      return headers
-    },
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+    }),
+    refreshMe: builder.mutation<any, any>({
+      query: () => {
+        return {
+          method: 'GET',
+          url: 'v1/auth/refresh-token',
+        }
+      },
+    }),
+    updateMe: builder.mutation<UserType, ArgRefreshMeType>({
+      query: ({ email, password, name }) => {
+        return {
+          method: 'PATCH',
+          url: 'v1/auth/me',
+          body: { email, password, name },
+        }
+      },
+    }),
+    signUp: builder.mutation<UserType, ArgsSignUpType>({
+      query: ({ email, password }) => {
+        return {
+          method: 'POST',
+          url: 'v1/auth/sign-up',
+          body: { email, password },
+        }
+      },
+    }),
+    signIn: builder.mutation<SignInResponseType, ArgsSignInType>({
+      query: ({ email, password }) => {
+        return {
+          method: 'POST',
+          url: 'v1/auth/login',
+          body: { email, password },
+        }
+      },
+    }),
+    verifyEmail: builder.mutation<void, string>({
+      query: code => {
+        return {
+          method: 'POST',
+          url: 'v1/auth/verify-email',
+          body: { code },
+        }
+      },
+    }),
+    resendEmail: builder.mutation<void, string>({
+      query: userId => {
+        return {
+          method: 'POST',
+          url: 'v1/auth/resend-verification-email',
+          body: { userId },
+        }
+      },
+    }),
+    recoverPassword: builder.mutation<void, ArgRecoverPasswordType>({
+      query: ({ email, html, subject }) => {
+        return {
+          method: 'POST',
+          url: 'v1/auth/recover-password',
+          body: { email, html, subject },
+        }
+      },
+    }),
+    resetPassword: builder.mutation<any, ArgResetPasswordType>({
+      query: ({ password, token }) => {
+        return {
+          method: 'POST',
+          url: `v1/auth/reset-password/${token}`,
+          body: { password },
+        }
+      },
+    }),
   }),
-  tagTypes: ['Me'],
-  endpoints: build => {
-    return {
-      me: build.query<UserType, void>({
-        query: () => {
-          return {
-            method: 'GET',
-            url: 'auth/me',
-            params: {},
-          }
-        },
-        providesTags: ['Me'],
-      }),
-      signOut: build.mutation<void, void>({
-        query: () => {
-          return {
-            method: 'POST',
-            url: 'auth/logout',
-          }
-        },
-        invalidatesTags: ['Me'],
-      }),
-      refreshMe: build.mutation<any, any>({
-        query: () => {
-          return {
-            method: 'GET',
-            url: 'auth/refresh-token',
-          }
-        },
-      }),
-      updateMe: build.mutation<UserType, ArgRefreshMeType>({
-        query: ({ email, password, name }) => {
-          return {
-            method: 'PATCH',
-            url: 'auth/me',
-            body: { email, password, name },
-          }
-        },
-      }),
-      signUp: build.mutation<UserType, ArgsSignUpType>({
-        query: ({ email, password }) => {
-          return {
-            method: 'POST',
-            url: 'auth/sign-up',
-            body: { email, password },
-          }
-        },
-      }),
-      signIn: build.mutation<SignInResponseType, ArgsSignInType>({
-        query: ({ email, password }) => {
-          return {
-            method: 'POST',
-            url: 'auth/login',
-            body: { email, password },
-          }
-        },
-      }),
-      verifyEmail: build.mutation<void, string>({
-        query: code => {
-          return {
-            method: 'POST',
-            url: 'auth/verify-email',
-            body: { code },
-          }
-        },
-      }),
-      resendEmail: build.mutation<void, string>({
-        query: userId => {
-          return {
-            method: 'POST',
-            url: 'auth/resend-verification-email',
-            body: { userId },
-          }
-        },
-      }),
-      recoverPassword: build.mutation<void, ArgRecoverPasswordType>({
-        query: ({ email, html, subject }) => {
-          return {
-            method: 'POST',
-            url: 'auth/recover-password',
-            body: { email, html, subject },
-          }
-        },
-      }),
-      resetPassword: build.mutation<any, ArgResetPasswordType>({
-        query: ({ password, token }) => {
-          return {
-            method: 'POST',
-            url: `auth/reset-password/${token}`,
-            body: { password },
-          }
-        },
-      }),
-    }
-  },
+  overrideExisting: true,
 })
 
 export const {
   useRecoverPasswordMutation,
-  util,
   useSignOutMutation,
   useMeQuery,
   useSignUpMutation,
   useSignInMutation,
   useResetPasswordMutation,
-} = api
+} = authAPI

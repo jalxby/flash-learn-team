@@ -2,15 +2,17 @@ import { FC, useState } from 'react'
 
 import { clsx } from 'clsx'
 
-import s from './packs.module.scss'
+import s from './decks.module.scss'
 
 import { AddNewPackModal, Button, Pagination, Sort, Table, Typography } from '@/components'
 import { FilterPanel } from '@/components/ui/filter-panel'
-import { columns, data as mockData } from '@/components/ui/table/table.stories.tsx'
 import { TableActions } from '@/components/ui/table-action-buttons'
+import { columns } from '@/pages/dacks/columns.ts'
+import { useGetDecksQuery } from '@/services/decks'
 
 type PacksProps = {}
-export const Packs: FC<PacksProps> = () => {
+export const Decks: FC<PacksProps> = () => {
+  const { data } = useGetDecksQuery()
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
   const [sort, setSort] = useState<Sort>(null)
@@ -20,14 +22,14 @@ export const Packs: FC<PacksProps> = () => {
     title: clsx(s.pageTitle),
   }
 
-  const tableRows = mockData.slice(0, +pageSize).map(row => (
-    <Table.Row key={row.title}>
-      <Table.DataCell>{row.title}</Table.DataCell>
+  const tableRows = data?.items.map(row => (
+    <Table.Row key={row.id}>
+      <Table.DataCell>{row.name}</Table.DataCell>
       <Table.DataCell>{row.cardsCount}</Table.DataCell>
       <Table.DataCell>{row.updated}</Table.DataCell>
-      <Table.DataCell>{row.createdBy}</Table.DataCell>
+      <Table.DataCell>{row.author.name}</Table.DataCell>
       <Table.DataCell>
-        <TableActions editable={row.editable} item={row} />
+        <TableActions editable={true} item={row} />
       </Table.DataCell>
     </Table.Row>
   ))

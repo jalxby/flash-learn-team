@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components'
-import { CheckEmailPage, Packs, SignIn, SignUp } from '@/pages'
+import { CheckEmailPage, Decks, SignIn, SignUp } from '@/pages'
 import { ForgotPasswordPage } from '@/pages/forgot-password'
 import { UpdatePasswordPage } from '@/pages/update-password'
 import { ProtectedRoutes } from '@/protected-routes.tsx'
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         index: true,
         element: (
           <ProtectedRoutes>
-            <Packs />
+            <Decks />
           </ProtectedRoutes>
         ),
       },

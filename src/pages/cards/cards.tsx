@@ -10,7 +10,6 @@ import {
   DeckEditMenu,
   DeleteDialog,
   Grade,
-  ItemType,
   Pagination,
   Sort,
   Table,
@@ -21,6 +20,7 @@ import { AddNewCard } from '@/components/ui/modal/add-new-card'
 import { EditCard } from '@/components/ui/modal/edit-card'
 import { columns } from '@/pages/cards/table-columns.ts'
 import { testData } from '@/pages/cards/test-data.ts'
+import { DecksItem } from '@/services/decks/decks.api.types.ts'
 
 type CardsPropsType = {
   userId: string
@@ -117,12 +117,7 @@ const TableRows = (el: any, userId: string) => {
         <Grade onClick={id => console.log(id)} grade={5} />
       </Table.DataCell>
       <Table.DataCell style={{ padding: '6px 24px' }}>
-        <TableActions
-          question={el.question}
-          answer={el.answer}
-          item={{ id: el.id, title: el.question }}
-          editable={userId === '1'}
-        />
+        <TableActions item={el} editable={userId === '1'} />
       </Table.DataCell>
     </Table.Row>
   )
@@ -162,18 +157,16 @@ const renderDeckHeading = (userId: string, packName: string) => {
 
 type TableActionsProps = {
   editable?: boolean
-  question: string
-  answer: string
-  item: ItemType
+  item: DecksItem
 }
 const TableActions: FC<TableActionsProps> = props => {
-  const { item, editable = true, question, answer } = props
+  const { item, editable = true } = props
 
   return (
     <div style={{ display: 'flex', gap: '10px' }}>
       {editable && (
         <>
-          <EditCard question={question} answer={answer} onSubmit={data => console.log(data)}>
+          <EditCard question={'question'} answer={'answer'} onSubmit={data => console.log(data)}>
             <button>
               <EditIcon />
             </button>

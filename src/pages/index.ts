@@ -1,6 +1,6 @@
 export * from './sign-in'
 export * from './sign-up'
-export * from './packs'
+export * from './dacks'
 export * from './cards'
 export * from './404'
 export * from './check-email'

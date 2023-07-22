@@ -6,6 +6,7 @@ import s from './table.module.scss'
 
 import { ChevronDown } from '@/assets'
 import { Typography } from '@/components'
+import { Column } from '@/pages/dacks/columns.ts'
 
 type TableProps = { className?: string } & ComponentProps<'table'>
 
@@ -19,11 +20,7 @@ export type Sort = {
   columnKey: string
   direction: 'asc' | 'desc' | null
 } | null
-type Column = {
-  key: string
-  title: string
-  sortable: boolean
-}
+
 type HeadProps = Omit<
   ComponentPropsWithoutRef<'thead'> & {
     columns: Column[]

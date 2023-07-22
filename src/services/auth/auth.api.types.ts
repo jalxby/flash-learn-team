@@ -3,13 +3,16 @@ export type ArgsSignUpType = {
   password: string
   email: string
 }
-export type UserType = Required<Omit<ArgsSignUpType, 'password'>> & {
+export type UserType = {
   avatar: string
   id: string
   isEmailVerified: boolean
   created: string
   updated: string
+  name: string
+  email: string
 }
+
 export type ArgsSignInType = Omit<ArgsSignUpType, 'name'>
 export type SignInResponseType = {
   accessToken: string
