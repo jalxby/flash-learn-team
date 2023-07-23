@@ -3,39 +3,33 @@ export type Author = {
   name: string
 }
 
-export type DecksItem = {
+export type Deck = {
   id: string
   userId: string
   name: string
   isPrivate: boolean
   shots: number
-  cover: string | null
+  cover?: any
   rating: number
+  isDeleted?: any
+  isBlocked?: any
   created: string
   updated: string
   cardsCount: number
   author: Author
 }
-
-export type Pagination = {
-  currentPage: number
-  itemsPerPage: number
-  totalPages: number
-  totalItems: number
-}
-
-export type Decks = {
-  items: DecksItem[]
-  pagination: Pagination
-  maxCardsCount: number
-}
-
+export type Decks = Deck[]
 export type ArgGetDecks = {
   minCardsCount?: string
   maxCardsCount?: string
   name?: string
   authorId?: string
   orderBy?: string
-  currentPage?: string
-  itemsPerPage?: string
+  currentPage?: number
+  itemsPerPage?: number
+}
+export type ArgCreateDeck = {
+  cover?: string
+  name: string
+  isPrivate?: boolean
 }

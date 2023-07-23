@@ -6,7 +6,7 @@ import s from './table.module.scss'
 
 import { ChevronDown } from '@/assets'
 import { Typography } from '@/components'
-import { Column } from '@/pages/dacks/columns.ts'
+import { Column } from '@/pages/decks/columns.ts'
 
 type TableProps = { className?: string } & ComponentProps<'table'>
 
@@ -18,7 +18,7 @@ const Root: FC<TableProps> = ({ className, ...rest }) => {
 
 export type Sort = {
   columnKey: string
-  direction: 'asc' | 'desc' | null
+  direction: 'asc' | 'desc'
 } | null
 
 type HeadProps = Omit<

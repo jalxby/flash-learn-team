@@ -10,7 +10,7 @@ import { AvatarDropdown, Button } from '@/components'
 import { UserType } from '@/services/auth/auth.api.types.ts'
 
 export type Props = {
-  userData?: UserType
+  userData?: UserType | null
   onSignOut: () => void
 }
 export const Header: FC<Props> = ({ onSignOut, userData }) => {

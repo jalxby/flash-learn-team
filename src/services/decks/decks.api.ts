@@ -1,18 +1,27 @@
-import { api } from '@/services/common/common.api.ts'
-import { ArgGetDecks, Decks } from '@/services/decks/decks.api.types.ts'
+import { commonApi } from '@/services/common/common.api.ts'
+import { Paginated } from '@/services/common/types.ts'
+import { ArgCreateDeck, ArgGetDecks, Deck } from '@/services/decks/decks.api.types.ts'
 
-const decksAPI = api.injectEndpoints({
-  endpoints: build => ({
-    getDecks: build.query<Decks, ArgGetDecks | void>({
-      query: () => {
-        return {
-          method: 'GET',
-          url: 'v1/decks',
-        }
-      },
+export const decksAPI = commonApi.injectEndpoints({
+  endpoints: builder => ({
+    getDecks: builder.query<Paginated<Deck> & { maxCardsCount: number }, ArgGetDecks>({
+      query: params => ({
+        method: 'GET',
+        url: 'v1/decks',
+        params: params ?? undefined,
+      }),
+      providesTags: ['UPDATE_DECKS'],
+    }),
+    createDeck: builder.mutation<Deck, ArgCreateDeck>({
+      query: body => ({
+        method: 'POST',
+        url: '/v1/decks',
+        body,
+      }),
+      invalidatesTags: ['UPDATE_DECKS'],
     }),
   }),
   overrideExisting: true,
 })
 
-export const { useGetDecksQuery } = decksAPI
+export const { useGetDecksQuery, useCreateDeckMutation } = decksAPI

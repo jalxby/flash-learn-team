@@ -24,7 +24,7 @@ export const AddNewPackModal: FC<AddNewPackModalPropsType> = props => {
   })
 
   const onSubmitForm = handleSubmit(data => {
-    onSubmit({ namePack: data.namePack, private: data.private })
+    onSubmit({ name: data.name, isPrivate: data.isPrivate })
     setIsOpen(false)
   })
 
@@ -34,12 +34,12 @@ export const AddNewPackModal: FC<AddNewPackModalPropsType> = props => {
         <Modal.Body>
           <ControlledTextField
             style={{ marginBottom: '1.5rem' }}
-            name={'namePack'}
+            name={'name'}
             control={control}
             title={'Name Pack'}
             inputType={'text'}
           />
-          <ControlledCheckbox control={control} name={'private'} label={'Private pack'} left />
+          <ControlledCheckbox control={control} name={'isPrivate'} label={'Private pack'} left />
         </Modal.Body>
         <Modal.Footer>
           <Button variant={'primary'} type={'submit'}>

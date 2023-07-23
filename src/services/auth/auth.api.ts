@@ -7,29 +7,29 @@ import {
   SignInResponseType,
   UserType,
 } from '@/services/auth/auth.api.types.ts'
-import { api } from '@/services/common'
+import { commonApi } from '@/services/common/common.api.ts'
 
-const authAPI = api.injectEndpoints({
+export const authAPI = commonApi.injectEndpoints({
   endpoints: builder => ({
-    me: builder.query<UserType, void>({
+    getMe: builder.query<UserType | null, void>({
       query: () => {
         return {
           method: 'GET',
           url: 'v1/auth/me',
         }
       },
+      providesTags: ['ME'],
     }),
+
     signOut: builder.mutation<void, void>({
-      query: () => {
-        return {
-          method: 'POST',
-          url: 'v1/auth/logout',
-        }
-      },
+      query: () => ({
+        method: 'POST',
+        url: 'v1/auth/logout',
+      }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          authAPI.util.updateQueryData('me', undefined, () => {
-            return {} as UserType
+          authAPI.util.updateQueryData('getMe', undefined, () => {
+            return null
           })
         )
 
@@ -112,13 +112,12 @@ const authAPI = api.injectEndpoints({
       },
     }),
   }),
-  overrideExisting: true,
 })
 
 export const {
   useRecoverPasswordMutation,
   useSignOutMutation,
-  useMeQuery,
+  useGetMeQuery,
   useSignUpMutation,
   useSignInMutation,
   useResetPasswordMutation,

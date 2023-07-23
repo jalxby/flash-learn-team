@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 
 import { ForgotPassword, Page } from '@/components'
 import { recoveryEmail } from '@/helpers/templates/emails/recoveryEmail.ts'
-import { useRecoverPasswordMutation } from '@/services/auth'
+import { useRecoverPasswordMutation } from '@/services/auth/auth.api.ts'
 
 export const ForgotPasswordPage = () => {
   const [passwordRecovery] = useRecoverPasswordMutation()

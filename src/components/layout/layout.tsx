@@ -1,25 +1,15 @@
 import { Outlet } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 import { Header } from '@/components/layout/header'
-import { useMeQuery, useSignOutMutation } from '@/services/auth'
+import { useGetMeQuery, useSignOutMutation } from '@/services/auth/auth.api.ts'
 
 export const Layout = () => {
-  const { data } = useMeQuery()
+  const { data } = useGetMeQuery()
   const [signOut] = useSignOutMutation()
-
-  const onSignOut = () => {
-    signOut()
-      .unwrap()
-      .then(() => {})
-      .catch(error => {
-        toast(error)
-      })
-  }
 
   return (
     <div>
-      <Header userData={data} onSignOut={onSignOut} />
+      <Header userData={data} onSignOut={signOut} />
       <Outlet />
     </div>
   )
