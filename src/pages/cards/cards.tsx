@@ -41,46 +41,49 @@ export const Cards: FC<CardsPropsType> = ({ userId, img }) => {
     navigate(-1)
   }
   const packName = deck ? deck.name : ''
-  const classNames = {
+  const cNames = {
     header: clsx(s.headerPage),
     textField: clsx(s.textField),
     back: clsx(s.back),
+    wrapper: clsx(s.wrapper, 'container'),
   }
 
   return (
     <Page>
-      <Button variant={'link'} onClick={navigateBack}>
-        <Typography variant={'body2'} className={classNames.back}>
-          <ArrowLeftIcon /> Back to Packs List
-        </Typography>
-      </Button>
+      <div className={cNames.wrapper}>
+        <Button variant={'link'} onClick={navigateBack}>
+          <Typography variant={'body2'} className={cNames.back}>
+            <ArrowLeftIcon /> Back to Packs List
+          </Typography>
+        </Button>
 
-      <div className={classNames.header}>{renderDeckHeading(userId, packName)}</div>
+        <div className={cNames.header}>{renderDeckHeading(userId, packName)}</div>
 
-      {img && (
-        <div style={{ width: '170px', height: '107px' }}>
-          <img src={img} alt="" style={{ width: '170px', height: '107px' }} />
-        </div>
-      )}
+        {img && (
+          <div style={{ width: '170px', height: '107px' }}>
+            <img src={img} alt="" style={{ width: '170px', height: '107px' }} />
+          </div>
+        )}
 
-      <TextField inputType={'search'} className={classNames.textField} />
+        <TextField inputType={'search'} className={cNames.textField} />
 
-      <CardTable
-        rowData={testData}
-        sort={sort}
-        setSort={setSort}
-        userId={userId}
-        pageSize={pageSize}
-      />
+        <CardTable
+          rowData={testData}
+          sort={sort}
+          setSort={setSort}
+          userId={userId}
+          pageSize={pageSize}
+        />
 
-      <Pagination
-        currentPage={page}
-        totalCount={14}
-        pageSize={+pageSize}
-        siblingCount={3}
-        onPageChange={setPage}
-        onPageSizeChange={setPageSize}
-      />
+        <Pagination
+          currentPage={page}
+          totalCount={14}
+          pageSize={+pageSize}
+          siblingCount={3}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+        />
+      </div>
     </Page>
   )
 }

@@ -30,7 +30,14 @@
   display: flex;
   gap: 1rem;
 }
+
 .tableRoot {
   width: 100%;
   margin-bottom: 25px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
