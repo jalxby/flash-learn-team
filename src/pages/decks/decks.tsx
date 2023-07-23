@@ -21,11 +21,7 @@ import { DecksTableActions } from '@/components/ui/table-action-buttons'
 import { Tabs } from '@/components/ui/tabs'
 import { columns } from '@/pages/decks/columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
-import {
-  useCreateDeckMutation,
-  useGetDeckQuery,
-  useGetDecksQuery,
-} from '@/services/decks/decks.api.ts'
+import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks/decks.api.ts'
 
 type PacksProps = {}
 export const Decks: FC<PacksProps> = () => {

@@ -1,6 +1,7 @@
 import { FC } from 'react'
 
 import { clsx } from 'clsx'
+import { useNavigate } from 'react-router-dom'
 //todo uncomment
 //import { useNavigate } from 'react-router-dom'
 
@@ -10,8 +11,7 @@ import { Page404 } from '@/assets'
 import { Button, Typography } from '@/components'
 
 export const PageNotFound: FC = () => {
-  //todo указать путь
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const classNames = {
     wrapper: clsx(s.wrapper),
     container: clsx(s.container),
@@ -26,12 +26,7 @@ export const PageNotFound: FC = () => {
         <Typography variant={'body1'} className={classNames.message}>
           Sorry! Page not found!
         </Typography>
-        <Button
-          variant={'primary'}
-          className={classNames.btn}
-          //todo uncomment
-          // onClick={() => navigate('PATH')}
-        >
+        <Button as={'a'} href={'/'} className={classNames.btn} onClick={() => navigate('/')}>
           Back to home page
         </Button>
       </div>
