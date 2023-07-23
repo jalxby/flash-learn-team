@@ -20,7 +20,7 @@ import { TableActions } from '@/components/ui/table-action-buttons'
 import { Tabs } from '@/components/ui/tabs'
 import { columns } from '@/pages/decks/columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
-import { decksAPI, useGetDecksQuery } from '@/services/decks/decks.api.ts'
+import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks/decks.api.ts'
 
 type PacksProps = {}
 export const Decks: FC<PacksProps> = () => {
@@ -32,7 +32,7 @@ export const Decks: FC<PacksProps> = () => {
   const [sort, setSort] = useState<Sort>(null)
   const [nameToSearch, setNameToSearch] = useState('')
 
-  const [createDeck] = decksAPI.endpoints.createDeck.useMutation()
+  const [createDeck] = useCreateDeckMutation()
   const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
   const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100])
   const [debouncedSliderValue, setDebouncedSliderValue] = useState<[number, number]>([0, 100])
