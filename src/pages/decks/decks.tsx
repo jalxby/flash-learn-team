@@ -70,14 +70,14 @@ export const Decks: FC<PacksProps> = () => {
     setSliderValue([0, maxCardsCount])
     setDebouncedSliderValue([0, maxCardsCount])
   }, [data?.maxCardsCount])
-  const tableRows = data?.items.map(row => (
-    <Table.Row key={row.id}>
-      <Table.DataCell>{row.name}</Table.DataCell>
-      <Table.DataCell>{row.cardsCount}</Table.DataCell>
-      <Table.DataCell>{row.updated}</Table.DataCell>
-      <Table.DataCell>{row.author.name}</Table.DataCell>
+  const tableRows = data?.items.map(deck => (
+    <Table.Row key={deck.id}>
+      <Table.DataCell>{deck.name}</Table.DataCell>
+      <Table.DataCell>{deck.cardsCount}</Table.DataCell>
+      <Table.DataCell>{deck.updated}</Table.DataCell>
+      <Table.DataCell>{deck.author.name}</Table.DataCell>
       <Table.DataCell>
-        <DecksTableActions item={row} isMyDeck={row.author.id === me?.id} />
+        <DecksTableActions item={deck} isMyDeck={deck.author.id === me?.id} />
       </Table.DataCell>
     </Table.Row>
   ))

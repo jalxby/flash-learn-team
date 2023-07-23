@@ -1,15 +1,18 @@
 import { commonApi } from '@/services/common/common.api.ts'
-import { Paginated } from '@/services/common/types.ts'
+import { GetArgs, Paginated } from '@/services/common/types.ts'
 import {
+  ArgCreateCard,
   ArgCreateDeck,
-  ArgGetDecks,
   ArgUpdateDeck,
+  Card,
+  CardsParams,
   Deck,
+  DecksParams,
 } from '@/services/decks/decks.api.types.ts'
 
 export const decksAPI = commonApi.injectEndpoints({
   endpoints: builder => ({
-    getDecks: builder.query<Paginated<Deck> & { maxCardsCount: number }, ArgGetDecks>({
+    getDecks: builder.query<Paginated<Deck> & { maxCardsCount: number }, GetArgs<DecksParams>>({
       query: params => ({
         method: 'GET',
         url: 'v1/decks',
@@ -17,7 +20,15 @@ export const decksAPI = commonApi.injectEndpoints({
       }),
       providesTags: ['UPDATE_DECKS'],
     }),
-    getDeck: builder.query<Deck, { id: string }>({
+    getCards: builder.query<Paginated<Card>, GetArgs<CardsParams>>({
+      query: ({ id, ...rest }) => ({
+        method: 'GET',
+        url: `/v1/decks/${id}/cards`,
+        params: { ...rest },
+      }),
+      providesTags: ['UPDATE_CARDS'],
+    }),
+    getDeck: builder.query<Omit<Deck, 'author'>, { id: string }>({
       query: ({ id }) => ({
         url: `/v1/decks/${id}`,
       }),
@@ -38,12 +49,22 @@ export const decksAPI = commonApi.injectEndpoints({
       invalidatesTags: ['UPDATE_DECKS'],
     }),
     updateDeck: builder.mutation<Deck, ArgUpdateDeck>({
-      query: ({ id, name, cover, isPrivate }) => ({
+      query: ({ id, ...rest }) => ({
         method: 'PATCH',
         url: `/v1/decks/${id}`,
-        body: { name, cover, isPrivate },
+        body: { ...rest },
       }),
       invalidatesTags: ['UPDATE_DECKS'],
+    }),
+    createCard: builder.mutation<any, ArgCreateCard>({
+      query: ({ id, ...body }) => {
+        return {
+          method: 'POST',
+          url: `/v1/decks/${id}/cards`,
+          body,
+        }
+      },
+      invalidatesTags: ['UPDATE_CARDS'],
     }),
   }),
   overrideExisting: true,
@@ -55,4 +76,6 @@ export const {
   useCreateDeckMutation,
   useRemoveDeckMutation,
   useGetDeckQuery,
+  useGetCardsQuery,
+  useCreateCardMutation,
 } = decksAPI
