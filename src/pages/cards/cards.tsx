@@ -32,7 +32,7 @@ type Props = {}
 export const Cards: FC<Props> = () => {
   const [sort, setSort] = useState<Sort>(null)
   const [page, setPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<string>('10')
+  const [pageSize, setPageSize] = useState<string>('7')
   const { id: deckId } = useParams()
   const { data: deck } = useGetDeckQuery({ id: deckId ? deckId : '' })
   const { data: cards } = useGetCardsQuery({ id: deckId ? deckId : '' })

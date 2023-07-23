@@ -28,7 +28,9 @@ export const authAPI = commonApi.injectEndpoints({
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          authAPI.util.updateQueryData('getMe', undefined, () => {
+          authAPI.util.updateQueryData('getMe', undefined, data => {
+            console.log(data?.email)
+
             return null
           })
         )

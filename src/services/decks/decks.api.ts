@@ -57,7 +57,7 @@ export const decksAPI = commonApi.injectEndpoints({
       }),
       invalidatesTags: ['UPDATE_DECKS'],
     }),
-    createCard: builder.mutation<any, ArgCreateCard>({
+    createCard: builder.mutation<Card, ArgCreateCard>({
       query: ({ id, ...body }) => {
         return {
           method: 'POST',
@@ -67,16 +67,23 @@ export const decksAPI = commonApi.injectEndpoints({
       },
       invalidatesTags: ['UPDATE_CARDS'],
     }),
-    updateCardGrade: builder.mutation<any, ArgGradeUpdate>({
+    updateCardGrade: builder.mutation<Paginated<Card>, ArgGradeUpdate>({
       query: ({ id, ...body }) => ({
         method: 'POST',
         url: `/v1/decks/${id}/learn`,
         body,
       }),
-      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+      async onQueryStarted(
+        // 1 параметр: QueryArg - аргументы, которые приходят в query
+        { id, ...body },
+        // 2 параметр: MutationLifecycleApi - dispatch, queryFulfilled, getState и пр.
+        { dispatch, queryFulfilled }
+      ) {
         const patchResult = dispatch(
           decksAPI.util.updateQueryData('getCards', { id }, draft => {
-            Object.assign(draft, patch)
+            const index = draft.items.findIndex(card => card.id === body.cardId)
+
+            if (index !== -1) draft.items[index].grade = body.grade
           })
         )
 
