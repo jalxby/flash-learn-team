@@ -10,6 +10,7 @@ import {
   DeckEditMenu,
   DeleteDialog,
   Grade,
+  Page,
   Pagination,
   Sort,
   Table,
@@ -20,7 +21,8 @@ import { AddNewCard } from '@/components/ui/modal/add-new-card'
 import { EditCard } from '@/components/ui/modal/edit-card'
 import { columns } from '@/pages/cards/table-columns.ts'
 import { testData } from '@/pages/cards/test-data.ts'
-import { DecksItem } from '@/services/decks/decks.api.types.ts'
+import { useGetDeckQuery } from '@/services/decks/decks.api.ts'
+import { Deck } from '@/services/decks/decks.api.types.ts'
 
 type CardsPropsType = {
   userId: string
@@ -46,9 +48,10 @@ export const Cards: FC<CardsPropsType> = ({ userId, img }) => {
     textField: clsx(s.textField),
     back: clsx(s.back),
   }
+  const { data: deck } = useGetDeckQuery({ id })
 
   return (
-    <>
+    <Page>
       <Button variant={'link'} onClick={navigateBack}>
         <Typography variant={'body2'} className={classNames.back}>
           <ArrowLeftIcon /> Back to Packs List
@@ -81,7 +84,7 @@ export const Cards: FC<CardsPropsType> = ({ userId, img }) => {
         onPageChange={setPage}
         onPageSizeChange={setPageSize}
       />
-    </>
+    </Page>
   )
 }
 
@@ -157,7 +160,7 @@ const renderDeckHeading = (userId: string, packName: string) => {
 
 type TableActionsProps = {
   editable?: boolean
-  item: DecksItem
+  item: Deck
 }
 const TableActions: FC<TableActionsProps> = props => {
   const { item, editable = true } = props

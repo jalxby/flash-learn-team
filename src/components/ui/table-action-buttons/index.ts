@@ -1,1 +1,1 @@
-export * from './table-action-buttons'
+export * from './decks-table-actions'

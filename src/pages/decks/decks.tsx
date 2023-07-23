@@ -1,6 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 
 import { clsx } from 'clsx'
+import { useDebounce } from 'usehooks-ts'
 
 import s from './decks.module.scss'
 
@@ -16,28 +17,33 @@ import {
   Typography,
 } from '@/components'
 import { Slider } from '@/components/ui/slider'
-import { TableActions } from '@/components/ui/table-action-buttons'
+import { DecksTableActions } from '@/components/ui/table-action-buttons'
 import { Tabs } from '@/components/ui/tabs'
 import { columns } from '@/pages/decks/columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
-import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks/decks.api.ts'
+import {
+  useCreateDeckMutation,
+  useGetDeckQuery,
+  useGetDecksQuery,
+} from '@/services/decks/decks.api.ts'
 
 type PacksProps = {}
 export const Decks: FC<PacksProps> = () => {
   const { data: me } = useGetMeQuery()
+
   const isMyDecks = me?.id ? me?.id : ''
   const [myDecks, setMyDecks] = useState('')
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
   const [sort, setSort] = useState<Sort>(null)
   const [nameToSearch, setNameToSearch] = useState('')
-
+  const debouncedNameToSearch = useDebounce<string>(nameToSearch, 800)
   const [createDeck] = useCreateDeckMutation()
   const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
   const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100])
   const [debouncedSliderValue, setDebouncedSliderValue] = useState<[number, number]>([0, 100])
   const { data } = useGetDecksQuery({
-    name: nameToSearch,
+    name: debouncedNameToSearch,
     authorId: myDecks,
     currentPage: page,
     itemsPerPage: +pageSize,
@@ -75,7 +81,7 @@ export const Decks: FC<PacksProps> = () => {
       <Table.DataCell>{row.updated}</Table.DataCell>
       <Table.DataCell>{row.author.name}</Table.DataCell>
       <Table.DataCell>
-        <TableActions editable={true} item={row} />
+        <DecksTableActions item={row} isMyDeck={row.author.id === me?.id} />
       </Table.DataCell>
     </Table.Row>
   ))

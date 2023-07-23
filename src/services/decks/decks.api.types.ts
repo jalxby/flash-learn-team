@@ -33,3 +33,4 @@ export type ArgCreateDeck = {
   name: string
   isPrivate?: boolean
 }
+export type ArgUpdateDeck = ArgCreateDeck & { id: string }
