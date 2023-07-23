@@ -1,9 +1,10 @@
 import { FC } from 'react'
 
+import { useNavigate } from 'react-router-dom'
+
 import s from './table-action-buttons.module.scss'
 
 import { DeleteIcon, EditIcon, PlayIcon } from '@/assets'
-import { AddNewPackModal } from '@/components/ui/modal/add-new-pack-modal'
 import { DeleteDialog } from '@/components/ui/modal/delete-dialog/delete-dialog.tsx'
 import { EditPackModal } from '@/components/ui/modal/edit-pack-modal/edit-pack-modal.tsx'
 import { useRemoveDeckMutation, useUpdateDeckMutation } from '@/services/decks/decks.api.ts'
@@ -17,17 +18,13 @@ export const DecksTableActions: FC<Props> = ({ item, isMyDeck }) => {
   const [removeDeck] = useRemoveDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
   const { name, isPrivate, id, cover } = item
+  const navigate = useNavigate()
 
   return (
     <div className={s.container}>
-      <AddNewPackModal
-        trigger={
-          <button>
-            <PlayIcon />
-          </button>
-        }
-        onSubmit={() => {}}
-      />
+      <button onClick={() => navigate(`/cards/${id}`)}>
+        <PlayIcon />
+      </button>
       {isMyDeck && (
         <>
           <EditPackModal

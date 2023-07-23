@@ -1,6 +1,7 @@
 import { FC, useState } from 'react'
 
 import { clsx } from 'clsx'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import s from './cards.module.scss'
 
@@ -33,22 +34,18 @@ export const Cards: FC<CardsPropsType> = ({ userId, img }) => {
   const [sort, setSort] = useState<Sort>(null)
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('10')
-  //todo раскомментировать когда подключим роуты
-  // const navigate = useNavigate()
-  //userId - только для тестирования функционала
+  const { id: deckId } = useParams()
+  const { data: deck } = useGetDeckQuery({ id: deckId ? deckId : '' })
+  const navigate = useNavigate()
   const navigateBack = () => {
-    // eslint-disable-next-line no-console
-    console.log('back')
-    // navigate(-1)
+    navigate(-1)
   }
-  //todo заменить переменную packName на имя колоды
-  const packName = "Friend's pack"
+  const packName = deck ? deck.name : ''
   const classNames = {
     header: clsx(s.headerPage),
     textField: clsx(s.textField),
     back: clsx(s.back),
   }
-  const { data: deck } = useGetDeckQuery({ id })
 
   return (
     <Page>

@@ -19,7 +19,7 @@ const router = createBrowserRouter([
             element: <Decks />,
           },
           {
-            path: 'cards/:deckId',
+            path: 'cards/:id',
             element: <Cards userId={'any'} />,
           },
         ],
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         element: <CheckEmailPage />,
       },
       {
-        path: '/*',
+        path: '*',
         element: <PageNotFound />,
       },
     ],
