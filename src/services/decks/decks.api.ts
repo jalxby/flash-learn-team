@@ -3,6 +3,7 @@ import { GetArgs, Paginated } from '@/services/common/types.ts'
 import {
   ArgCreateCard,
   ArgCreateDeck,
+  ArgGradeUpdate,
   ArgUpdateDeck,
   Card,
   CardsParams,
@@ -66,6 +67,27 @@ export const decksAPI = commonApi.injectEndpoints({
       },
       invalidatesTags: ['UPDATE_CARDS'],
     }),
+    updateCardGrade: builder.mutation<any, ArgGradeUpdate>({
+      query: ({ id, ...body }) => ({
+        method: 'POST',
+        url: `/v1/decks/${id}/learn`,
+        body,
+      }),
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          decksAPI.util.updateQueryData('getCards', { id }, draft => {
+            Object.assign(draft, patch)
+          })
+        )
+
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+      invalidatesTags: ['UPDATE_CARDS'],
+    }),
   }),
   overrideExisting: true,
 })
@@ -78,4 +100,5 @@ export const {
   useGetDeckQuery,
   useGetCardsQuery,
   useCreateCardMutation,
+  useUpdateCardGradeMutation,
 } = decksAPI

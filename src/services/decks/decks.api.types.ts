@@ -68,3 +68,8 @@ export type Card = {
   updated: string
   grade: GradeType
 }
+export type ArgGradeUpdate = {
+  id: string
+  cardId: string
+  grade: GradeType
+}

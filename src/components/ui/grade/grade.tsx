@@ -8,7 +8,7 @@ import { StarIcon, StarOutlineIcon } from '@/assets'
 
 export type GradeType = 0 | 1 | 2 | 3 | 4 | 5
 type GradeProps = {
-  onClick: (id: GradeType) => void
+  onClick: (grade: GradeType) => void
   grade: GradeType
 }
 export const Grade: FC<GradeProps> = ({ onClick, grade = 0 }) => {

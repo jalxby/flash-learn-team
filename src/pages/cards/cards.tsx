@@ -24,6 +24,7 @@ import {
   useCreateCardMutation,
   useGetCardsQuery,
   useGetDeckQuery,
+  useUpdateCardGradeMutation,
 } from '@/services/decks/decks.api.ts'
 
 type Props = {}
@@ -37,6 +38,7 @@ export const Cards: FC<Props> = () => {
   const { data: cards } = useGetCardsQuery({ id: deckId ? deckId : '' })
   const { data: me } = useGetMeQuery()
   const [createCard] = useCreateCardMutation()
+  const [updateGrade] = useUpdateCardGradeMutation()
 
   const isMyPack = me?.id === deck?.userId
 
@@ -105,7 +107,12 @@ export const Cards: FC<Props> = () => {
                   <Table.DataCell>{card.answer}</Table.DataCell>
                   <Table.DataCell>{card.updated}</Table.DataCell>
                   <Table.DataCell>
-                    <Grade onClick={id => console.log(id)} grade={card.grade} />
+                    <Grade
+                      onClick={grade =>
+                        updateGrade({ id: deckId ? deckId : '', grade, cardId: card.id })
+                      }
+                      grade={card.grade}
+                    />
                   </Table.DataCell>
                   <Table.DataCell style={{ padding: '6px 24px' }}></Table.DataCell>
                 </Table.Row>
