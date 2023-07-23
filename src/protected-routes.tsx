@@ -2,11 +2,11 @@ import { FC, PropsWithChildren } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { useMeQuery } from '@/services/auth'
+import { useGetMeQuery } from '@/services/auth/auth.api.ts'
 
 type Props = PropsWithChildren
 export const ProtectedRoutes: FC<Props> = ({ children }) => {
-  const { data, isLoading, error } = useMeQuery()
+  const { data, isLoading, error } = useGetMeQuery()
 
   const navigate = useNavigate()
 

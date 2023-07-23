@@ -6,9 +6,8 @@ import { v4 as uuidv4 } from 'uuid'
 import s from './table.module.scss'
 
 import { Checkbox, Grade, Sort, Table } from '@/components'
-import { TableActions } from '@/components/ui/table-action-buttons'
 
-export const data = [
+export const Data = [
   {
     id: uuidv4(),
     title: 'Project A',
@@ -171,7 +170,7 @@ export const data = [
   },
 ]
 
-export const columns = [
+export const Columns = [
   {
     key: 'name',
     title: 'Name',
@@ -216,23 +215,23 @@ const Container = () => {
 
   return (
     <>
-      <Table.Head columns={columns} sort={sort} onSort={setSort} />
+      <Table.Head columns={Columns} sort={sort} onSort={setSort} />
 
-      <Table.Body>
-        {data.map(row => {
-          return (
-            <Table.Row key={row.title}>
-              <Table.DataCell>{row.title}</Table.DataCell>
-              <Table.DataCell>{row.cardsCount}</Table.DataCell>
-              <Table.DataCell>{row.updated}</Table.DataCell>
-              <Table.DataCell>{row.createdBy}</Table.DataCell>
-              <Table.DataCell>
-                <TableActions editable={row.editable} item={row} />
-              </Table.DataCell>
-            </Table.Row>
-          )
-        })}
-      </Table.Body>
+      {/*<Table.Body>*/}
+      {/*  {data.map(row => {*/}
+      {/*    return (*/}
+      {/*      <Table.Row key={row.title}>*/}
+      {/*        <Table.DataCell>{row.title}</Table.DataCell>*/}
+      {/*        <Table.DataCell>{row.cardsCount}</Table.DataCell>*/}
+      {/*        <Table.DataCell>{row.updated}</Table.DataCell>*/}
+      {/*        <Table.DataCell>{row.createdBy}</Table.DataCell>*/}
+      {/*        <Table.DataCell>*/}
+      {/*          <TableActions editable={row.editable} item={row} />*/}
+      {/*        </Table.DataCell>*/}
+      {/*      </Table.Row>*/}
+      {/*    )*/}
+      {/*  })}*/}
+      {/*</Table.Body>*/}
     </>
   )
 }
@@ -285,10 +284,6 @@ export const Data_Cell_With_Grade: Story = {
 
 export const Data_Cell_With_Actions: Story = {
   args: {
-    children: (
-      <Table.DataCell className={s.row}>
-        <TableActions item={data[0]} />
-      </Table.DataCell>
-    ),
+    children: <Table.DataCell className={s.row}></Table.DataCell>,
   },
 }
