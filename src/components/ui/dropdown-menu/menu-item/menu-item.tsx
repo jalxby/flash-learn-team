@@ -1,6 +1,7 @@
 import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { clsx } from 'clsx'
 
 import s from './menu-item.module.scss'
 
@@ -9,12 +10,14 @@ type MenuItemPropsType<T extends ElementType = 'div'> = {
   children: ReactNode
   separator?: boolean
   onSelect?: () => void
+  selectable?: boolean
 } & ComponentPropsWithoutRef<T>
 export const MenuItem = <T extends ElementType = 'div'>({
   as,
   children,
   separator = true,
   onSelect,
+  selectable = false,
   ...rest
 }: MenuItemPropsType<T>) => {
   const onSelectHandler = (e: Event) => {
@@ -23,8 +26,8 @@ export const MenuItem = <T extends ElementType = 'div'>({
   }
   const TagName = as || 'div'
   const classNames = {
-    menuItem: s.menuItem,
-    item: s.item,
+    menuItem: clsx(s.menuItem, selectable && s.interactive),
+    item: clsx(s.item),
     separator: s.separator,
   }
 
@@ -33,7 +36,6 @@ export const MenuItem = <T extends ElementType = 'div'>({
       <TagName className={classNames.item} {...rest}>
         {children}
       </TagName>
-      {separator && <DropdownMenu.Separator className={classNames.separator} />}
     </DropdownMenu.Item>
   )
 }
