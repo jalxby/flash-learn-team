@@ -1,5 +1,5 @@
 import { commonApi } from '@/services/common/common.api.ts'
-import { GetArgs, Paginated } from '@/services/common/types.ts'
+import { GetArgs, Paginated } from '@/services/common/common.api.types.ts'
 import {
   ArgCreateCard,
   ArgCreateDeck,
