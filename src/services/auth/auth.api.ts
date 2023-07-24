@@ -20,7 +20,6 @@ export const authAPI = commonApi.injectEndpoints({
       },
       providesTags: ['ME'],
     }),
-
     signOut: builder.mutation<void, void>({
       query: () => ({
         method: 'POST',

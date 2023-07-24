@@ -35,7 +35,11 @@ export const Cards: FC<Props> = () => {
   const [pageSize, setPageSize] = useState<string>('7')
   const { id: deckId } = useParams()
   const { data: deck } = useGetDeckQuery({ id: deckId ? deckId : '' })
-  const { data: cards } = useGetCardsQuery({ id: deckId ? deckId : '' })
+  const { data: cards } = useGetCardsQuery({
+    id: deckId ? deckId : '',
+    currentPage: page,
+    itemsPerPage: +pageSize,
+  })
   const { data: me } = useGetMeQuery()
   const [createCard] = useCreateCardMutation()
   const [updateGrade] = useUpdateCardGradeMutation()
@@ -46,7 +50,7 @@ export const Cards: FC<Props> = () => {
   const navigateBack = () => {
     navigate(-1)
   }
-  const packName = deck ? deck.name : ''
+  const deckName = deck ? deck.name : ''
   const cNames = {
     header: clsx(s.headerPage),
     textField: clsx(s.textField),
@@ -69,7 +73,6 @@ export const Cards: FC<Props> = () => {
       Learn to Pack
     </Button>
   )
-  const headingText = isMyPack ? 'My pack' : packName
 
   return (
     <Page>
@@ -82,7 +85,7 @@ export const Cards: FC<Props> = () => {
 
         <div className={cNames.header}>
           <Typography variant={'large'} style={{ display: 'flex', gap: '16px' }}>
-            {headingText}
+            {deckName}
             {editMenu}
           </Typography>
           {addNewCardSection}
@@ -122,9 +125,9 @@ export const Cards: FC<Props> = () => {
         </Table.Root>
 
         <Pagination
-          currentPage={page}
-          totalCount={14}
-          pageSize={+pageSize}
+          currentPage={cards ? cards.pagination.currentPage : 1}
+          totalCount={cards ? cards.pagination.totalItems : 0}
+          pageSize={cards ? cards.pagination.itemsPerPage : 0}
           siblingCount={3}
           onPageChange={setPage}
           onPageSizeChange={setPageSize}
