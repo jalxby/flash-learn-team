@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 
 import s from './personal-info.module.scss'
 
@@ -7,19 +7,24 @@ import { Avatar, Button, Typography } from '@/components'
 import { useImageUploader } from '@/components/ui/avatar/useImageUploader.ts'
 import { Card } from '@/components/ui/card'
 import { EditableText, useEditableText } from '@/components/ui/editeble-text'
+import { useUpdateMeMutation } from '@/services/auth'
 
 export type PersonalInfoPropsType = {
-  userName: string
-  userEmail: string
+  userName?: string
+  userEmail?: string
   onLogout: () => void
+  onSaveChanges: (value: string | undefined) => void
 }
 
 export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
-  const { userName, userEmail, onLogout } = props
+  const { userName, userEmail, onLogout, onSaveChanges } = props
   const { activateEditMode, setEditMode, editMode } = useEditableText('')
-  const { file, handleFileChange, openFileInput, fileInputRef } = useImageUploader(
-    'https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80'
-  )
+  const { file, handleFileChange, openFileInput, fileInputRef } = useImageUploader('')
+  const [updateAvatar] = useUpdateMeMutation()
+
+  useEffect(() => {
+    updateAvatar({ avatar: file })
+  }, [file])
 
   return (
     <Card className={`${s.card} ${editMode && s.editMode}`}>
@@ -54,7 +59,13 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
           </Button>
         </>
       ) : (
-        <EditableText callback={setEditMode} text={userName} />
+        <EditableText
+          callback={setEditMode}
+          text={userName}
+          onSaveChanges={value => {
+            onSaveChanges(value)
+          }}
+        />
       )}
     </Card>
   )

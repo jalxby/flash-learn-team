@@ -24,6 +24,7 @@ import {
   useCreateCardMutation,
   useGetCardsQuery,
   useGetDeckQuery,
+  useLearnCardQuery,
   useUpdateCardGradeMutation,
 } from '@/services/decks/decks.api.ts'
 
@@ -41,6 +42,9 @@ export const Cards: FC<Props> = () => {
     itemsPerPage: +pageSize,
   })
   const { data: me } = useGetMeQuery()
+  const { data: randomCard, refetch } = useLearnCardQuery({ id: deckId ? deckId : '' })
+
+  console.log('randomCard', randomCard)
   const [createCard] = useCreateCardMutation()
   const [updateGrade] = useUpdateCardGradeMutation()
 
@@ -76,6 +80,7 @@ export const Cards: FC<Props> = () => {
 
   return (
     <Page>
+      <Button onClick={refetch}>Refetch</Button>
       <div className={cNames.wrapper}>
         <Button variant={'link'} onClick={navigateBack}>
           <Typography variant={'body2'} className={cNames.back}>

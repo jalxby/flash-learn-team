@@ -38,7 +38,7 @@ export const AvatarDropdown: FC<AvtarDropdownPropsType> = props => {
           </div>
         </MenuItem>
         {separator}
-        <MenuItem as={'a'} href={'#'} selectable={true}>
+        <MenuItem as={'a'} href={'profile'} selectable={true}>
           <ProfileIcon />
           <Typography variant={'caption'}>My Profile</Typography>
         </MenuItem>

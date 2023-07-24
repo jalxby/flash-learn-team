@@ -50,13 +50,14 @@ export const authAPI = commonApi.injectEndpoints({
       },
     }),
     updateMe: builder.mutation<UserType, ArgRefreshMeType>({
-      query: ({ email, password, name }) => {
+      query: ({ email, avatar, name }) => {
         return {
           method: 'PATCH',
           url: 'v1/auth/me',
-          body: { email, password, name },
+          body: { email, avatar, name },
         }
       },
+      invalidatesTags: ['ME'],
     }),
     signUp: builder.mutation<UserType, ArgsSignUpType>({
       query: ({ email, password }) => {
@@ -116,6 +117,7 @@ export const authAPI = commonApi.injectEndpoints({
 })
 
 export const {
+  useUpdateMeMutation,
   useRecoverPasswordMutation,
   useSignOutMutation,
   useGetMeQuery,

@@ -59,6 +59,6 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 export const commonApi = createApi({
   reducerPath: 'commonApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['ME', 'UPDATE_DECKS', 'UPDATE_CARDS'],
+  tagTypes: ['ME', 'UPDATE_DECKS', 'UPDATE_CARDS', 'LEARN_CARD'],
   endpoints: () => ({}),
 })

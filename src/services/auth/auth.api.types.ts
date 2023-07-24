@@ -17,7 +17,11 @@ export type ArgsSignInType = Omit<ArgsSignUpType, 'name'>
 export type SignInResponseType = {
   accessToken: string
 }
-export type ArgRefreshMeType = Required<ArgsSignUpType>
+export type ArgRefreshMeType = {
+  name?: string
+  avatar?: string
+  email?: string
+}
 export type ArgRecoverPasswordType = {
   html?: string
   email: string

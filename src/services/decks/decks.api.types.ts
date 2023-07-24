@@ -50,26 +50,28 @@ export type ArgCreateCard = {
 }
 
 export type Card = {
-  id: string
-  deckId: string
   userId: string
-  question: string
-  answer: string
   shots: number
-  questionImg?: any
-  answerImg?: any
-  answerVideo?: any
-  questionVideo?: any
   comments?: any
   type?: any
   rating: number
   moreId?: any
-  created: string
-  updated: string
   grade: GradeType
-}
+} & LearnCard
 export type ArgGradeUpdate = {
   id: string
   cardId: string
   grade: GradeType
+}
+export type LearnCard = {
+  id: string
+  question: string
+  answer: string
+  deckId: string
+  questionImg?: any
+  answerImg?: any
+  questionVideo?: any
+  answerVideo?: any
+  created: string
+  updated: string
 }

@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components'
-import { Cards, CheckEmailPage, Decks, PageNotFound, SignIn, SignUp } from '@/pages'
+import { Cards, CheckEmailPage, Decks, PageNotFound, Profile, SignIn, SignUp } from '@/pages'
 import { ForgotPasswordPage } from '@/pages/forgot-password'
 import { UpdatePasswordPage } from '@/pages/update-password'
 import { ProtectedRoutes } from '@/protected-routes.tsx'
@@ -20,7 +20,11 @@ const router = createBrowserRouter([
           },
           {
             path: 'cards/:id',
-            element: <Cards userId={'any'} />,
+            element: <Cards />,
+          },
+          {
+            path: 'profile',
+            element: <Profile />,
           },
         ],
       },

@@ -34,6 +34,13 @@ export const decksAPI = commonApi.injectEndpoints({
         url: `/v1/decks/${id}`,
       }),
     }),
+    learnCard: builder.query<any, { id: string }>({
+      query: ({ id }) => ({
+        method: 'GET',
+        url: `v1/decks/${id}/learn`,
+      }),
+      // providesTags: ['LEARN_CARD'],
+    }),
     createDeck: builder.mutation<Deck, ArgCreateDeck>({
       query: body => ({
         method: 'POST',
@@ -73,17 +80,12 @@ export const decksAPI = commonApi.injectEndpoints({
         url: `/v1/decks/${id}/learn`,
         body,
       }),
-      async onQueryStarted(
-        // 1 параметр: QueryArg - аргументы, которые приходят в query
-        { id, ...body },
-        // 2 параметр: MutationLifecycleApi - dispatch, queryFulfilled, getState и пр.
-        { dispatch, queryFulfilled }
-      ) {
+      async onQueryStarted({ id, grade, cardId }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           decksAPI.util.updateQueryData('getCards', { id }, draft => {
-            const index = draft.items.findIndex(card => card.id === body.cardId)
+            const card = draft.items.find(card => card.id === cardId)
 
-            if (index !== -1) draft.items[index].grade = body.grade
+            if (card) card.grade = grade
           })
         )
 
@@ -100,6 +102,7 @@ export const decksAPI = commonApi.injectEndpoints({
 })
 
 export const {
+  useLearnCardQuery,
   useUpdateDeckMutation,
   useGetDecksQuery,
   useCreateDeckMutation,

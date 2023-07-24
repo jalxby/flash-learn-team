@@ -8,14 +8,16 @@ import { useEditableText } from '@/components/ui/editeble-text/useEditableText.t
 export type EditableTextPropsType = {
   text: string | undefined
   callback: (value: boolean) => void
+  onSaveChanges: (newValue: string | undefined) => void
 }
 export const EditableText: FC<EditableTextPropsType> = props => {
-  const { text, callback } = props
+  const { text, callback, onSaveChanges } = props
 
   const { disableEditMode, error, value, handleInputChange } = useEditableText(text && text)
   const disableEditModeHandler = () => {
     disableEditMode()
     callback(false)
+    onSaveChanges(value)
   }
 
   return (
