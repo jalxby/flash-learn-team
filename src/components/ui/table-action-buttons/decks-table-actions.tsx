@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import s from './table-action-buttons.module.scss'
 
 import { DeleteIcon, EditIcon, PlayIcon } from '@/assets'
-import { DeleteDialog } from '@/components/ui/modal/delete-dialog/delete-dialog.tsx'
+import { DeleteDeckDialog } from '@/components/ui/modal/delete-deck/delete-deck-dialog.tsx'
 import { EditPackModal } from '@/components/ui/modal/edit-pack-modal/edit-pack-modal.tsx'
 import { useRemoveDeckMutation, useUpdateDeckMutation } from '@/services/decks/decks.api.ts'
 import { Deck } from '@/services/decks/decks.api.types.ts'
@@ -39,16 +39,17 @@ export const DecksTableActions: FC<Props> = ({ item, isMyDeck }) => {
             isPrivate={isPrivate}
             packName={name}
           />
-          <DeleteDialog
+          <DeleteDeckDialog
             buttonTitle={'Delete Pack'}
-            item={item}
             onClick={() => removeDeck({ id })}
             title={'Delete Pack'}
+            bodyMessage={`Do you really want to delete "${item.name}" deck?`}
+            id={item.id}
           >
             <button>
               <DeleteIcon />
             </button>
-          </DeleteDialog>
+          </DeleteDeckDialog>
         </>
       )}
     </div>

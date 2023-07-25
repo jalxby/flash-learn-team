@@ -1,18 +1,18 @@
 import { Meta, StoryObj } from '@storybook/react'
 
 import { DeleteIcon } from '@/assets'
-import { DeleteDialog } from '@/components/ui/modal/delete-dialog/delete-dialog.tsx'
+import { DeleteDeckDialog } from '@/components/ui/modal/delete-deck/delete-deck-dialog.tsx'
 
 const meta = {
   title: 'Modals/Delete Dialog',
-  component: DeleteDialog,
+  component: DeleteDeckDialog,
   tags: ['autodocs'],
   parameters: {
     controls: {
       exclude: /(?:\b|')(item|trigger|onClick)(?:\b|')/g,
     },
   },
-} satisfies Meta<typeof DeleteDialog>
+} satisfies Meta<typeof DeleteDeckDialog>
 const item = {
   id: 'cljyp4jjv0008p6mg6sc0lkks',
   userId: 'af9721b3-1995-4f2a-b48a-f0bc4d39395f',

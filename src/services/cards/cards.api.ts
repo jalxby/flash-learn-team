@@ -15,13 +15,15 @@ export const cardsAPI = commonApi.injectEndpoints({
         url: `v1/cards/${id}`,
         body,
       }),
+      invalidatesTags: ['UPDATE_CARDS'],
     }),
     deleteCard: builder.mutation<void, { id: string }>({
       query: ({ id }) => ({
         method: 'DELETE',
         url: `v1/cards/${id}`,
       }),
+      invalidatesTags: ['UPDATE_CARDS'],
     }),
   }),
 })
-export const { useGetCardQuery } = cardsAPI
+export const { useGetCardQuery, useDeleteCardMutation, useUpdateCardMutation } = cardsAPI
