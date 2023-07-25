@@ -4,8 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { addNewPackSchema } from './add-new-pack-schema.ts'
+import { createDeckSchema } from './create-deck-schema.ts'
 
+import { ChangeCoverIcon } from '@/assets'
 import { Button, ControlledCheckbox, ControlledTextField, Typography } from '@/components'
 import { Modal } from '@/components/ui/modal'
 
@@ -13,13 +14,13 @@ type AddNewPackModalPropsType = {
   trigger: ReactNode
   onSubmit: (data: Form) => void
 }
-type Form = z.infer<typeof addNewPackSchema>
+type Form = z.infer<typeof createDeckSchema>
 
-export const AddNewPackModal: FC<AddNewPackModalPropsType> = props => {
+export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const { trigger, onSubmit } = props
   const { handleSubmit, control } = useForm<Form>({
-    resolver: zodResolver(addNewPackSchema),
+    resolver: zodResolver(createDeckSchema),
     mode: 'onSubmit',
   })
 
@@ -32,6 +33,10 @@ export const AddNewPackModal: FC<AddNewPackModalPropsType> = props => {
     <Modal.Root title={'Add New Pack'} trigger={trigger} onOpenChange={setIsOpen} isOpen={isOpen}>
       <form onSubmit={onSubmitForm}>
         <Modal.Body>
+          <Button variant={'secondary'}>
+            <ChangeCoverIcon />
+            Change Cover
+          </Button>
           <ControlledTextField
             style={{ marginBottom: '1.5rem' }}
             name={'name'}

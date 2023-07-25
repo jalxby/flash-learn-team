@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { PersonalInfo } from 'src/components/personal-info/personal-info.tsx'
+
+import { PersonalInfo } from '@/components'
 
 const meta = {
   title: 'Profile/Personal Information',

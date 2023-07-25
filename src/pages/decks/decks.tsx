@@ -7,7 +7,7 @@ import s from './decks.module.scss'
 
 import DeleteIcon from '@/assets/icons/DeleteIcon.tsx'
 import {
-  AddNewPackModal,
+  CreateDeck,
   Button,
   Page,
   Pagination,
@@ -87,7 +87,7 @@ export const Decks: FC<PacksProps> = () => {
       <div className={cNames.container}>
         <div className={cNames.title}>
           <Typography variant={'large'}>Pack list</Typography>
-          <AddNewPackModal trigger={<Button>Add New Pack</Button>} onSubmit={createDeck} />
+          <CreateDeck trigger={<Button>Add New Pack</Button>} onSubmit={createDeck} />
         </div>
 
         <div className={cNames.root}>

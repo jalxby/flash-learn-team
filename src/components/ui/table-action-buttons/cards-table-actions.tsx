@@ -3,7 +3,7 @@ import { FC } from 'react'
 import s from './table-action-buttons.module.scss'
 
 import { DeleteIcon, EditIcon } from '@/assets'
-import { DeleteDeckDialog } from '@/components/ui/modal/delete-deck/delete-deck-dialog.tsx'
+import { DeleteDialog } from '@/components/ui/modal/delete-dialog/delete-dialog.tsx'
 import { EditCard } from '@/components/ui/modal/edit-card'
 import { useDeleteCardMutation, useUpdateCardMutation } from '@/services/cards/cards.api.ts'
 import { Card } from '@/services/decks/decks.api.types.ts'
@@ -24,7 +24,7 @@ export const CardsTableActions: FC<Props> = ({ item }) => {
         </button>
       </EditCard>
 
-      <DeleteDeckDialog
+      <DeleteDialog
         buttonTitle={'Delete Card'}
         onClick={id => deleteCard({ id })}
         title={'Delete Card'}
@@ -34,7 +34,7 @@ export const CardsTableActions: FC<Props> = ({ item }) => {
         <button>
           <DeleteIcon />
         </button>
-      </DeleteDeckDialog>
+      </DeleteDialog>
     </div>
   )
 }

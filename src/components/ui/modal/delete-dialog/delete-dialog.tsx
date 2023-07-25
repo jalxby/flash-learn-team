@@ -11,7 +11,7 @@ type DeleteDialogProps = {
   children: ReactNode
   onClick: (id: string) => void
 }
-export const DeleteDeckDialog: FC<DeleteDialogProps> = ({
+export const DeleteDialog: FC<DeleteDialogProps> = ({
   onClick,
   children,
   title,
