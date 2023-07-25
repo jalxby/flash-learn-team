@@ -1,5 +1,7 @@
 import { FC } from 'react'
 
+import * as DropdownMenuRDX from '@radix-ui/react-dropdown-menu'
+
 import s from './dropdown-menu.module.scss'
 
 import { LogoutIcon, ProfileIcon } from '@/assets'
@@ -15,6 +17,7 @@ type AvtarDropdownPropsType = {
 
 export const AvatarDropdown: FC<AvtarDropdownPropsType> = props => {
   const { avatar, userName, userEmail, onSignOut } = props
+  const separator = <DropdownMenuRDX.Separator className={s.separator} />
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -26,21 +29,21 @@ export const AvatarDropdown: FC<AvtarDropdownPropsType> = props => {
         }
       >
         <MenuItem>
-          <>
-            <Avatar src={avatar} menuItem={s.menu_item} userName={userName} />
-            <div style={{ flexDirection: 'column' }}>
-              <Typography variant={'caption'}>
-                <div>{userName}</div>
-                <div>{userEmail}</div>
-              </Typography>
-            </div>
-          </>
+          <Avatar src={avatar} menuItem={s.menu_item} userName={userName} />
+          <div style={{ flexDirection: 'column' }}>
+            <Typography variant={'caption'}>
+              <div>{userName}</div>
+              <div>{userEmail}</div>
+            </Typography>
+          </div>
         </MenuItem>
-        <MenuItem as={'a'} href={'#'}>
+        {separator}
+        <MenuItem as={'a'} href={'/profile'} selectable={true}>
           <ProfileIcon />
           <Typography variant={'caption'}>My Profile</Typography>
         </MenuItem>
-        <MenuItem separator={false} onSelect={onSignOut}>
+        {separator}
+        <MenuItem onSelect={onSignOut} selectable={true}>
           <LogoutIcon />
           <Typography variant={'caption'}>Sign Out</Typography>
         </MenuItem>

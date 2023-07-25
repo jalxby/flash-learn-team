@@ -75,7 +75,7 @@ export const EditCard: FC<EditCardModalPropsType> = props => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant={'primary'} type={'submit'}>
-            <Typography variant={'subtitle2'}>Add New Card</Typography>
+            <Typography variant={'subtitle2'}>Save Changes</Typography>
           </Button>
           <Button variant={'secondary'} onClick={() => setIsOpen(false)}>
             <Typography variant={'subtitle2'}>Cancel</Typography>

@@ -15,7 +15,7 @@ export const columns = [
     sortable: true,
   },
   {
-    key: 'garde',
+    key: 'grade',
     title: 'Grade',
     sortable: false,
   },

@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components'
-import { CheckEmailPage, Decks, SignIn, SignUp } from '@/pages'
+import { Cards, CheckEmailPage, Decks, PageNotFound, Profile, SignIn, SignUp } from '@/pages'
 import { ForgotPasswordPage } from '@/pages/forgot-password'
 import { UpdatePasswordPage } from '@/pages/update-password'
 import { ProtectedRoutes } from '@/protected-routes.tsx'
@@ -12,20 +12,29 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
+        element: <ProtectedRoutes />,
+        children: [
+          {
+            index: true,
+            element: <Decks />,
+          },
+          {
+            path: 'cards/:id',
+            element: <Cards />,
+          },
+          {
+            path: 'profile',
+            element: <Profile />,
+          },
+        ],
+      },
+      {
         path: 'sign-in',
         element: <SignIn />,
       },
       {
         path: 'sign-up',
         element: <SignUp />,
-      },
-      {
-        index: true,
-        element: (
-          <ProtectedRoutes>
-            <Decks />
-          </ProtectedRoutes>
-        ),
       },
 
       {
@@ -40,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: 'check-email',
         element: <CheckEmailPage />,
+      },
+      {
+        path: '*',
+        element: <PageNotFound />,
       },
     ],
   },

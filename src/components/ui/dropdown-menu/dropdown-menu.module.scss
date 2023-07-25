@@ -49,6 +49,13 @@ button {
   stroke-width: 0.125rem; /* Толщина обводки */
 }
 
+.separator {
+  height: 0.063rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  background-color: var(--color-dark-500);
+}
+
 .icon_button {
   cursor: pointer;
   user-select: none;

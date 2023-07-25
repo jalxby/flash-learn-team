@@ -30,7 +30,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
           extraOptions
         )
 
-        if (refreshResult.meta?.response?.status === 201) {
+        if (refreshResult.meta?.response?.status === 204) {
           result = await baseQuery(args, api, extraOptions)
         } else {
           await baseQuery(
@@ -43,11 +43,9 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
           )
         }
       } finally {
-        // release must be called once the mutex should be released again.
         release()
       }
     } else {
-      // wait until the mutex is available without locking it
       await mutex.waitForUnlock()
       result = await baseQuery(args, api, extraOptions)
     }
@@ -59,6 +57,6 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 export const commonApi = createApi({
   reducerPath: 'commonApi',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['ME', 'UPDATE_DECKS'],
+  tagTypes: ['ME', 'UPDATE_DECKS', 'UPDATE_CARDS', 'LEARN_CARD'],
   endpoints: () => ({}),
 })

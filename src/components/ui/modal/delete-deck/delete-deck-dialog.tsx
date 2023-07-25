@@ -2,30 +2,26 @@ import { FC, ReactNode, useState } from 'react'
 
 import { Button, Typography } from '@/components'
 import { Modal } from '@/components/ui/modal'
-import { DecksItem } from '@/services/decks/decks.api.types.ts'
-
-//TODO change this mock types to types from backend
 
 type DeleteDialogProps = {
+  id: string
   title: string
-  item: DecksItem
+  bodyMessage: string
   buttonTitle: string
   children: ReactNode
   onClick: (id: string) => void
 }
-export const DeleteDialog: FC<DeleteDialogProps> = ({
+export const DeleteDeckDialog: FC<DeleteDialogProps> = ({
   onClick,
   children,
   title,
-  item,
   buttonTitle,
+  id,
+  bodyMessage,
 }) => {
-  //TODO body message should warn about deleting all cards if item = Pack
-  const bodyMessage = `Do you really want to delete ${item.name}`
-
   const [open, setOpen] = useState<boolean>(false)
   const clickHandler = () => {
-    onClick(item.id)
+    onClick(id)
     setOpen(false)
   }
 

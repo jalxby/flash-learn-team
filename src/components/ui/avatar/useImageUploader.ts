@@ -3,7 +3,7 @@ import { ChangeEvent, useRef, useState } from 'react'
 /**
  * The useImageUploader hook provides functionality for uploading images.
  * @param {string} value - The initial file value.
- * @returns {object} - An object with data and functions for working with image upload.
+ *
  */
 export const useImageUploader = (value: string) => {
   const [file, setFile] = useState<string>(value)
@@ -24,7 +24,7 @@ export const useImageUploader = (value: string) => {
     const photo = e.target.files?.[0]
 
     if (photo) {
-      if (photo.type === 'image/jpeg') {
+      if (photo.type === 'image/jpeg' || photo.type === 'image/png') {
         const fileURL = URL.createObjectURL(photo)
 
         setFile(fileURL)

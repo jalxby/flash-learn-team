@@ -1,5 +1,5 @@
 export * from './ui'
 export * from './layout'
 export * from './auth'
-export * from './profile'
+export * from './personal-info'
 export * from './learn-pack'

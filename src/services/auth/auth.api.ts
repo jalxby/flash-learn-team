@@ -18,9 +18,9 @@ export const authAPI = commonApi.injectEndpoints({
           url: 'v1/auth/me',
         }
       },
+      extraOptions: { maxRetries: false },
       providesTags: ['ME'],
     }),
-
     signOut: builder.mutation<void, void>({
       query: () => ({
         method: 'POST',
@@ -40,7 +40,7 @@ export const authAPI = commonApi.injectEndpoints({
         }
       },
     }),
-    refreshMe: builder.mutation<any, any>({
+    refreshMe: builder.mutation<void, void>({
       query: () => {
         return {
           method: 'GET',
@@ -49,13 +49,14 @@ export const authAPI = commonApi.injectEndpoints({
       },
     }),
     updateMe: builder.mutation<UserType, ArgRefreshMeType>({
-      query: ({ email, password, name }) => {
+      query: ({ email, avatar, name }) => {
         return {
           method: 'PATCH',
           url: 'v1/auth/me',
-          body: { email, password, name },
+          body: { email, avatar, name },
         }
       },
+      invalidatesTags: ['ME'],
     }),
     signUp: builder.mutation<UserType, ArgsSignUpType>({
       query: ({ email, password }) => {
@@ -74,6 +75,7 @@ export const authAPI = commonApi.injectEndpoints({
           body: { email, password },
         }
       },
+      invalidatesTags: ['ME'],
     }),
     verifyEmail: builder.mutation<void, string>({
       query: code => {
@@ -102,7 +104,7 @@ export const authAPI = commonApi.injectEndpoints({
         }
       },
     }),
-    resetPassword: builder.mutation<any, ArgResetPasswordType>({
+    resetPassword: builder.mutation<void, ArgResetPasswordType>({
       query: ({ password, token }) => {
         return {
           method: 'POST',
@@ -115,6 +117,7 @@ export const authAPI = commonApi.injectEndpoints({
 })
 
 export const {
+  useUpdateMeMutation,
   useRecoverPasswordMutation,
   useSignOutMutation,
   useGetMeQuery,

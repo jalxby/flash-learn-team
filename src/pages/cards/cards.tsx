@@ -1,15 +1,18 @@
-import { FC, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 
 import { clsx } from 'clsx'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDebounce } from 'usehooks-ts'
 
 import s from './cards.module.scss'
 
-import { ArrowLeftIcon, DeleteIcon, EditIcon } from '@/assets'
+import { ArrowLeftIcon } from '@/assets'
 import {
   Button,
   DeckEditMenu,
-  DeleteDialog,
   Grade,
+  GradeType,
+  Page,
   Pagination,
   Sort,
   Table,
@@ -17,115 +20,60 @@ import {
   Typography,
 } from '@/components'
 import { AddNewCard } from '@/components/ui/modal/add-new-card'
-import { EditCard } from '@/components/ui/modal/edit-card'
+import { CardsTableActions } from '@/components/ui/table-action-buttons/cards-table-actions.tsx'
 import { columns } from '@/pages/cards/table-columns.ts'
-import { testData } from '@/pages/cards/test-data.ts'
-import { DecksItem } from '@/services/decks/decks.api.types.ts'
+import { useGetMeQuery } from '@/services/auth/auth.api.ts'
+import {
+  useCreateCardMutation,
+  useGetCardsQuery,
+  useGetDeckQuery,
+  useUpdateCardGradeMutation,
+} from '@/services/decks/decks.api.ts'
 
-type CardsPropsType = {
-  userId: string
-  img?: string
-}
+type Props = {}
 
-export const Cards: FC<CardsPropsType> = ({ userId, img }) => {
+export const Cards: FC<Props> = () => {
   const [sort, setSort] = useState<Sort>(null)
+  const [search, setSearch] = useState<string>('')
+  const debouncedNameToSearch = useDebounce<string>(search, 800)
   const [page, setPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<string>('10')
-  //todo раскомментировать когда подключим роуты
-  // const navigate = useNavigate()
-  //userId - только для тестирования функционала
+  const [pageSize, setPageSize] = useState<string>('7')
+  const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
+
+  const { id: deckIdFromParams } = useParams()
+  const deckId = deckIdFromParams ?? ''
+  const { data: deck } = useGetDeckQuery({ id: deckId })
+  const { data: cards } = useGetCardsQuery({
+    id: deckId,
+    currentPage: page,
+    itemsPerPage: +pageSize,
+    orderBy: sortDirection,
+    answer: debouncedNameToSearch,
+  })
+  const { data: me } = useGetMeQuery()
+  const isMyDeck = me?.id === deck?.userId
+  const [createCard] = useCreateCardMutation()
+  const [updateGrade] = useUpdateCardGradeMutation()
+
+  const isMyPack = me?.id === deck?.userId
+
+  const navigate = useNavigate()
   const navigateBack = () => {
-    // eslint-disable-next-line no-console
-    console.log('back')
-    // navigate(-1)
+    navigate(-1)
   }
-  //todo заменить переменную packName на имя колоды
-  const packName = "Friend's pack"
-  const classNames = {
+  const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.currentTarget.value)
+  }
+  const updateGradeHandler = (cardId: string, grade: GradeType) => {
+    if (deckId) updateGrade({ id: deckId, grade, cardId: cardId })
+  }
+  const deckName = deck?.name ?? ''
+  const cNames = {
     header: clsx(s.headerPage),
     textField: clsx(s.textField),
     back: clsx(s.back),
+    wrapper: clsx(s.wrapper, 'container'),
   }
-
-  return (
-    <>
-      <Button variant={'link'} onClick={navigateBack}>
-        <Typography variant={'body2'} className={classNames.back}>
-          <ArrowLeftIcon /> Back to Packs List
-        </Typography>
-      </Button>
-
-      <div className={classNames.header}>{renderDeckHeading(userId, packName)}</div>
-
-      {img && (
-        <div style={{ width: '170px', height: '107px' }}>
-          <img src={img} alt="" style={{ width: '170px', height: '107px' }} />
-        </div>
-      )}
-
-      <TextField inputType={'search'} className={classNames.textField} />
-
-      <CardTable
-        rowData={testData}
-        sort={sort}
-        setSort={setSort}
-        userId={userId}
-        pageSize={pageSize}
-      />
-
-      <Pagination
-        currentPage={page}
-        totalCount={14}
-        pageSize={+pageSize}
-        siblingCount={3}
-        onPageChange={setPage}
-        onPageSizeChange={setPageSize}
-      />
-    </>
-  )
-}
-
-type CardTablePropsType = {
-  rowData: any
-  userId: string
-  pageSize: string
-  sort: Sort
-  setSort: (sort: Sort) => void
-}
-const CardTable: FC<CardTablePropsType> = props => {
-  const { rowData, sort, setSort, userId, pageSize } = props
-  const classNames = {
-    head: clsx(s.tableHead),
-    tableRot: clsx(s.tableRoot),
-  }
-
-  return (
-    <Table.Root className={s.tableRoot}>
-      <Table.Head columns={columns} sort={sort} onSort={setSort} className={classNames.head} />
-      <Table.Body>{rowData.slice(0, +pageSize).map((el: any) => TableRows(el, userId))}</Table.Body>
-    </Table.Root>
-  )
-}
-//todo типизация
-const TableRows = (el: any, userId: string) => {
-  return (
-    <Table.Row key={el.question}>
-      <Table.DataCell>{el.question}</Table.DataCell>
-      <Table.DataCell>{el.answer}</Table.DataCell>
-      <Table.DataCell>{el.updated}</Table.DataCell>
-      <Table.DataCell>
-        <Grade onClick={id => console.log(id)} grade={5} />
-      </Table.DataCell>
-      <Table.DataCell style={{ padding: '6px 24px' }}>
-        <TableActions item={el} editable={userId === '1'} />
-      </Table.DataCell>
-    </Table.Row>
-  )
-}
-
-const renderDeckHeading = (userId: string, packName: string) => {
-  const isMyPack = userId === '1'
-  const headingText = isMyPack ? 'My pack' : packName
   const editMenu = isMyPack && (
     <DeckEditMenu
       onEdit={() => console.log('onEdit called')}
@@ -133,7 +81,7 @@ const renderDeckHeading = (userId: string, packName: string) => {
     />
   )
   const addNewCardSection = isMyPack && (
-    <AddNewCard onSubmit={data => console.log(data)}>
+    <AddNewCard onSubmit={data => createCard({ id: deckId, ...data })}>
       <Button variant={'primary'}>Add New Card</Button>
     </AddNewCard>
   )
@@ -142,49 +90,68 @@ const renderDeckHeading = (userId: string, packName: string) => {
       Learn to Pack
     </Button>
   )
+  const preparedColumns = isMyDeck ? columns : columns.filter(column => column.key !== 'actions')
 
   return (
-    <>
-      <Typography variant={'large'} style={{ display: 'flex', gap: '16px' }}>
-        {headingText}
-        {editMenu}
-      </Typography>
-      {addNewCardSection}
-      {learnToPackButton}
-    </>
-  )
-}
+    <Page>
+      <div className={cNames.wrapper}>
+        <Button variant={'link'} onClick={navigateBack}>
+          <Typography variant={'body2'} className={cNames.back}>
+            <ArrowLeftIcon /> Back to Packs List
+          </Typography>
+        </Button>
 
-type TableActionsProps = {
-  editable?: boolean
-  item: DecksItem
-}
-const TableActions: FC<TableActionsProps> = props => {
-  const { item, editable = true } = props
+        <div className={cNames.header}>
+          <Typography variant={'large'}>{deckName}</Typography>
+          {editMenu}
+          {deck?.cover}
+          {addNewCardSection}
+          {learnToPackButton}
+        </div>
 
-  return (
-    <div style={{ display: 'flex', gap: '10px' }}>
-      {editable && (
-        <>
-          <EditCard question={'question'} answer={'answer'} onSubmit={data => console.log(data)}>
-            <button>
-              <EditIcon />
-            </button>
-          </EditCard>
-          <DeleteDialog
-            buttonTitle={'Delete Card'}
-            item={item}
-            onClick={id => {
-              console.log(id)
-            }}
-            title={'Delete Card'}
-          >
-            <button>
-              <DeleteIcon />
-            </button>
-          </DeleteDialog>
-        </>
-      )}
-    </div>
+        {/*{img && (*/}
+        {/*  <div style={{ width: '170px', height: '107px' }}>*/}
+        {/*    <img src={img} alt="" style={{ width: '170px', height: '107px' }} />*/}
+        {/*  </div>*/}
+        {/*)}*/}
+
+        <TextField onChange={onValueChange} inputType={'search'} className={cNames.textField} />
+
+        <Table.Root className={s.tableRoot}>
+          <Table.Head columns={preparedColumns} sort={sort} onSort={setSort} />
+          <Table.Body>
+            {cards?.items.map(card => {
+              return (
+                <Table.Row key={card.id}>
+                  <Table.DataCell>{card.question}</Table.DataCell>
+                  <Table.DataCell>{card.answer}</Table.DataCell>
+                  <Table.DataCell>{card.updated}</Table.DataCell>
+                  <Table.DataCell>
+                    <Grade
+                      onClick={grade => updateGradeHandler(card.id, grade)}
+                      grade={card.grade}
+                    />
+                  </Table.DataCell>
+                  {isMyDeck && (
+                    <Table.DataCell style={{ padding: '6px 24px' }}>
+                      <CardsTableActions item={card} />
+                    </Table.DataCell>
+                  )}
+                </Table.Row>
+              )
+            })}
+          </Table.Body>
+        </Table.Root>
+
+        <Pagination
+          currentPage={cards ? cards.pagination.currentPage : 1}
+          totalCount={cards ? cards.pagination.totalItems : 0}
+          pageSize={cards ? cards.pagination.itemsPerPage : 0}
+          siblingCount={3}
+          onPageChange={setPage}
+          onPageSizeChange={setPageSize}
+        />
+      </div>
+    </Page>
   )
 }

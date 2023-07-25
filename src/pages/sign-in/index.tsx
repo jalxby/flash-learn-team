@@ -1,15 +1,17 @@
+import { useEffect } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import { Page } from '@/components'
 import { LoginForm } from '@/components/auth'
-import { useSignInMutation } from '@/services/auth/auth.api.ts'
+import { useGetMeQuery, useSignInMutation } from '@/services/auth/auth.api.ts'
 import { ArgsSignInType } from '@/services/auth/auth.api.types.ts'
 
 export const SignIn = () => {
   const [signIn] = useSignInMutation()
   const navigate = useNavigate()
-
+  const { data: me } = useGetMeQuery()
   const onSubmit = (data: ArgsSignInType) => {
     signIn(data)
       .unwrap()
@@ -21,6 +23,12 @@ export const SignIn = () => {
         toast.error(error.data.message)
       })
   }
+
+  useEffect(() => {
+    if (!me) return
+
+    navigate('/')
+  }, [me])
 
   return (
     <Page>
