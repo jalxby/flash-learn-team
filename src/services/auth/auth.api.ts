@@ -18,6 +18,7 @@ export const authAPI = commonApi.injectEndpoints({
           url: 'v1/auth/me',
         }
       },
+      extraOptions: { maxRetries: false },
       providesTags: ['ME'],
     }),
     signOut: builder.mutation<void, void>({
@@ -27,9 +28,7 @@ export const authAPI = commonApi.injectEndpoints({
       }),
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
-          authAPI.util.updateQueryData('getMe', undefined, data => {
-            console.log(data?.email)
-
+          authAPI.util.updateQueryData('getMe', undefined, () => {
             return null
           })
         )
@@ -41,7 +40,7 @@ export const authAPI = commonApi.injectEndpoints({
         }
       },
     }),
-    refreshMe: builder.mutation<any, any>({
+    refreshMe: builder.mutation<void, void>({
       query: () => {
         return {
           method: 'GET',
@@ -76,6 +75,7 @@ export const authAPI = commonApi.injectEndpoints({
           body: { email, password },
         }
       },
+      invalidatesTags: ['ME'],
     }),
     verifyEmail: builder.mutation<void, string>({
       query: code => {
@@ -104,7 +104,7 @@ export const authAPI = commonApi.injectEndpoints({
         }
       },
     }),
-    resetPassword: builder.mutation<any, ArgResetPasswordType>({
+    resetPassword: builder.mutation<void, ArgResetPasswordType>({
       query: ({ password, token }) => {
         return {
           method: 'POST',

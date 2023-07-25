@@ -10,9 +10,8 @@ import { ArgsSignInType } from '@/services/auth/auth.api.types.ts'
 
 export const SignIn = () => {
   const [signIn] = useSignInMutation()
-  const { data: me } = useGetMeQuery()
   const navigate = useNavigate()
-
+  const { data: me } = useGetMeQuery()
   const onSubmit = (data: ArgsSignInType) => {
     signIn(data)
       .unwrap()
