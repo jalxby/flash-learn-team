@@ -39,10 +39,12 @@ export const Cards: FC<Props> = () => {
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
   const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
-  const { id: deckId } = useParams()
-  const { data: deck } = useGetDeckQuery({ id: deckId ? deckId : '' })
+
+  const { id: deckIdFromParams } = useParams()
+  const deckId = deckIdFromParams ?? ''
+  const { data: deck } = useGetDeckQuery({ id: deckId })
   const { data: cards } = useGetCardsQuery({
-    id: deckId ? deckId : '',
+    id: deckId,
     currentPage: page,
     itemsPerPage: +pageSize,
     orderBy: sortDirection,
@@ -65,7 +67,7 @@ export const Cards: FC<Props> = () => {
   const updateGradeHandler = (cardId: string, grade: GradeType) => {
     if (deckId) updateGrade({ id: deckId, grade, cardId: cardId })
   }
-  const deckName = deck ? deck.name : ''
+  const deckName = deck?.name ?? ''
   const cNames = {
     header: clsx(s.headerPage),
     textField: clsx(s.textField),
@@ -79,7 +81,7 @@ export const Cards: FC<Props> = () => {
     />
   )
   const addNewCardSection = isMyPack && (
-    <AddNewCard onSubmit={data => createCard({ id: deckId ? deckId : '', ...data })}>
+    <AddNewCard onSubmit={data => createCard({ id: deckId, ...data })}>
       <Button variant={'primary'}>Add New Card</Button>
     </AddNewCard>
   )
@@ -89,9 +91,6 @@ export const Cards: FC<Props> = () => {
     </Button>
   )
   const preparedColumns = isMyDeck ? columns : columns.filter(column => column.key !== 'actions')
-
-  console.log(preparedColumns)
-  console.log(columns)
 
   return (
     <Page>
@@ -103,10 +102,9 @@ export const Cards: FC<Props> = () => {
         </Button>
 
         <div className={cNames.header}>
-          <Typography variant={'large'} style={{ display: 'flex', gap: '16px' }}>
-            {deckName}
-            {editMenu}
-          </Typography>
+          <Typography variant={'large'}>{deckName}</Typography>
+          {editMenu}
+          {deck?.cover}
           {addNewCardSection}
           {learnToPackButton}
         </div>
