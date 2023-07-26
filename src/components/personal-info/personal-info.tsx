@@ -7,7 +7,7 @@ import { Avatar, Button, Typography } from '@/components'
 import { useImageUploader } from '@/components/ui/avatar/useImageUploader.ts'
 import { Card } from '@/components/ui/card'
 import { EditableText, useEditableText } from '@/components/ui/editeble-text'
-import { useUpdateMeMutation } from '@/services/auth'
+import { useGetMeQuery, useUpdateMeMutation } from '@/services/auth'
 
 export type PersonalInfoPropsType = {
   userName?: string
@@ -21,9 +21,16 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
   const { activateEditMode, setEditMode, editMode } = useEditableText('')
   const { file, handleFileChange, openFileInput, fileInputRef } = useImageUploader('')
   const [updateAvatar] = useUpdateMeMutation()
+  const { data: me } = useGetMeQuery()
 
+  console.log(file)
   useEffect(() => {
-    updateAvatar({ avatar: file })
+    const form = new FormData()
+
+    form.append('avatar', file)
+    form.append('name', userName ?? '')
+    form.append('email', userEmail ?? '')
+    updateAvatar(form)
   }, [file])
 
   return (
@@ -31,7 +38,7 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
       <Typography variant="large" as={'h1'} className={s.title}>
         Personal Information
       </Typography>
-      <Avatar src={file} size={'6rem'} />
+      <Avatar src={me?.avatar} size={'6rem'} />
       {!editMode ? (
         <>
           <div className={s.edit_avtar}>
