@@ -43,7 +43,7 @@ export const Cards: FC<Props> = () => {
   const { id: deckIdFromParams } = useParams()
   const deckId = deckIdFromParams ?? ''
   const { data: deck } = useGetDeckQuery({ id: deckId })
-  const { data: cards } = useGetCardsQuery({
+  const { data: rawCards } = useGetCardsQuery({
     id: deckId,
     currentPage: page,
     itemsPerPage: +pageSize,
@@ -56,9 +56,10 @@ export const Cards: FC<Props> = () => {
   const [updateGrade] = useUpdateCardGradeMutation()
 
   const isMyPack = me?.id === deck?.userId
-  const currentPage = cards ? cards.pagination.currentPage : 1
-  const totalCount = cards ? cards.pagination.totalItems : 0
-  const pSize = cards ? cards.pagination.itemsPerPage : 0
+  const currentPage = rawCards ? rawCards.pagination.currentPage : 1
+  const totalCount = rawCards ? rawCards.pagination.totalItems : 0
+  const pSize = rawCards ? rawCards.pagination.itemsPerPage : 0
+  const preparedColumns = isMyDeck ? columns : columns.filter(column => column.key !== 'actions')
   const navigate = useNavigate()
   const navigateBack = () => {
     navigate(-1)
@@ -82,17 +83,38 @@ export const Cards: FC<Props> = () => {
       onDelete={() => console.log('onDelete called')}
     />
   )
-  const addNewCardSection = isMyPack && (
+  const addCard = isMyPack && (
     <AddNewCard onSubmit={data => createCard({ id: deckId, ...data })}>
       <Button variant={'primary'}>Add New Card</Button>
     </AddNewCard>
   )
-  const learnToPackButton = !isMyPack && (
+  const learnDeck = !isMyPack && (
     <Button variant={'primary'} as={'a'} href={'#'}>
       Learn to Pack
     </Button>
   )
-  const preparedColumns = isMyDeck ? columns : columns.filter(column => column.key !== 'actions')
+
+  const cards = rawCards?.items.map(card => {
+    const updateGradeHandler = (grade: GradeType) => {
+      if (deckId) updateGrade({ id: deckId, grade, cardId: card.id })
+    }
+
+    return (
+      <Table.Row key={card.id}>
+        <Table.DataCell>{card.question}</Table.DataCell>
+        <Table.DataCell>{card.answer}</Table.DataCell>
+        <Table.DataCell>{card.updated}</Table.DataCell>
+        <Table.DataCell>
+          <Grade onClick={updateGradeHandler} grade={card.grade} />
+        </Table.DataCell>
+        {isMyDeck && (
+          <Table.DataCell>
+            <CardsTableActions item={card} />
+          </Table.DataCell>
+        )}
+      </Table.Row>
+    )
+  })
 
   return (
     <Page>
@@ -102,45 +124,20 @@ export const Cards: FC<Props> = () => {
             <ArrowLeftIcon /> Back to Packs List
           </Typography>
         </Button>
-
         <div className={cNames.header}>
           <div className={cNames.menu}>
             <Typography variant={'large'}>{deckName}</Typography>
             {editMenu}
           </div>
-          {addNewCardSection}
-          {learnToPackButton}
+          {addCard}
+          {learnDeck}
         </div>
         {deck?.cover && <img className={cNames.image} src={deck?.cover} alt="deck-cover" />}
         <TextField onChange={onValueChange} inputType={'search'} className={cNames.textField} />
-
         <Table.Root className={s.tableRoot}>
           <Table.Head columns={preparedColumns} sort={sort} onSort={setSort} />
-          <Table.Body>
-            {cards?.items.map(card => {
-              const updateGradeHandler = (grade: GradeType) => {
-                if (deckId) updateGrade({ id: deckId, grade, cardId: card.id })
-              }
-
-              return (
-                <Table.Row key={card.id}>
-                  <Table.DataCell>{card.question}</Table.DataCell>
-                  <Table.DataCell>{card.answer}</Table.DataCell>
-                  <Table.DataCell>{card.updated}</Table.DataCell>
-                  <Table.DataCell>
-                    <Grade onClick={updateGradeHandler} grade={card.grade} />
-                  </Table.DataCell>
-                  {isMyDeck && (
-                    <Table.DataCell>
-                      <CardsTableActions item={card} />
-                    </Table.DataCell>
-                  )}
-                </Table.Row>
-              )
-            })}
-          </Table.Body>
+          <Table.Body>{cards}</Table.Body>
         </Table.Root>
-
         <Pagination
           currentPage={currentPage}
           totalCount={totalCount}
