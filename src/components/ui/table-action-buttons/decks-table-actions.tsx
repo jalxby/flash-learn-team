@@ -33,9 +33,14 @@ export const DecksTableActions: FC<Props> = ({ item, isMyDeck }) => {
                 <EditIcon />
               </button>
             }
-            onSubmit={data =>
-              updateDeck({ id, isPrivate: data.isPrivate, cover, name: data.newNamePack })
-            }
+            onSubmit={data => {
+              const form = new FormData()
+
+              form.append('name', data.newNamePack)
+              form.append('isPrivate', String(data.isPrivate))
+              form.append('cover', cover)
+              updateDeck({ id, ...form })
+            }}
             isPrivate={isPrivate}
             packName={name}
           />

@@ -9,6 +9,7 @@ import {
   CardsParams,
   Deck,
   DecksParams,
+  GetDeckType,
 } from '@/services/decks/decks.api.types.ts'
 
 export const decksAPI = commonApi.injectEndpoints({
@@ -29,7 +30,7 @@ export const decksAPI = commonApi.injectEndpoints({
       }),
       providesTags: ['UPDATE_CARDS'],
     }),
-    getDeck: builder.query<Omit<Deck, 'author'>, { id: string }>({
+    getDeck: builder.query<GetDeckType, { id: string }>({
       query: ({ id }) => ({
         url: `/v1/decks/${id}`,
       }),

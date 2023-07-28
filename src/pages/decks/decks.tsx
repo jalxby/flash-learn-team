@@ -87,7 +87,7 @@ export const Decks: FC<PacksProps> = () => {
       <div className={cNames.container}>
         <div className={cNames.title}>
           <Typography variant={'large'}>Pack list</Typography>
-          <CreateDeck trigger={<Button>Add New Pack</Button>} onSubmit={createDeck} />
+          <CreateDeck trigger={<Button>Create Deck</Button>} onSubmit={createDeck} />
         </div>
 
         <div className={cNames.root}>

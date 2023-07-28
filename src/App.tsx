@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Layout } from '@/components'
 import { Cards, CheckEmailPage, Decks, PageNotFound, Profile, SignIn, SignUp } from '@/pages'
 import { ForgotPasswordPage } from '@/pages/forgot-password'
+import { Learn } from '@/pages/learn'
 import { UpdatePasswordPage } from '@/pages/update-password'
 import { ProtectedRoutes } from '@/protected-routes.tsx'
 
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
           {
             path: 'profile',
             element: <Profile />,
+          },
+          {
+            path: 'learn/:id',
+            element: <Learn />,
           },
         ],
       },

@@ -14,7 +14,7 @@ const meta = {
     ),
   ],
   args: {
-    trigger: <Button variant={'primary'}>Add New Pack</Button>,
+    trigger: <Button variant={'primary'}>Create Deck</Button>,
   },
 } satisfies Meta<typeof CreateDeck>
 

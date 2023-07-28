@@ -6,7 +6,7 @@ import { ChangeEvent, useRef, useState } from 'react'
  *
  */
 export const useImageUploader = (value: string) => {
-  const maskFile = new File([value], 'mask.png', { type: 'image/png' })
+  const maskFile = new File([value], 'mask.png', { type: 'file-input-preview/png' })
   const [file, setFile] = useState<File>(maskFile)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -25,7 +25,7 @@ export const useImageUploader = (value: string) => {
     const photo = e.target.files?.[0]
 
     if (photo) {
-      if (photo.type === 'image/jpeg' || photo.type === 'image/png') {
+      if (photo.type === 'file-input-preview/jpeg' || photo.type === 'file-input-preview/png') {
         setFile(photo)
       }
     }

@@ -23,15 +23,16 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
   const [updateAvatar] = useUpdateMeMutation()
   const { data: me } = useGetMeQuery()
 
-  console.log(file)
   useEffect(() => {
     const form = new FormData()
 
+    console.log(file)
     form.append('avatar', file)
     form.append('name', userName ?? '')
     form.append('email', userEmail ?? '')
     updateAvatar(form)
   }, [file])
+  console.log(me)
 
   return (
     <Card className={`${s.card} ${editMode && s.editMode}`}>

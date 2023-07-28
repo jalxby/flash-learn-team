@@ -3,11 +3,11 @@ import { FC, useState } from 'react'
 import { clsx } from 'clsx'
 import { v4 } from 'uuid'
 
-import s from './learn-desk.module.scss'
+import s from './learn-deck.module.scss'
 
 import { Button, Card, RadioGroup, Typography } from '@/components'
 
-type LearnPackPropsType = {
+type Props = {
   packName: string
   question: string
   attempts: string | number
@@ -17,8 +17,15 @@ type LearnPackPropsType = {
   value: string
 }
 
-export const LearnDesk: FC<LearnPackPropsType> = props => {
-  const { packName, question, attempts, answer, loadNextQuestion, onChange, value } = props
+export const LearnDeck: FC<Props> = ({
+  packName,
+  question,
+  attempts,
+  answer,
+  loadNextQuestion,
+  onChange,
+  value,
+}) => {
   const [showAnswer, setShowAnswer] = useState(false)
 
   const classNames = {

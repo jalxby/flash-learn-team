@@ -8,7 +8,11 @@ export const Profile = () => {
 
   const onSaveChanges = (value: string | undefined) => {
     if (me) {
-      updateMe({ name: value ? value : '', email: me.email })
+      const form = new FormData()
+
+      form.append('name', value ? value : '')
+      form.append('email', me.email)
+      updateMe(form)
     }
   }
 
