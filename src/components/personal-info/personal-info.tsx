@@ -1,5 +1,7 @@
 import { FC, useEffect } from 'react'
 
+import { useForm } from 'react-hook-form'
+
 import s from './personal-info.module.scss'
 
 import { LogoutIcon, PencilIcon } from '@/assets'
@@ -22,6 +24,7 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
   const { file, handleFileChange, openFileInput, fileInputRef } = useImageUploader('')
   const [updateAvatar] = useUpdateMeMutation()
   const { data: me } = useGetMeQuery()
+  const {} = useForm()
 
   useEffect(() => {
     const form = new FormData()

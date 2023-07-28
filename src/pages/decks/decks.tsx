@@ -64,6 +64,8 @@ export const Decks: FC<PacksProps> = () => {
     container: clsx(s.container, 'container'),
     title: clsx(s.pageTitle),
     root: clsx(s.wrapper),
+    image: clsx(s.image),
+    imageContainer: clsx(s.imageContainer),
   }
 
   useEffect(() => {
@@ -72,7 +74,12 @@ export const Decks: FC<PacksProps> = () => {
   }, [data?.maxCardsCount])
   const tableRows = data?.items.map(deck => (
     <Table.Row key={deck.id}>
-      <Table.DataCell>{deck.name}</Table.DataCell>
+      <Table.DataCell>
+        <div className={cNames.imageContainer}>
+          {deck.cover && <img className={cNames.image} src={deck.cover} alt="" />}
+          {deck.name}
+        </div>
+      </Table.DataCell>
       <Table.DataCell>{deck.cardsCount}</Table.DataCell>
       <Table.DataCell>{deck.updated}</Table.DataCell>
       <Table.DataCell>{deck.author.name}</Table.DataCell>

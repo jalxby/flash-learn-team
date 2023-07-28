@@ -29,3 +29,15 @@
     margin-left: 25px;
   }
 }
+
+.imageContainer {
+  display: flex;
+  column-gap: 0.62rem;
+  align-items: center;
+}
+
+.image {
+  width: 7.3916rem;
+  height: 3rem;
+  border-radius: 0.13rem;
+}
