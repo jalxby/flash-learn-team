@@ -56,7 +56,9 @@ export const Cards: FC<Props> = () => {
   const [updateGrade] = useUpdateCardGradeMutation()
 
   const isMyPack = me?.id === deck?.userId
-
+  const currentPage = cards ? cards.pagination.currentPage : 1
+  const totalCount = cards ? cards.pagination.totalItems : 0
+  const pSize = cards ? cards.pagination.itemsPerPage : 0
   const navigate = useNavigate()
   const navigateBack = () => {
     navigate(-1)
@@ -64,9 +66,7 @@ export const Cards: FC<Props> = () => {
   const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value)
   }
-  const updateGradeHandler = (cardId: string, grade: GradeType) => {
-    if (deckId) updateGrade({ id: deckId, grade, cardId: cardId })
-  }
+
   const deckName = deck?.name ?? ''
   const cNames = {
     header: clsx(s.headerPage),
@@ -111,26 +111,27 @@ export const Cards: FC<Props> = () => {
           {addNewCardSection}
           {learnToPackButton}
         </div>
-        {deck?.cover && <img className={cNames.image} src={deck?.cover} alt="" />}
+        {deck?.cover && <img className={cNames.image} src={deck?.cover} alt="deck-cover" />}
         <TextField onChange={onValueChange} inputType={'search'} className={cNames.textField} />
 
         <Table.Root className={s.tableRoot}>
           <Table.Head columns={preparedColumns} sort={sort} onSort={setSort} />
           <Table.Body>
             {cards?.items.map(card => {
+              const updateGradeHandler = (grade: GradeType) => {
+                if (deckId) updateGrade({ id: deckId, grade, cardId: card.id })
+              }
+
               return (
                 <Table.Row key={card.id}>
                   <Table.DataCell>{card.question}</Table.DataCell>
                   <Table.DataCell>{card.answer}</Table.DataCell>
                   <Table.DataCell>{card.updated}</Table.DataCell>
                   <Table.DataCell>
-                    <Grade
-                      onClick={grade => updateGradeHandler(card.id, grade)}
-                      grade={card.grade}
-                    />
+                    <Grade onClick={updateGradeHandler} grade={card.grade} />
                   </Table.DataCell>
                   {isMyDeck && (
-                    <Table.DataCell style={{ padding: '6px 24px' }}>
+                    <Table.DataCell>
                       <CardsTableActions item={card} />
                     </Table.DataCell>
                   )}
@@ -141,9 +142,9 @@ export const Cards: FC<Props> = () => {
         </Table.Root>
 
         <Pagination
-          currentPage={cards ? cards.pagination.currentPage : 1}
-          totalCount={cards ? cards.pagination.totalItems : 0}
-          pageSize={cards ? cards.pagination.itemsPerPage : 0}
+          currentPage={currentPage}
+          totalCount={totalCount}
+          pageSize={pSize}
           siblingCount={3}
           onPageChange={setPage}
           onPageSizeChange={setPageSize}
