@@ -39,7 +39,6 @@ export const Cards: FC<Props> = () => {
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
   const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
-
   const { id: deckIdFromParams } = useParams()
   const deckId = deckIdFromParams ?? ''
   const { data: deck } = useGetDeckQuery({ id: deckId })
@@ -54,7 +53,6 @@ export const Cards: FC<Props> = () => {
   const isMyDeck = me?.id === deck?.userId
   const [createCard] = useCreateCardMutation()
   const [updateGrade] = useUpdateCardGradeMutation()
-
   const isMyPack = me?.id === deck?.userId
   const currentPage = rawCards ? rawCards.pagination.currentPage : 1
   const totalCount = rawCards ? rawCards.pagination.totalItems : 0
