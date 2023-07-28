@@ -73,6 +73,8 @@ export const Cards: FC<Props> = () => {
     textField: clsx(s.textField),
     back: clsx(s.back),
     wrapper: clsx(s.wrapper, 'container'),
+    image: clsx(s.image),
+    menu: clsx(s.menuSection),
   }
   const editMenu = isMyPack && (
     <DeckEditMenu
@@ -102,19 +104,14 @@ export const Cards: FC<Props> = () => {
         </Button>
 
         <div className={cNames.header}>
-          <Typography variant={'large'}>{deckName}</Typography>
-          {editMenu}
-          {deck?.cover}
+          <div className={cNames.menu}>
+            <Typography variant={'large'}>{deckName}</Typography>
+            {editMenu}
+          </div>
           {addNewCardSection}
           {learnToPackButton}
         </div>
-
-        {/*{img && (*/}
-        {/*  <div style={{ width: '170px', height: '107px' }}>*/}
-        {/*    <img src={img} alt="" style={{ width: '170px', height: '107px' }} />*/}
-        {/*  </div>*/}
-        {/*)}*/}
-
+        {deck?.cover && <img className={cNames.image} src={deck?.cover} alt="" />}
         <TextField onChange={onValueChange} inputType={'search'} className={cNames.textField} />
 
         <Table.Root className={s.tableRoot}>
