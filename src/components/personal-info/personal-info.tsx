@@ -27,27 +27,24 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
   const { activateEditMode, setEditMode, editMode } = useEditableText('')
   const [updateAvatar] = useUpdateMeMutation()
   const { data: me } = useGetMeQuery()
-  const { control, handleSubmit } = useForm<Form>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<Form>({
     resolver: zodResolver(profile),
     mode: 'onChange',
   })
 
-  // useEffect(() => {
-  //   const form = new FormData()
-  //
-  //   form.append('avatar', file ?? '')
-  //   form.append('name', userName ?? '')
-  //   form.append('email', userEmail ?? '')
-  //   updateAvatar(form)
-  // }, [])
+  console.log(errors)
+  const onChangeHandler = handleSubmit((data: Form) => {
+    const form = new FormData()
 
-  const onChangeHandler = (data: any) => {
-    console.log(data)
-  }
-
-  const onSubmit = (data: any) => {
-    console.log(data)
-  }
+    form.append('avatar', data.avatar ?? '')
+    form.append('name', me?.name ?? '')
+    updateAvatar(form)
+  })
 
   return (
     <Card className={`${s.card} ${editMode && s.editMode}`}>
@@ -58,20 +55,19 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
       {!editMode ? (
         <>
           <div className={s.edit_avatar}>
-            <form onSubmit={handleSubmit(onChangeHandler)}>
+            <form onChange={onChangeHandler}>
               <Controller
                 name="avatar"
                 control={control}
                 render={({ field }) => (
                   <InputFile {...field}>
                     {(onClick: () => void) => (
-                      <Button type={'button'} onClick={onClick}>
-                        {'test'}
-                      </Button>
+                      <PencilIcon onClick={onClick} style={{ cursor: 'pointer' }} />
                     )}
                   </InputFile>
                 )}
               />
+              <Button type={'submit'}>sub</Button>
             </form>
           </div>
           <div className={s.userName_container}>
