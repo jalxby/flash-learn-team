@@ -1,13 +1,16 @@
-import { FC, useEffect } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 
-import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import s from './personal-info.module.scss'
 
 import { LogoutIcon, PencilIcon } from '@/assets'
-import { Avatar, Button, Typography } from '@/components'
-import { useImageUploader } from '@/components/ui/avatar/useImageUploader.ts'
+import { Avatar, Button, FileInputPreview, Typography } from '@/components'
+import { profile } from '@/components/personal-info/schema.ts'
 import { Card } from '@/components/ui/card'
+import { InputFile } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
 import { EditableText, useEditableText } from '@/components/ui/editeble-text'
 import { useGetMeQuery, useUpdateMeMutation } from '@/services/auth'
 
@@ -17,25 +20,34 @@ export type PersonalInfoPropsType = {
   onLogout: () => void
   onSaveChanges: (value: string | undefined) => void
 }
+type Form = z.infer<typeof profile>
 
 export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
   const { userName, userEmail, onLogout, onSaveChanges } = props
   const { activateEditMode, setEditMode, editMode } = useEditableText('')
-  const { file, handleFileChange, openFileInput, fileInputRef } = useImageUploader('')
   const [updateAvatar] = useUpdateMeMutation()
   const { data: me } = useGetMeQuery()
-  const {} = useForm()
+  const { control, handleSubmit } = useForm<Form>({
+    resolver: zodResolver(profile),
+    mode: 'onChange',
+  })
 
-  useEffect(() => {
-    const form = new FormData()
+  // useEffect(() => {
+  //   const form = new FormData()
+  //
+  //   form.append('avatar', file ?? '')
+  //   form.append('name', userName ?? '')
+  //   form.append('email', userEmail ?? '')
+  //   updateAvatar(form)
+  // }, [])
 
-    console.log(file)
-    form.append('avatar', file)
-    form.append('name', userName ?? '')
-    form.append('email', userEmail ?? '')
-    updateAvatar(form)
-  }, [file])
-  console.log(me)
+  const onChangeHandler = (data: any) => {
+    console.log(data)
+  }
+
+  const onSubmit = (data: any) => {
+    console.log(data)
+  }
 
   return (
     <Card className={`${s.card} ${editMode && s.editMode}`}>
@@ -45,14 +57,22 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
       <Avatar src={me?.avatar} size={'6rem'} />
       {!editMode ? (
         <>
-          <div className={s.edit_avtar}>
-            <input
-              type="file"
-              className={s.reset_input}
-              onChange={handleFileChange}
-              ref={fileInputRef}
-            />
-            <PencilIcon onClick={openFileInput} style={{ cursor: 'pointer' }} />
+          <div className={s.edit_avatar}>
+            <form onSubmit={handleSubmit(onChangeHandler)}>
+              <Controller
+                name="avatar"
+                control={control}
+                render={({ field }) => (
+                  <InputFile {...field}>
+                    {(onClick: () => void) => (
+                      <Button type={'button'} onClick={onClick}>
+                        {'test'}
+                      </Button>
+                    )}
+                  </InputFile>
+                )}
+              />
+            </form>
           </div>
           <div className={s.userName_container}>
             <Typography as={'h1'} variant={'h1'}>

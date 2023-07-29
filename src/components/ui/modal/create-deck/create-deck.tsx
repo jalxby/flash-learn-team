@@ -61,7 +61,6 @@ export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
       <form onSubmit={onSubmitForm}>
         <Modal.Body>
           <FileInputPreview
-            id={'image'}
             file={mask}
             variant={'large'}
             formSetValue={setValue}

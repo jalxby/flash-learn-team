@@ -5,9 +5,8 @@ import { ChangeEvent, useRef, useState } from 'react'
  * @param {string} value - The initial file value.
  *
  */
-export const useImageUploader = (value: string) => {
-  const maskFile = new File([value], 'mask.png', { type: 'file-input-preview/png' })
-  const [file, setFile] = useState<File>(maskFile)
+export const useImageUploader = () => {
+  const [file, setFile] = useState<File>()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   /**
