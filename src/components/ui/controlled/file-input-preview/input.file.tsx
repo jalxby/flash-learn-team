@@ -1,14 +1,10 @@
 import { ChangeEvent, FC, useRef, useState } from 'react'
 
-import { zodResolver } from '@hookform/resolvers/zod'
 import { clsx } from 'clsx'
-import { Controller, useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import s from './file-input-preview.module.scss'
 
 import mask from '@/assets/images/mask.png'
-import { Button } from '@/components'
 
 type Props = {
   children: (onClick: () => void) => JSX.Element
@@ -57,49 +53,3 @@ export const InputFile: FC<Props> = ({
     </>
   )
 }
-const MAX_FILE_SIZE = 500000
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-const schema = z.object({
-  avatar: z
-    .any()
-    .refine(file => file?.size <= MAX_FILE_SIZE, `Max file-input-preview size is 5MB.`)
-    .refine(
-      file => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Only .jpg, .jpeg, .png and .webp formats are supported.'
-    ),
-})
-
-type Form = z.infer<typeof schema>
-const InputFileWithForm = () => {
-  const { control, handleSubmit } = useForm<Form>({
-    mode: 'onSubmit',
-    resolver: zodResolver(schema),
-  })
-
-  const onSubmit = (data: any) => {
-    console.log(data)
-  }
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          name="avatar"
-          control={control}
-          render={({ field }) => (
-            <InputFile {...field}>
-              {(onClick: () => void) => (
-                <Button type={'button'} onClick={onClick}>
-                  {'test'}
-                </Button>
-              )}
-            </InputFile>
-          )}
-        />
-        <input type="submit" />
-      </form>
-    </div>
-  )
-}
-
-export default InputFileWithForm

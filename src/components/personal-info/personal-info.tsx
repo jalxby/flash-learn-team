@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react'
+import { FC } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
@@ -7,7 +7,7 @@ import { z } from 'zod'
 import s from './personal-info.module.scss'
 
 import { LogoutIcon, PencilIcon } from '@/assets'
-import { Avatar, Button, FileInputPreview, Typography } from '@/components'
+import { Avatar, Button, Typography } from '@/components'
 import { profile } from '@/components/personal-info/schema.ts'
 import { Card } from '@/components/ui/card'
 import { InputFile } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
@@ -27,17 +27,11 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
   const { activateEditMode, setEditMode, editMode } = useEditableText('')
   const [updateAvatar] = useUpdateMeMutation()
   const { data: me } = useGetMeQuery()
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<Form>({
+  const { control, handleSubmit } = useForm<Form>({
     resolver: zodResolver(profile),
     mode: 'onChange',
   })
 
-  console.log(errors)
   const onChangeHandler = handleSubmit((data: Form) => {
     const form = new FormData()
 
@@ -55,7 +49,7 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
       {!editMode ? (
         <>
           <div className={s.edit_avatar}>
-            <form onChange={onChangeHandler}>
+            <form onChange={onChangeHandler} style={{ height: '16px' }}>
               <Controller
                 name="avatar"
                 control={control}
@@ -67,7 +61,6 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
                   </InputFile>
                 )}
               />
-              <Button type={'submit'}>sub</Button>
             </form>
           </div>
           <div className={s.userName_container}>
