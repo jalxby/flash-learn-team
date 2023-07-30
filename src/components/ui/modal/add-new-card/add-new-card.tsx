@@ -1,14 +1,12 @@
 import { FC, ReactNode, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Label } from '@radix-ui/react-label'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { addNewCard } from './add-new-card.ts'
 
 import { Button, ControlledTextField, Select, Typography } from '@/components'
-import { useImageUploader } from '@/components/ui/avatar/useImageUploader.ts'
 import { Modal } from '@/components/ui/modal'
 
 type AddNewPackModalPropsType = {
@@ -50,7 +48,7 @@ export const AddNewCard: FC<AddNewPackModalPropsType> = props => {
         />
       </>
     ) : (
-      <ImagePreviewUploader />
+      <div>...loading</div>
     )
 
   return (
@@ -77,63 +75,5 @@ export const AddNewCard: FC<AddNewPackModalPropsType> = props => {
         </Modal.Footer>
       </form>
     </Modal.Root>
-  )
-}
-
-const ImagePreviewUploader = () => {
-  const {
-    fileInputRef: questionInputRef,
-    file: questionImg,
-    openFileInput: openQuestionInput,
-    handleFileChange: onChangeQuestionImg,
-  } = useImageUploader('')
-
-  const {
-    fileInputRef: answerInputRef,
-    file: answerImg,
-    openFileInput: openAnswerInput,
-    handleFileChange: onChangeAnswerImg,
-  } = useImageUploader('')
-
-  return (
-    <>
-      <Label style={{ marginTop: '3px' }}>
-        <Typography variant={'subtitle2'}>Question:</Typography>
-      </Label>
-      {questionImg && (
-        <img src={questionImg} alt="question image" style={{ width: '100%', height: '120px' }} />
-      )}
-      <Button variant={'secondary'} fullWidth onClick={openQuestionInput}>
-        <input
-          hidden
-          accept="image/png, image/jpeg"
-          type="file"
-          ref={questionInputRef}
-          onChange={onChangeQuestionImg}
-        />
-        <Typography variant={'subtitle2'}>Change Cover</Typography>
-      </Button>
-      <Label>
-        <Typography variant={'subtitle2'}>Answer:</Typography>
-      </Label>
-      {answerImg && (
-        <img src={answerImg} alt="answer image" style={{ width: '100%', height: '120px' }} />
-      )}
-      <Button
-        variant={'secondary'}
-        fullWidth
-        onClick={openAnswerInput}
-        style={{ marginBottom: '3px' }}
-      >
-        <input
-          hidden
-          accept="image/png, image/jpeg"
-          type="file"
-          ref={answerInputRef}
-          onChange={onChangeAnswerImg}
-        />
-        <Typography variant={'subtitle2'}>Change Cover</Typography>
-      </Button>
-    </>
   )
 }

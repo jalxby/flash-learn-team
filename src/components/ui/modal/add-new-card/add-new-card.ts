@@ -5,7 +5,7 @@ export const addNewCard = z.object({
     .string()
     .trim()
     .nonempty('Please enter a question')
-    .min(5, 'Question must be at least 3 characters')
+    .min(3, 'Question must be at least 3 characters')
     .max(50, 'Question must be at more 50 characters'),
   answer: z
     .string()
