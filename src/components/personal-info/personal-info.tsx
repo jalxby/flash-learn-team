@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import s from './personal-info.module.scss'
@@ -10,7 +10,7 @@ import { LogoutIcon, PencilIcon } from '@/assets'
 import { Avatar, Button, Typography } from '@/components'
 import { profile } from '@/components/personal-info/schema.ts'
 import { Card } from '@/components/ui/card'
-import { InputFile } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
+import { ControlledFileInput } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
 import { EditableText, useEditableText } from '@/components/ui/editeble-text'
 import { useGetMeQuery, useUpdateMeMutation } from '@/services/auth'
 
@@ -50,17 +50,7 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
         <>
           <div className={s.edit_avatar}>
             <form onChange={onChangeHandler} style={{ height: '16px' }}>
-              <Controller
-                name="avatar"
-                control={control}
-                render={({ field }) => (
-                  <InputFile {...field}>
-                    {(onClick: () => void) => (
-                      <PencilIcon onClick={onClick} style={{ cursor: 'pointer' }} />
-                    )}
-                  </InputFile>
-                )}
-              />
+              <ControlledFileInput control={control} withPreview={false} name={'avatar'} />
             </form>
           </div>
           <div className={s.userName_container}>

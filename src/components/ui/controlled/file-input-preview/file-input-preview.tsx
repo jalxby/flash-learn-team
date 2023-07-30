@@ -36,14 +36,14 @@ export const FileInputPreview = forwardRef<HTMLInputElement, Props>(
 
     return (
       <div>
-        {withPreview && (
-          <div
-            className={cNames.size}
-            style={{
-              backgroundImage: `url(${selectedFile ? URL.createObjectURL(selectedFile) : mask})`,
-            }}
-          />
-        )}
+        {/*{withPreview && (*/}
+        {/*  <div*/}
+        {/*    className={cNames.size}*/}
+        {/*    style={{*/}
+        {/*      backgroundImage: `url(${selectedFile ? URL.createObjectURL(selectedFile) : mask})`,*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*)}*/}
         <input
           id={'fileInput'}
           className={cNames.input}

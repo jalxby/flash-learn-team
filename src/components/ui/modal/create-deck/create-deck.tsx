@@ -1,22 +1,14 @@
-import { FC, ReactNode, useRef, useState } from 'react'
+import { FC, ReactNode, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
-import mask from '../../../../assets/images/mask.png'
-
 import { createDeckSchema } from './create-deck-schema.ts'
 
-import { ChangeCoverIcon } from '@/assets'
-import {
-  Button,
-  ControlledCheckbox,
-  ControlledTextField,
-  FileInputPreview,
-  Typography,
-} from '@/components'
+import { Button, ControlledCheckbox, ControlledTextField, Typography } from '@/components'
+import { ControlledFileInput } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
 import { Modal } from '@/components/ui/modal'
 
 type AddNewPackModalPropsType = {
@@ -31,18 +23,17 @@ export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
   const {
     handleSubmit,
     control,
-    setValue,
     formState: { errors },
   } = useForm<Form>({
     resolver: zodResolver(createDeckSchema),
     mode: 'onSubmit',
   })
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   if (errors.cover) toast.error(`${errors.cover.message}`)
   const onSubmitForm = handleSubmit(data => {
     const form = new FormData()
 
+    debugger
     form.append('cover', data.cover)
     form.append('name', data.name)
     form.append('isPrivate', String(data.isPrivate))
@@ -50,27 +41,12 @@ export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
 
     setIsOpen(false)
   })
-  const handleOpenFileInput = () => {
-    if (fileInputRef) {
-      fileInputRef.current?.click()
-    }
-  }
 
   return (
     <Modal.Root title={'Add New Pack'} trigger={trigger} onOpenChange={setIsOpen} isOpen={isOpen}>
       <form onSubmit={onSubmitForm}>
         <Modal.Body>
-          <FileInputPreview
-            file={mask}
-            variant={'large'}
-            formSetValue={setValue}
-            ref={fileInputRef}
-            withPreview={true}
-          />
-          <Button type="button" variant={'secondary'} onClick={handleOpenFileInput}>
-            <ChangeCoverIcon />
-            Change Cover
-          </Button>
+          <ControlledFileInput withPreview={true} control={control} name={'cover'} />
           <ControlledTextField
             style={{ marginBottom: '1.5rem' }}
             name={'name'}
