@@ -46,7 +46,13 @@ export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
     <Modal.Root title={'Add New Pack'} trigger={trigger} onOpenChange={setIsOpen} isOpen={isOpen}>
       <form onSubmit={onSubmitForm}>
         <Modal.Body>
-          <ControlledFileInput withPreview={true} control={control} name={'cover'} />
+          <ControlledFileInput withPreview={true} control={control} name={'cover'}>
+            {onClick => (
+              <Button type={'button'} onClick={onClick}>
+                with ref
+              </Button>
+            )}
+          </ControlledFileInput>
           <ControlledTextField
             style={{ marginBottom: '1.5rem' }}
             name={'name'}

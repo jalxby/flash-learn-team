@@ -1,8 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react'
-
 import InputFileWithForm, {
   InputFile,
 } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
+import { Meta, StoryObj } from '@storybook/react'
 
 const meta = {
   title: 'InputFile',
