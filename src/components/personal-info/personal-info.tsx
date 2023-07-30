@@ -1,13 +1,18 @@
-import { FC, useEffect } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import s from './personal-info.module.scss'
 
 import { LogoutIcon, PencilIcon } from '@/assets'
-import { Avatar, Button, Typography } from '@/components'
-import { useImageUploader } from '@/components/ui/avatar/useImageUploader.ts'
+import { Avatar, Button, FileInputPreview, Typography } from '@/components'
+import { profile } from '@/components/personal-info/schema.ts'
 import { Card } from '@/components/ui/card'
+import { InputFile } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
 import { EditableText, useEditableText } from '@/components/ui/editeble-text'
-import { useUpdateMeMutation } from '@/services/auth'
+import { useGetMeQuery, useUpdateMeMutation } from '@/services/auth'
 
 export type PersonalInfoPropsType = {
   userName?: string
@@ -15,33 +20,55 @@ export type PersonalInfoPropsType = {
   onLogout: () => void
   onSaveChanges: (value: string | undefined) => void
 }
+type Form = z.infer<typeof profile>
 
 export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
   const { userName, userEmail, onLogout, onSaveChanges } = props
   const { activateEditMode, setEditMode, editMode } = useEditableText('')
-  const { file, handleFileChange, openFileInput, fileInputRef } = useImageUploader('')
   const [updateAvatar] = useUpdateMeMutation()
+  const { data: me } = useGetMeQuery()
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<Form>({
+    resolver: zodResolver(profile),
+    mode: 'onChange',
+  })
 
-  useEffect(() => {
-    updateAvatar({ avatar: file })
-  }, [file])
+  console.log(errors)
+  const onChangeHandler = handleSubmit((data: Form) => {
+    const form = new FormData()
+
+    form.append('avatar', data.avatar ?? '')
+    form.append('name', me?.name ?? '')
+    updateAvatar(form)
+  })
 
   return (
     <Card className={`${s.card} ${editMode && s.editMode}`}>
       <Typography variant="large" as={'h1'} className={s.title}>
         Personal Information
       </Typography>
-      <Avatar src={file} size={'6rem'} />
+      <Avatar src={me?.avatar} size={'6rem'} />
       {!editMode ? (
         <>
-          <div className={s.edit_avtar}>
-            <input
-              type="file"
-              className={s.reset_input}
-              onChange={handleFileChange}
-              ref={fileInputRef}
-            />
-            <PencilIcon onClick={openFileInput} style={{ cursor: 'pointer' }} />
+          <div className={s.edit_avatar}>
+            <form onChange={onChangeHandler}>
+              <Controller
+                name="avatar"
+                control={control}
+                render={({ field }) => (
+                  <InputFile {...field}>
+                    {(onClick: () => void) => (
+                      <PencilIcon onClick={onClick} style={{ cursor: 'pointer' }} />
+                    )}
+                  </InputFile>
+                )}
+              />
+              <Button type={'submit'}>sub</Button>
+            </form>
           </div>
           <div className={s.userName_container}>
             <Typography as={'h1'} variant={'h1'}>

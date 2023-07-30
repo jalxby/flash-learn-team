@@ -20,6 +20,9 @@ export type Deck = {
   cardsCount: number
   author: Author
 }
+
+export type GetDeckType = Omit<Deck, 'author'>
+
 export type Decks = Deck[]
 export type DecksParams = {
   minCardsCount?: string
@@ -27,11 +30,7 @@ export type DecksParams = {
   name?: string
   authorId?: string
 }
-export type ArgCreateDeck = {
-  cover?: string
-  name: string
-  isPrivate?: boolean
-}
+export type ArgCreateDeck = FormData
 export type ArgUpdateDeck = ArgCreateDeck & { id: string }
 export type CardsParams = {
   id: string

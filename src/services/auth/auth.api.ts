@@ -1,6 +1,5 @@
 import {
   ArgRecoverPasswordType,
-  ArgRefreshMeType,
   ArgResetPasswordType,
   ArgsSignInType,
   ArgsSignUpType,
@@ -48,12 +47,12 @@ export const authAPI = commonApi.injectEndpoints({
         }
       },
     }),
-    updateMe: builder.mutation<UserType, ArgRefreshMeType>({
-      query: ({ email, avatar, name }) => {
+    updateMe: builder.mutation<UserType, FormData>({
+      query: data => {
         return {
           method: 'PATCH',
           url: 'v1/auth/me',
-          body: { email, avatar, name },
+          body: data,
         }
       },
       invalidatesTags: ['ME'],

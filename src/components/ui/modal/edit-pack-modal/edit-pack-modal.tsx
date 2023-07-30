@@ -33,6 +33,8 @@ export const EditPackModal: FC<EditPackModalProps> = ({
     setIsOpen(false)
   })
 
+  console.log('edit modal')
+
   return (
     <Modal.Root isOpen={isOpen} onOpenChange={setIsOpen} trigger={trigger} title={'Edit Pack'}>
       <form onSubmit={onSubmitForm}>

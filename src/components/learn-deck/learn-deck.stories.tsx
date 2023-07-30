@@ -2,11 +2,11 @@ import { useState } from 'react'
 
 import { Meta, StoryObj } from '@storybook/react'
 
-import { LearnDesk } from '@/components/learn-pack/learn-desk.tsx'
+import { LearnDeck } from '@/components/learn-deck/learn-deck.tsx'
 
 const meta = {
   title: 'Modals/Learn desk',
-  component: LearnDesk,
+  component: LearnDeck,
   tags: ['autodocs'],
   decorators: [
     Story => (
@@ -15,7 +15,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof LearnDesk>
+} satisfies Meta<typeof LearnDeck>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -33,7 +33,7 @@ export const Default: Story = {
     const [value, setValue] = useState('value1')
 
     return (
-      <LearnDesk
+      <LearnDeck
         packName={packName}
         question={question}
         attempts={attempts}

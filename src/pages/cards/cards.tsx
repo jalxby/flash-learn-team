@@ -39,11 +39,10 @@ export const Cards: FC<Props> = () => {
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
   const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
-
   const { id: deckIdFromParams } = useParams()
   const deckId = deckIdFromParams ?? ''
   const { data: deck } = useGetDeckQuery({ id: deckId })
-  const { data: cards } = useGetCardsQuery({
+  const { data: rawCards } = useGetCardsQuery({
     id: deckId,
     currentPage: page,
     itemsPerPage: +pageSize,
@@ -54,9 +53,11 @@ export const Cards: FC<Props> = () => {
   const isMyDeck = me?.id === deck?.userId
   const [createCard] = useCreateCardMutation()
   const [updateGrade] = useUpdateCardGradeMutation()
-
   const isMyPack = me?.id === deck?.userId
-
+  const currentPage = rawCards ? rawCards.pagination.currentPage : 1
+  const totalCount = rawCards ? rawCards.pagination.totalItems : 0
+  const pSize = rawCards ? rawCards.pagination.itemsPerPage : 0
+  const preparedColumns = isMyDeck ? columns : columns.filter(column => column.key !== 'actions')
   const navigate = useNavigate()
   const navigateBack = () => {
     navigate(-1)
@@ -64,15 +65,15 @@ export const Cards: FC<Props> = () => {
   const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value)
   }
-  const updateGradeHandler = (cardId: string, grade: GradeType) => {
-    if (deckId) updateGrade({ id: deckId, grade, cardId: cardId })
-  }
+
   const deckName = deck?.name ?? ''
   const cNames = {
     header: clsx(s.headerPage),
     textField: clsx(s.textField),
     back: clsx(s.back),
     wrapper: clsx(s.wrapper, 'container'),
+    image: clsx(s.image),
+    menu: clsx(s.menuSection),
   }
   const editMenu = isMyPack && (
     <DeckEditMenu
@@ -80,17 +81,38 @@ export const Cards: FC<Props> = () => {
       onDelete={() => console.log('onDelete called')}
     />
   )
-  const addNewCardSection = isMyPack && (
+  const addCard = isMyPack && (
     <AddNewCard onSubmit={data => createCard({ id: deckId, ...data })}>
       <Button variant={'primary'}>Add New Card</Button>
     </AddNewCard>
   )
-  const learnToPackButton = !isMyPack && (
+  const learnDeck = !isMyPack && (
     <Button variant={'primary'} as={'a'} href={'#'}>
       Learn to Pack
     </Button>
   )
-  const preparedColumns = isMyDeck ? columns : columns.filter(column => column.key !== 'actions')
+
+  const cards = rawCards?.items.map(card => {
+    const updateGradeHandler = (grade: GradeType) => {
+      if (deckId) updateGrade({ id: deckId, grade, cardId: card.id })
+    }
+
+    return (
+      <Table.Row key={card.id}>
+        <Table.DataCell>{card.question}</Table.DataCell>
+        <Table.DataCell>{card.answer}</Table.DataCell>
+        <Table.DataCell>{card.updated}</Table.DataCell>
+        <Table.DataCell>
+          <Grade onClick={updateGradeHandler} grade={card.grade} />
+        </Table.DataCell>
+        {isMyDeck && (
+          <Table.DataCell>
+            <CardsTableActions item={card} />
+          </Table.DataCell>
+        )}
+      </Table.Row>
+    )
+  })
 
   return (
     <Page>
@@ -100,53 +122,24 @@ export const Cards: FC<Props> = () => {
             <ArrowLeftIcon /> Back to Packs List
           </Typography>
         </Button>
-
         <div className={cNames.header}>
-          <Typography variant={'large'}>{deckName}</Typography>
-          {editMenu}
-          {deck?.cover}
-          {addNewCardSection}
-          {learnToPackButton}
+          <div className={cNames.menu}>
+            <Typography variant={'large'}>{deckName}</Typography>
+            {editMenu}
+          </div>
+          {addCard}
+          {learnDeck}
         </div>
-
-        {/*{img && (*/}
-        {/*  <div style={{ width: '170px', height: '107px' }}>*/}
-        {/*    <img src={img} alt="" style={{ width: '170px', height: '107px' }} />*/}
-        {/*  </div>*/}
-        {/*)}*/}
-
+        {deck?.cover && <img className={cNames.image} src={deck?.cover} alt="deck-cover" />}
         <TextField onChange={onValueChange} inputType={'search'} className={cNames.textField} />
-
         <Table.Root className={s.tableRoot}>
           <Table.Head columns={preparedColumns} sort={sort} onSort={setSort} />
-          <Table.Body>
-            {cards?.items.map(card => {
-              return (
-                <Table.Row key={card.id}>
-                  <Table.DataCell>{card.question}</Table.DataCell>
-                  <Table.DataCell>{card.answer}</Table.DataCell>
-                  <Table.DataCell>{card.updated}</Table.DataCell>
-                  <Table.DataCell>
-                    <Grade
-                      onClick={grade => updateGradeHandler(card.id, grade)}
-                      grade={card.grade}
-                    />
-                  </Table.DataCell>
-                  {isMyDeck && (
-                    <Table.DataCell style={{ padding: '6px 24px' }}>
-                      <CardsTableActions item={card} />
-                    </Table.DataCell>
-                  )}
-                </Table.Row>
-              )
-            })}
-          </Table.Body>
+          <Table.Body>{cards}</Table.Body>
         </Table.Root>
-
         <Pagination
-          currentPage={cards ? cards.pagination.currentPage : 1}
-          totalCount={cards ? cards.pagination.totalItems : 0}
-          pageSize={cards ? cards.pagination.itemsPerPage : 0}
+          currentPage={currentPage}
+          totalCount={totalCount}
+          pageSize={pSize}
           siblingCount={3}
           onPageChange={setPage}
           onPageSizeChange={setPageSize}

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import s from './table-action-buttons.module.scss'
 
 import { DeleteIcon, EditIcon, PlayIcon } from '@/assets'
-import { DeleteDeckDialog } from '@/components/ui/modal/delete-deck/delete-deck-dialog.tsx'
+import { DeleteDialog } from '@/components/ui/modal/delete-dialog/delete-dialog.tsx'
 import { EditPackModal } from '@/components/ui/modal/edit-pack-modal/edit-pack-modal.tsx'
 import { useRemoveDeckMutation, useUpdateDeckMutation } from '@/services/decks/decks.api.ts'
 import { Deck } from '@/services/decks/decks.api.types.ts'
@@ -33,13 +33,18 @@ export const DecksTableActions: FC<Props> = ({ item, isMyDeck }) => {
                 <EditIcon />
               </button>
             }
-            onSubmit={data =>
-              updateDeck({ id, isPrivate: data.isPrivate, cover, name: data.newNamePack })
-            }
+            onSubmit={data => {
+              const form = new FormData()
+
+              form.append('name', data.newNamePack)
+              form.append('isPrivate', String(data.isPrivate))
+              form.append('cover', cover)
+              updateDeck({ id, ...form })
+            }}
             isPrivate={isPrivate}
             packName={name}
           />
-          <DeleteDeckDialog
+          <DeleteDialog
             buttonTitle={'Delete Pack'}
             onClick={() => removeDeck({ id })}
             title={'Delete Pack'}
@@ -49,7 +54,7 @@ export const DecksTableActions: FC<Props> = ({ item, isMyDeck }) => {
             <button>
               <DeleteIcon />
             </button>
-          </DeleteDeckDialog>
+          </DeleteDialog>
         </>
       )}
     </div>

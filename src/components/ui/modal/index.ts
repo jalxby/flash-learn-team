@@ -1,4 +1,3 @@
 export * from './modal.tsx'
-export * from './delete-deck'
-export * from './delete-card'
-export * from './add-new-pack-modal'
+export * from './delete-dialog'
+export * from './create-deck'

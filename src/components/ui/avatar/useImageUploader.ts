@@ -5,8 +5,8 @@ import { ChangeEvent, useRef, useState } from 'react'
  * @param {string} value - The initial file value.
  *
  */
-export const useImageUploader = (value: string) => {
-  const [file, setFile] = useState<string>(value)
+export const useImageUploader = () => {
+  const [file, setFile] = useState<File>()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   /**
@@ -24,10 +24,8 @@ export const useImageUploader = (value: string) => {
     const photo = e.target.files?.[0]
 
     if (photo) {
-      if (photo.type === 'image/jpeg' || photo.type === 'image/png') {
-        const fileURL = URL.createObjectURL(photo)
-
-        setFile(fileURL)
+      if (photo.type === 'file-input-preview/jpeg' || photo.type === 'file-input-preview/png') {
+        setFile(photo)
       }
     }
   }

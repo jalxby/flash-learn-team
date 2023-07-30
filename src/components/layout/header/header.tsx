@@ -7,6 +7,7 @@ import s from './header.module.scss'
 
 import { Logo } from '@/assets'
 import { AvatarDropdown, Button } from '@/components'
+import { useGetMeQuery } from '@/services/auth'
 import { UserType } from '@/services/auth/auth.api.types.ts'
 
 export type Props = {
@@ -14,6 +15,7 @@ export type Props = {
   onSignOut: () => void
 }
 export const Header: FC<Props> = ({ onSignOut, userData }) => {
+  const { data: me } = useGetMeQuery()
   const cNames = {
     header: clsx(s.header),
     container: clsx(s.container, 'container'),
@@ -32,6 +34,7 @@ export const Header: FC<Props> = ({ onSignOut, userData }) => {
         )}
         {userData && (
           <AvatarDropdown
+            avatar={me?.avatar}
             onSignOut={onSignOut}
             userEmail={userData.email}
             userName={userData.name}

@@ -1,12 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { AddNewPackModal } from './add-new-pack-modal.tsx'
-
-import { Button } from '@/components'
+import { Button, CreateDeck } from '@/components'
 
 const meta = {
-  title: 'Modals/Add New Pack Modal',
-  component: AddNewPackModal,
+  title: 'Modals/Create Deck',
+  component: CreateDeck,
   tags: ['autodocs'],
   decorators: [
     Story => (
@@ -16,16 +14,16 @@ const meta = {
     ),
   ],
   args: {
-    trigger: <Button variant={'primary'}>Add New Pack</Button>,
+    trigger: <Button variant={'primary'}>Create Deck</Button>,
   },
-} satisfies Meta<typeof AddNewPackModal>
+} satisfies Meta<typeof CreateDeck>
 
 export default meta
 type Story = StoryObj<typeof meta>
 export const Default: Story = {
   render: args => {
     return (
-      <AddNewPackModal
+      <CreateDeck
         trigger={args.trigger}
         onSubmit={data => {
           // eslint-disable-next-line no-console

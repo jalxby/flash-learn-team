@@ -20,6 +20,7 @@ type ModalProps = {
 }
 
 const Root: FC<ModalProps> = ({ title, isOpen, trigger, onOpenChange, children }) => {
+  console.log('root')
   const cNames = {
     content: clsx(s.content),
     overlay: clsx(s.overlay),

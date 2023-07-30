@@ -1,2 +1,3 @@
-export * from './controlled-text-field.tsx'
-export * from './controlled-checkbox.tsx'
+export * from './controlled-text-field'
+export * from './controlled-checkbox'
+export * from './file-input-preview'
