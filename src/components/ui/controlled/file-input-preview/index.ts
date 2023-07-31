@@ -1,1 +1,1 @@
-export * from './file-input-preview'
+export * from './controlled-file-input'

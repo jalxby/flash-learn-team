@@ -10,7 +10,7 @@ import { LogoutIcon, PencilIcon } from '@/assets'
 import { Avatar, Button, Typography } from '@/components'
 import { profile } from '@/components/personal-info/schema.ts'
 import { Card } from '@/components/ui/card'
-import { ControlledFileInput } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
+import { ControlledFileInput } from '@/components/ui/controlled/file-input-preview/controlled-file-input.tsx'
 import { EditableText, useEditableText } from '@/components/ui/editeble-text'
 import { useGetMeQuery, useUpdateMeMutation } from '@/services/auth'
 
@@ -50,7 +50,9 @@ export const PersonalInfo: FC<PersonalInfoPropsType> = props => {
         <>
           <div className={s.edit_avatar}>
             <form onChange={onChangeHandler} style={{ height: '16px' }}>
-              <ControlledFileInput control={control} withPreview={false} name={'avatar'} />
+              <ControlledFileInput control={control} withPreview={false} name={'avatar'}>
+                {onClick => <PencilIcon onClick={onClick} style={{ cursor: 'pointer' }} />}
+              </ControlledFileInput>
             </form>
           </div>
           <div className={s.userName_container}>

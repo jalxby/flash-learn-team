@@ -14,6 +14,9 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
+    setIsOpenEditDeck: () => {},
+    cover: '',
+    isOpenEditDeck: false,
     packName: 'EditedPackName',
     isPrivate: true,
     trigger: <EditIcon />,

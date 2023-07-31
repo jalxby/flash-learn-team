@@ -11,6 +11,7 @@ import DeleteIcon from '@/assets/icons/DeleteIcon.tsx'
 import {
   Button,
   CreateDeck,
+  DeleteDialog,
   Page,
   Pagination,
   Sort,
@@ -26,6 +27,7 @@ import { useGetMeQuery } from '@/services/auth/auth.api.ts'
 import {
   useCreateDeckMutation,
   useGetDecksQuery,
+  useRemoveDeckMutation,
   useUpdateDeckMutation,
 } from '@/services/decks/decks.api.ts'
 import { Deck } from '@/services/decks/decks.api.types.ts'
@@ -34,7 +36,7 @@ type PacksProps = {}
 export const Decks: FC<PacksProps> = () => {
   const { data: me } = useGetMeQuery()
 
-  const isMyDecks = me?.id ? me?.id : ''
+  const myID = me?.id ? me?.id : ''
   const [myDecks, setMyDecks] = useState('')
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
@@ -46,9 +48,11 @@ export const Decks: FC<PacksProps> = () => {
   const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100])
   const [debouncedSliderValue, setDebouncedSliderValue] = useState<[number, number]>([0, 100])
   const [updateDeck] = useUpdateDeckMutation()
+  const [removeDeck] = useRemoveDeckMutation()
   const navigate = useNavigate()
   const [selectedDeck, setSelectedDeck] = useState<Deck>({} as Deck)
   const [isOpenEditDeck, setIsOpenEditDeck] = useState<boolean>(false)
+  const [isOpenDeleteDeck, setIsOpenDeleteDeck] = useState<boolean>(false)
   const { data } = useGetDecksQuery({
     name: debouncedNameToSearch,
     authorId: myDecks,
@@ -70,7 +74,7 @@ export const Decks: FC<PacksProps> = () => {
     setSliderValue([0, maxCardsCount])
     setDebouncedSliderValue([0, maxCardsCount])
   }
-
+  const removeDeckHandler = () => removeDeck({ id: selectedDeck.id })
   const cNames = {
     container: clsx(s.container, 'container'),
     title: clsx(s.pageTitle),
@@ -83,55 +87,74 @@ export const Decks: FC<PacksProps> = () => {
     setSliderValue([0, maxCardsCount])
     setDebouncedSliderValue([0, maxCardsCount])
   }, [data?.maxCardsCount])
-  const tableRows = data?.items.map(deck => (
-    <Table.Row key={deck.id}>
-      <Table.DataCell>
-        <div className={cNames.imageContainer}>
-          {deck.cover && <img className={cNames.image} src={deck.cover} alt="" />}
-          {deck.name}
-        </div>
-      </Table.DataCell>
-      <Table.DataCell>{deck.cardsCount}</Table.DataCell>
-      <Table.DataCell>{deck.updated}</Table.DataCell>
-      <Table.DataCell>{deck.author.name}</Table.DataCell>
-      <Table.DataCell>
-        {/*<DecksTableActions item={deck} isMyDeck={deck.author.id === me?.id} />*/}
-        <button onClick={() => navigate(`/cards/${deck.id}`)}>
-          <PlayIcon />
-        </button>
-        <button
-          onClick={() => {
-            setSelectedDeck(deck)
-            setIsOpenEditDeck(true)
-          }}
-        >
-          <EditIcon />
-        </button>
-        <button>
-          <DeleteIcon />
-        </button>
-      </Table.DataCell>
-    </Table.Row>
-  ))
+
+  const tableRows = data?.items.map(deck => {
+    const onClickEditHandler = () => {
+      setSelectedDeck(deck)
+      setIsOpenEditDeck(true)
+    }
+    const onClickDeleteHandler = () => {
+      setSelectedDeck(deck)
+      setIsOpenDeleteDeck(true)
+    }
+
+    return (
+      <Table.Row key={deck.id}>
+        <Table.DataCell>
+          <div className={cNames.imageContainer}>
+            {deck.cover && <img className={cNames.image} src={deck.cover} alt="" />}
+            {deck.name}
+          </div>
+        </Table.DataCell>
+        <Table.DataCell>{deck.cardsCount}</Table.DataCell>
+        <Table.DataCell>{deck.updated}</Table.DataCell>
+        <Table.DataCell>{deck.author.name}</Table.DataCell>
+        <Table.DataCell>
+          {/*<DecksTableActions item={deck} isMyDeck={deck.author.id === me?.id} />*/}
+          <button onClick={() => navigate(`/cards/${deck.id}`)}>
+            <PlayIcon />
+          </button>
+          {myID === deck.author.id && (
+            <>
+              <button onClick={onClickEditHandler}>
+                <EditIcon />
+              </button>
+              <button onClick={onClickDeleteHandler}>
+                <DeleteIcon />
+              </button>
+            </>
+          )}
+        </Table.DataCell>
+      </Table.Row>
+    )
+  })
 
   return (
     <Page>
       <EditPackModal
         trigger={<></>}
-        onSubmit={({ newNamePack, isPrivate }) => {
+        onSubmit={({ cover, name, isPrivate }) => {
           const form = new FormData()
 
-          form.append('name', newNamePack)
+          form.append('name', name)
           form.append('isPrivate', String(isPrivate))
-          form.append('cover', selectedDeck.cover)
+          form.append('cover', cover)
           updateDeck({ id: selectedDeck.id, formData: form })
-          debugger
         }}
         isPrivate={selectedDeck.isPrivate}
         packName={selectedDeck.name}
-        // cover={selectedDeck.cover}
+        cover={selectedDeck.cover}
         isOpenEditDeck={isOpenEditDeck}
         setIsOpenEditDeck={setIsOpenEditDeck}
+      />
+
+      <DeleteDialog
+        buttonTitle={'Delete Pack'}
+        onClick={removeDeckHandler}
+        title={'Delete Deck'}
+        bodyMessage={`Do you really want to delete "${selectedDeck.name}" deck?`}
+        isOpen={isOpenDeleteDeck}
+        setIsOpen={setIsOpenDeleteDeck}
       />
       <div className={cNames.container}>
         <div className={cNames.title}>
@@ -150,7 +173,7 @@ export const Decks: FC<PacksProps> = () => {
           <Tabs
             defaultValue={''}
             tabs={[
-              { tabName: 'MY', value: isMyDecks },
+              { tabName: 'MY', value: myID },
               { tabName: 'ALL', value: '' },
             ]}
             label={'Show decks'}
