@@ -5,7 +5,7 @@ import { v4 } from 'uuid'
 
 import s from './learn-deck.module.scss'
 
-import { Button, Card, RadioGroup, Typography } from '@/components'
+import { Button, Card, GradeType, RadioGroup, Typography } from '@/components'
 
 type Props = {
   packName: string
@@ -13,7 +13,7 @@ type Props = {
   attempts: string | number
   answer: string
   loadNextQuestion: () => void
-  onChange: (value: string) => void
+  onChange: (value: GradeType) => void
   value: string
 }
 
@@ -28,6 +28,7 @@ export const LearnDeck: FC<Props> = ({
 }) => {
   const [showAnswer, setShowAnswer] = useState(false)
 
+  console.log(value)
   const classNames = {
     container: clsx(s.container),
     question: clsx(s.question),
@@ -71,7 +72,7 @@ export const LearnDeck: FC<Props> = ({
 type AnswerFeedbackPropsType = {
   answer: string
   loadNextQuestion: () => void
-  onChange: (value: string) => void
+  onChange: (value: GradeType) => void
   value: string
 }
 
@@ -84,11 +85,11 @@ const AnswerFeedback: FC<AnswerFeedbackPropsType> = props => {
     radioGroup: s.radioGroup,
   }
   const items = [
-    { id: v4(), label: 'Did not know', value: 'value1' },
-    { id: v4(), label: 'Forgot', value: 'value2' },
-    { id: v4(), label: 'A lot of thought', value: 'value3' },
-    { id: v4(), label: 'Confused', value: 'value4' },
-    { id: v4(), label: 'Knew the answer', value: 'value5' },
+    { id: v4(), label: 'Did not know', value: '1' },
+    { id: v4(), label: 'Forgot', value: '2' },
+    { id: v4(), label: 'A lot of thought', value: '3' },
+    { id: v4(), label: 'Confused', value: '4' },
+    { id: v4(), label: 'Knew the answer', value: '5' },
   ]
 
   return (

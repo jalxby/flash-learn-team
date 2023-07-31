@@ -101,7 +101,7 @@ export const Decks: FC<PacksProps> = () => {
     return (
       <Table.Row key={deck.id}>
         <Table.DataCell>
-          <div className={cNames.imageContainer}>
+          <div className={cNames.imageContainer} onClick={() => navigate(`/cards/${deck.id}`)}>
             {deck.cover && <img className={cNames.image} src={deck.cover} alt="" />}
             {deck.name}
           </div>
@@ -110,8 +110,7 @@ export const Decks: FC<PacksProps> = () => {
         <Table.DataCell>{deck.updated}</Table.DataCell>
         <Table.DataCell>{deck.author.name}</Table.DataCell>
         <Table.DataCell>
-          {/*<DecksTableActions item={deck} isMyDeck={deck.author.id === me?.id} />*/}
-          <button onClick={() => navigate(`/cards/${deck.id}`)}>
+          <button onClick={() => navigate(`/learn/${deck.id}`)}>
             <PlayIcon />
           </button>
           {myID === deck.author.id && (

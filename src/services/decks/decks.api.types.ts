@@ -73,4 +73,5 @@ export type LearnCard = {
   answerVideo?: any
   created: string
   updated: string
+  shots: number
 }

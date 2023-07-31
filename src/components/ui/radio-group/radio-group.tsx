@@ -5,6 +5,7 @@ import { clsx } from 'clsx'
 
 import s from './radio-group.module.scss'
 
+import { GradeType } from '@/components'
 import { RadioGroupItem } from '@/components/ui/radio-group/radio-group-item.tsx'
 
 export type RadioGroupItemType = {
@@ -16,7 +17,7 @@ export type RadioGroupItemType = {
 type RadioGroupPropsType = {
   items: RadioGroupItemType[]
   className?: string
-  onChange: (value: string) => void
+  onChange: (value: GradeType) => void
   value: string
 }
 
@@ -25,6 +26,9 @@ export const RadioGroup: FC<RadioGroupPropsType> = props => {
   const classNames = {
     root: clsx(s.root, className),
   }
+  const onChangeHandler = (value: string) => {
+    onChange(+value as GradeType)
+  }
 
   return (
     <form>
@@ -32,7 +36,7 @@ export const RadioGroup: FC<RadioGroupPropsType> = props => {
         value={value}
         className={classNames.root}
         defaultValue="default"
-        onValueChange={onChange}
+        onValueChange={onChangeHandler}
       >
         {items.map(el => {
           return <RadioGroupItem key={el.id} label={el.label} id={el.id} value={el.value} />
