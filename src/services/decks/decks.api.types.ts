@@ -31,7 +31,7 @@ export type DecksParams = {
   authorId?: string
 }
 export type ArgCreateDeck = FormData
-export type ArgUpdateDeck = ArgCreateDeck & { id: string }
+export type ArgUpdateDeck = { formData: ArgCreateDeck; id: string }
 export type CardsParams = {
   id: string
   question?: string

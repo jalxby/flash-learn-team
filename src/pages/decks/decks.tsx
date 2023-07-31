@@ -1,14 +1,16 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 
 import { clsx } from 'clsx'
+import { useNavigate } from 'react-router-dom'
 import { useDebounce } from 'usehooks-ts'
 
 import s from './decks.module.scss'
 
+import { EditIcon, PlayIcon } from '@/assets'
 import DeleteIcon from '@/assets/icons/DeleteIcon.tsx'
 import {
-  CreateDeck,
   Button,
+  CreateDeck,
   Page,
   Pagination,
   Sort,
@@ -16,12 +18,17 @@ import {
   TextField,
   Typography,
 } from '@/components'
+import { EditPackModal } from '@/components/ui/modal/edit-pack-modal/edit-pack-modal.tsx'
 import { Slider } from '@/components/ui/slider'
-import { DecksTableActions } from '@/components/ui/table-action-buttons'
 import { Tabs } from '@/components/ui/tabs'
 import { columns } from '@/pages/decks/columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
-import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks/decks.api.ts'
+import {
+  useCreateDeckMutation,
+  useGetDecksQuery,
+  useUpdateDeckMutation,
+} from '@/services/decks/decks.api.ts'
+import { Deck } from '@/services/decks/decks.api.types.ts'
 
 type PacksProps = {}
 export const Decks: FC<PacksProps> = () => {
@@ -38,6 +45,10 @@ export const Decks: FC<PacksProps> = () => {
   const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
   const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100])
   const [debouncedSliderValue, setDebouncedSliderValue] = useState<[number, number]>([0, 100])
+  const [updateDeck] = useUpdateDeckMutation()
+  const navigate = useNavigate()
+  const [selectedDeck, setSelectedDeck] = useState<Deck>({} as Deck)
+  const [isOpenEditDeck, setIsOpenEditDeck] = useState<boolean>(false)
   const { data } = useGetDecksQuery({
     name: debouncedNameToSearch,
     authorId: myDecks,
@@ -84,13 +95,44 @@ export const Decks: FC<PacksProps> = () => {
       <Table.DataCell>{deck.updated}</Table.DataCell>
       <Table.DataCell>{deck.author.name}</Table.DataCell>
       <Table.DataCell>
-        <DecksTableActions item={deck} isMyDeck={deck.author.id === me?.id} />
+        {/*<DecksTableActions item={deck} isMyDeck={deck.author.id === me?.id} />*/}
+        <button onClick={() => navigate(`/cards/${deck.id}`)}>
+          <PlayIcon />
+        </button>
+        <button
+          onClick={() => {
+            setSelectedDeck(deck)
+            setIsOpenEditDeck(true)
+          }}
+        >
+          <EditIcon />
+        </button>
+        <button>
+          <DeleteIcon />
+        </button>
       </Table.DataCell>
     </Table.Row>
   ))
 
   return (
     <Page>
+      <EditPackModal
+        trigger={<></>}
+        onSubmit={({ newNamePack, isPrivate }) => {
+          const form = new FormData()
+
+          form.append('name', newNamePack)
+          form.append('isPrivate', String(isPrivate))
+          form.append('cover', selectedDeck.cover)
+          updateDeck({ id: selectedDeck.id, formData: form })
+          debugger
+        }}
+        isPrivate={selectedDeck.isPrivate}
+        packName={selectedDeck.name}
+        // cover={selectedDeck.cover}
+        isOpenEditDeck={isOpenEditDeck}
+        setIsOpenEditDeck={setIsOpenEditDeck}
+      />
       <div className={cNames.container}>
         <div className={cNames.title}>
           <Typography variant={'large'}>Pack list</Typography>

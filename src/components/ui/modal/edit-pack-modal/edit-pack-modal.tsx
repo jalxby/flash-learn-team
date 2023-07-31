@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react'
+import { FC, ReactNode } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -13,6 +13,8 @@ type EditPackModalProps = {
   isPrivate: boolean
   packName: string
   onSubmit: (data: Form) => void
+  isOpenEditDeck: boolean
+  setIsOpenEditDeck: (value: boolean) => void
 }
 
 type Form = z.infer<typeof editPackSchema>
@@ -21,8 +23,9 @@ export const EditPackModal: FC<EditPackModalProps> = ({
   packName,
   isPrivate,
   trigger,
+  isOpenEditDeck,
+  setIsOpenEditDeck,
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false)
   const { handleSubmit, control } = useForm<Form>({
     resolver: zodResolver(editPackSchema),
     mode: 'onSubmit',
@@ -30,13 +33,16 @@ export const EditPackModal: FC<EditPackModalProps> = ({
   })
   const onSubmitForm = handleSubmit(data => {
     onSubmit({ newNamePack: data.newNamePack, isPrivate: data.isPrivate })
-    setIsOpen(false)
+    setIsOpenEditDeck(false)
   })
 
-  console.log('edit modal')
-
   return (
-    <Modal.Root isOpen={isOpen} onOpenChange={setIsOpen} trigger={trigger} title={'Edit Pack'}>
+    <Modal.Root
+      isOpen={isOpenEditDeck}
+      onOpenChange={setIsOpenEditDeck}
+      trigger={trigger}
+      title={'Edit Pack'}
+    >
       <form onSubmit={onSubmitForm}>
         <Modal.Body>
           <ControlledTextField
@@ -51,7 +57,7 @@ export const EditPackModal: FC<EditPackModalProps> = ({
           <Button variant={'primary'} type={'submit'}>
             Save Changes
           </Button>
-          <Button variant={'secondary'} onClick={() => setIsOpen(false)}>
+          <Button variant={'secondary'} onClick={() => setIsOpenEditDeck(false)}>
             Cancel
           </Button>
         </Modal.Footer>
