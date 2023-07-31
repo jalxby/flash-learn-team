@@ -36,7 +36,7 @@ type PacksProps = {}
 export const Decks: FC<PacksProps> = () => {
   const { data: me } = useGetMeQuery()
 
-  const isMyDecks = me?.id ? me?.id : ''
+  const myID = me?.id ? me?.id : ''
   const [myDecks, setMyDecks] = useState('')
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
@@ -114,12 +114,16 @@ export const Decks: FC<PacksProps> = () => {
           <button onClick={() => navigate(`/cards/${deck.id}`)}>
             <PlayIcon />
           </button>
-          <button onClick={onClickEditHandler}>
-            <EditIcon />
-          </button>
-          <button onClick={onClickDeleteHandler}>
-            <DeleteIcon />
-          </button>
+          {myID === deck.author.id && (
+            <>
+              <button onClick={onClickEditHandler}>
+                <EditIcon />
+              </button>
+              <button onClick={onClickDeleteHandler}>
+                <DeleteIcon />
+              </button>
+            </>
+          )}
         </Table.DataCell>
       </Table.Row>
     )
@@ -169,7 +173,7 @@ export const Decks: FC<PacksProps> = () => {
           <Tabs
             defaultValue={''}
             tabs={[
-              { tabName: 'MY', value: isMyDecks },
+              { tabName: 'MY', value: myID },
               { tabName: 'ALL', value: '' },
             ]}
             label={'Show decks'}
