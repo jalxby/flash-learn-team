@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { ChangeEvent, FC } from 'react'
 
 import * as SliderRDX from '@radix-ui/react-slider'
 import { clsx } from 'clsx'
@@ -47,7 +47,16 @@ export const Slider: FC<SliderPropsType> = props => {
     <div className={classNames.container}>
       {label && <Typography variant={'body2'}>{label}</Typography>}
       <div className={classNames.wrapper}>
-        <div className={classNames.values}>{minValue}</div>
+        {/*<div className={classNames.values}>{minValue}</div>*/}
+        <input
+          type="text"
+          className={classNames.values}
+          value={minValue}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            onChange([+event.currentTarget.value, maxValue])
+            onValueCommit([+event.currentTarget.value, maxValue])
+          }}
+        />
         <SliderRDX.Root
           value={value}
           className={classNames.root}
@@ -64,7 +73,16 @@ export const Slider: FC<SliderPropsType> = props => {
           <SliderRDX.Thumb className={classNames.thumb} />
           <SliderRDX.Thumb className={classNames.thumb} />
         </SliderRDX.Root>
-        <div className={s.values}>{maxValue}</div>
+        {/*<div className={classNames.values}>{maxValue}</div>*/}
+        <input
+          type="text"
+          className={classNames.values}
+          value={maxValue}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            onChange([minValue, +event.currentTarget.value])
+            onValueCommit([minValue, +event.currentTarget.value])
+          }}
+        />
       </div>
     </div>
   )
