@@ -5,17 +5,17 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
-import { createDeckSchema } from './create-deck-schema.ts'
+import { deckSchema } from './create-deck-schema.ts'
 
 import { Button, ControlledCheckbox, ControlledTextField, Typography } from '@/components'
-import { ControlledFileInput } from '@/components/ui/controlled/file-input-preview/input.file.tsx'
+import { ControlledFileInput } from '@/components/ui/controlled/file-input-preview/controlled-file-input.tsx'
 import { Modal } from '@/components/ui/modal'
 
 type AddNewPackModalPropsType = {
   trigger: ReactNode
   onSubmit: (data: FormData) => void
 }
-type Form = z.infer<typeof createDeckSchema>
+type Form = z.infer<typeof deckSchema>
 
 export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -25,7 +25,7 @@ export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
     control,
     formState: { errors },
   } = useForm<Form>({
-    resolver: zodResolver(createDeckSchema),
+    resolver: zodResolver(deckSchema),
     mode: 'onSubmit',
   })
 

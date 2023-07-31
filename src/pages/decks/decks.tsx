@@ -118,18 +118,18 @@ export const Decks: FC<PacksProps> = () => {
     <Page>
       <EditPackModal
         trigger={<></>}
-        onSubmit={({ newNamePack, isPrivate }) => {
+        onSubmit={({ cover, name, isPrivate }) => {
           const form = new FormData()
 
-          form.append('name', newNamePack)
+          form.append('name', name)
           form.append('isPrivate', String(isPrivate))
-          form.append('cover', selectedDeck.cover)
+          form.append('cover', cover)
           updateDeck({ id: selectedDeck.id, formData: form })
           debugger
         }}
         isPrivate={selectedDeck.isPrivate}
         packName={selectedDeck.name}
-        // cover={selectedDeck.cover}
+        cover={selectedDeck.cover}
         isOpenEditDeck={isOpenEditDeck}
         setIsOpenEditDeck={setIsOpenEditDeck}
       />

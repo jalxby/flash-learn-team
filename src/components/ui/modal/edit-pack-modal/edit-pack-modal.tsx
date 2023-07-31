@@ -4,9 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { editPackSchema } from './edit-pack-modal-schema.ts'
-
 import { Button, ControlledCheckbox, ControlledTextField, Modal } from '@/components'
+import { ControlledFileInput } from '@/components/ui/controlled/file-input-preview/controlled-file-input.tsx'
+import { deckSchema } from '@/components/ui/modal/create-deck/create-deck-schema.ts'
 
 type EditPackModalProps = {
   trigger: ReactNode
@@ -15,9 +15,10 @@ type EditPackModalProps = {
   onSubmit: (data: Form) => void
   isOpenEditDeck: boolean
   setIsOpenEditDeck: (value: boolean) => void
+  cover: string
 }
 
-type Form = z.infer<typeof editPackSchema>
+type Form = z.infer<typeof deckSchema>
 export const EditPackModal: FC<EditPackModalProps> = ({
   onSubmit,
   packName,
@@ -27,12 +28,12 @@ export const EditPackModal: FC<EditPackModalProps> = ({
   setIsOpenEditDeck,
 }) => {
   const { handleSubmit, control } = useForm<Form>({
-    resolver: zodResolver(editPackSchema),
+    resolver: zodResolver(deckSchema),
     mode: 'onSubmit',
-    values: { isPrivate, newNamePack: packName },
+    values: { isPrivate, name: packName },
   })
   const onSubmitForm = handleSubmit(data => {
-    onSubmit({ newNamePack: data.newNamePack, isPrivate: data.isPrivate })
+    onSubmit({ name: data.name, isPrivate: data.isPrivate, cover: data.cover })
     setIsOpenEditDeck(false)
   })
 
@@ -45,11 +46,18 @@ export const EditPackModal: FC<EditPackModalProps> = ({
     >
       <form onSubmit={onSubmitForm}>
         <Modal.Body>
+          <ControlledFileInput name={'cover'} withPreview control={control}>
+            {onClick => (
+              <Button type={'button'} variant={'secondary'} onClick={onClick}>
+                Change cover
+              </Button>
+            )}
+          </ControlledFileInput>
           <ControlledTextField
             title={'Name Pack'}
             inputType={'text'}
             control={control}
-            name={'newNamePack'}
+            name={'name'}
           />
           <ControlledCheckbox control={control} left label={'Private Pack'} name={'isPrivate'} />
         </Modal.Body>

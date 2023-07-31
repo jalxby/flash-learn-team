@@ -31,6 +31,9 @@ export const DeckEditMenu: FC<DeckEditMenuPropsType> = props => {
         isPrivate={false}
         packName={'Name'}
         onSubmit={() => {}}
+        cover={''}
+        isOpenEditDeck={true}
+        setIsOpenEditDeck={() => {}}
       />
       <MenuItem separator={false} onSelect={onDelete}>
         <DeleteIcon />
