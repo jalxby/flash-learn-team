@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentProps, useRef, useState } from 'react'
+import { ChangeEvent, useRef, useState } from 'react'
 
 import { clsx } from 'clsx'
 import { FieldValues, useController, UseControllerProps } from 'react-hook-form'
@@ -9,9 +9,8 @@ import s from '@/components/ui/controlled/file-input-preview/file-input-preview.
 type Props<T extends FieldValues> = {
   withPreview: boolean
   variant?: 'small' | 'large' | 'medium'
-  children: JSX.Element
-} & Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type'> &
-  Omit<UseControllerProps<T>, 'rules' | 'defaultValues'>
+  children: (onClick: () => void) => JSX.Element
+} & Omit<UseControllerProps<T>, 'rules' | 'defaultValues' | 'onChange' | 'value' | 'type'>
 
 export const ControlledFileInput = <T extends FieldValues>({
   control,

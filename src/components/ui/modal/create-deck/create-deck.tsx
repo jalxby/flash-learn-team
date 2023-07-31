@@ -1,4 +1,4 @@
-import { FC, MutableRefObject, ReactNode, useRef, useState } from 'react'
+import { FC, ReactNode, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -47,9 +47,9 @@ export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
       <form onSubmit={onSubmitForm}>
         <Modal.Body>
           <ControlledFileInput withPreview={true} control={control} name={'cover'}>
-            {callback => (
-              <Button type={'button'} onClick={callback}>
-                with ref
+            {onClick => (
+              <Button type={'button'} variant={'secondary'} onClick={onClick}>
+                Change cover
               </Button>
             )}
           </ControlledFileInput>
