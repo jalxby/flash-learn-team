@@ -87,8 +87,8 @@ export const Cards: FC<Props> = () => {
     </AddNewCard>
   )
   const learnDeck = !isMyPack && (
-    <Button variant={'primary'} as={'a'} href={'#'}>
-      Learn to Pack
+    <Button variant={'primary'} as={'a'} href={`/learn/${deck?.id}`}>
+      Learn to Deck
     </Button>
   )
 

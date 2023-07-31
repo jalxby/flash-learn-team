@@ -32,7 +32,7 @@ export const DeckEditMenu: FC<DeckEditMenuPropsType> = props => {
         packName={'Name'}
         onSubmit={() => {}}
         cover={''}
-        isOpenEditDeck={true}
+        isOpenEditDeck={false}
         setIsOpenEditDeck={() => {}}
       />
       <MenuItem separator={false} onSelect={onDelete}>

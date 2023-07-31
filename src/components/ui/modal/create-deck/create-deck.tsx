@@ -33,7 +33,6 @@ export const CreateDeck: FC<AddNewPackModalPropsType> = props => {
   const onSubmitForm = handleSubmit(data => {
     const form = new FormData()
 
-    debugger
     form.append('cover', data.cover)
     form.append('name', data.name)
     form.append('isPrivate', String(data.isPrivate))

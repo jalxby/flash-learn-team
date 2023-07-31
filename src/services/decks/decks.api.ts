@@ -10,6 +10,7 @@ import {
   Deck,
   DecksParams,
   GetDeckType,
+  LearnCard,
 } from '@/services/decks/decks.api.types.ts'
 
 export const decksAPI = commonApi.injectEndpoints({
@@ -35,7 +36,7 @@ export const decksAPI = commonApi.injectEndpoints({
         url: `/v1/decks/${id}`,
       }),
     }),
-    learnCard: builder.query<any, { id: string }>({
+    learnCard: builder.query<LearnCard, { id: string }>({
       query: ({ id }) => ({
         method: 'GET',
         url: `v1/decks/${id}/learn`,
