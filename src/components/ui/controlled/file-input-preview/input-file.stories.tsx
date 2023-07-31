@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react'
 
-import { Button } from '@/components'
-import { ControlledFileInput } from '@/components/ui/controlled/file-input-preview/controlled-file-input.tsx'
+import { Button, ControlledFileInput } from '@/components'
 
 const meta = {
   title: 'ControlledFileInput',
