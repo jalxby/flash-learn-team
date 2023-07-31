@@ -61,8 +61,6 @@ export const decksAPI = commonApi.injectEndpoints({
     }),
     updateDeck: builder.mutation<Deck, ArgUpdateDeck>({
       query: data => {
-        debugger
-
         return {
           method: 'PATCH',
           url: `/v1/decks/${data.id}`,
