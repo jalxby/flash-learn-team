@@ -188,7 +188,7 @@ export const Decks: FC<PacksProps> = () => {
             className={s.slider}
             value={sliderValue}
             maxValue={sliderValue[1]}
-            minValue={0}
+            minValue={sliderValue[0]}
           />
           <Button variant={'secondary'} className={s.btn} onClick={clearFilters}>
             <DeleteIcon />

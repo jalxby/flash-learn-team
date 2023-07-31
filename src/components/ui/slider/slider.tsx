@@ -64,7 +64,7 @@ export const Slider: FC<SliderPropsType> = props => {
           <SliderRDX.Thumb className={classNames.thumb} />
           <SliderRDX.Thumb className={classNames.thumb} />
         </SliderRDX.Root>
-        <div className={s.values}>{maxValue}</div>
+        <div className={classNames.values}>{maxValue}</div>
       </div>
     </div>
   )
