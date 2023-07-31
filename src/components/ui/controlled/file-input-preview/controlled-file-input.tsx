@@ -37,7 +37,7 @@ export const ControlledFileInput = <T extends FieldValues>({
     }
 
     setSelectedFile(e.target.files[0])
-    debugger
+
     onChange(e?.target?.files[0] as any)
   }
   const onClick = () => {
