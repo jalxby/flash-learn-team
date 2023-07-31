@@ -18,7 +18,7 @@ import {
   TextField,
   Typography,
 } from '@/components'
-import { EditPackModal, Form } from '@/components/ui/modal/edit-pack-modal/edit-pack-modal.tsx'
+import { EditPackModal } from '@/components/ui/modal/edit-pack-modal/edit-pack-modal.tsx'
 import { Slider } from '@/components/ui/slider'
 import { Tabs } from '@/components/ui/tabs'
 import { columns } from '@/pages/decks/columns.ts'
@@ -118,17 +118,18 @@ export const Decks: FC<PacksProps> = () => {
     <Page>
       <EditPackModal
         trigger={<></>}
-        onSubmit={(data: Form) => {
+        onSubmit={({ newNamePack, isPrivate }) => {
           const form = new FormData()
 
-          debugger
-          form.append('name', data.newNamePack)
-          form.append('isPrivate', String(data.isPrivate))
+          form.append('name', newNamePack)
+          form.append('isPrivate', String(isPrivate))
           form.append('cover', selectedDeck.cover)
-          updateDeck({ id: selectedDeck.id, ...form })
+          updateDeck({ id: selectedDeck.id, formData: form })
+          debugger
         }}
         isPrivate={selectedDeck.isPrivate}
         packName={selectedDeck.name}
+        // cover={selectedDeck.cover}
         isOpenEditDeck={isOpenEditDeck}
         setIsOpenEditDeck={setIsOpenEditDeck}
       />

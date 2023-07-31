@@ -43,11 +43,13 @@ export const decksAPI = commonApi.injectEndpoints({
       // providesTags: ['LEARN_CARD'],
     }),
     createDeck: builder.mutation<Deck, ArgCreateDeck>({
-      query: body => ({
-        method: 'POST',
-        url: '/v1/decks',
-        body,
-      }),
+      query: body => {
+        return {
+          method: 'POST',
+          url: '/v1/decks',
+          body,
+        }
+      },
       invalidatesTags: ['UPDATE_DECKS'],
     }),
     removeDeck: builder.mutation<Omit<Deck, 'author'>, { id: string }>({
@@ -58,11 +60,15 @@ export const decksAPI = commonApi.injectEndpoints({
       invalidatesTags: ['UPDATE_DECKS'],
     }),
     updateDeck: builder.mutation<Deck, ArgUpdateDeck>({
-      query: ({ id, ...rest }) => ({
-        method: 'PATCH',
-        url: `/v1/decks/${id}`,
-        body: { ...rest },
-      }),
+      query: data => {
+        debugger
+
+        return {
+          method: 'PATCH',
+          url: `/v1/decks/${data.id}`,
+          body: data.formData,
+        }
+      },
       invalidatesTags: ['UPDATE_DECKS'],
     }),
     createCard: builder.mutation<Card, ArgCreateCard>({
