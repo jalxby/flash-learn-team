@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentProps, ReactNode, useRef, useState } from 'react'
+import { ChangeEvent, ComponentProps, useRef, useState } from 'react'
 
 import { clsx } from 'clsx'
 import { FieldValues, useController, UseControllerProps } from 'react-hook-form'
@@ -6,12 +6,13 @@ import { FieldValues, useController, UseControllerProps } from 'react-hook-form'
 import mask from '@/assets/images/mask.png'
 import s from '@/components/ui/controlled/file-input-preview/file-input-preview.module.scss'
 
-type PropsType<T extends FieldValues> = {
+type Props<T extends FieldValues> = {
   withPreview: boolean
   variant?: 'small' | 'large' | 'medium'
-  children?: (onClick: () => void) => ReactNode
+  children: JSX.Element
 } & Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type'> &
   Omit<UseControllerProps<T>, 'rules' | 'defaultValues'>
+
 export const ControlledFileInput = <T extends FieldValues>({
   control,
   name,
@@ -19,7 +20,7 @@ export const ControlledFileInput = <T extends FieldValues>({
   variant,
   children,
   ...rest
-}: PropsType<T>) => {
+}: Props<T>) => {
   const [selectedFile, setSelectedFile] = useState<File>()
   const refToOpen = useRef<HTMLInputElement | null>(null)
   const {
@@ -39,7 +40,6 @@ export const ControlledFileInput = <T extends FieldValues>({
     setSelectedFile(e.target.files[0])
     onChange(e?.target?.files[0] as any)
   }
-
   const onClick = () => {
     if (refToOpen) {
       refToOpen.current?.click()
@@ -67,7 +67,7 @@ export const ControlledFileInput = <T extends FieldValues>({
         {...field}
       />
 
-      {children && children(onClick)}
+      {children(onClick)}
     </>
   )
 }
