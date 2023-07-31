@@ -43,6 +43,8 @@ export const DecksTableActions: FC<Props> = ({ item, isMyDeck }) => {
             }}
             isPrivate={isPrivate}
             packName={name}
+            isOpenEditDeck={false}
+            setIsOpenEditDeck={() => {}}
           />
           <DeleteDialog
             buttonTitle={'Delete Pack'}
