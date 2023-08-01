@@ -9,7 +9,7 @@
 }
 
 .large {
-  width: 30.25rem;
+  width: 100%;
   height: 7.4375rem;
 }
 
@@ -24,6 +24,10 @@
   background-size: cover;
   border-radius: 0.125rem;
 }
+
 .fileInput {
   display: none;
+}
+
+.image {
 }

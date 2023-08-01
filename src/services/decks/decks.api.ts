@@ -41,7 +41,7 @@ export const decksAPI = commonApi.injectEndpoints({
         method: 'GET',
         url: `v1/decks/${id}/learn`,
       }),
-      // providesTags: ['LEARN_CARD'],
+      providesTags: ['LEARN_CARD'],
     }),
     createDeck: builder.mutation<Deck, ArgCreateDeck>({
       query: body => {
@@ -101,7 +101,7 @@ export const decksAPI = commonApi.injectEndpoints({
           patchResult.undo()
         }
       },
-      invalidatesTags: ['UPDATE_CARDS'],
+      invalidatesTags: ['UPDATE_CARDS', 'LEARN_CARD'],
     }),
   }),
   overrideExisting: true,

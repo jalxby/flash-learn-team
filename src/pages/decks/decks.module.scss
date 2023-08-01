@@ -37,7 +37,14 @@
 }
 
 .image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 7.3916rem;
   height: 3rem;
-  border-radius: 0.13rem;
+
+  background-position: center;
+  background-size: cover;
+  border-radius: 0.125rem;
 }
