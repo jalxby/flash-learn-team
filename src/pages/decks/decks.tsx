@@ -35,24 +35,23 @@ import { Deck } from '@/services/decks/decks.api.types.ts'
 type PacksProps = {}
 export const Decks: FC<PacksProps> = () => {
   const { data: me } = useGetMeQuery()
-
   const myID = me?.id ? me?.id : ''
   const [myDecks, setMyDecks] = useState('')
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<string>('7')
   const [sort, setSort] = useState<Sort>(null)
   const [nameToSearch, setNameToSearch] = useState('')
-  const debouncedNameToSearch = useDebounce<string>(nameToSearch, 800)
-  const [createDeck] = useCreateDeckMutation()
-  const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
   const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100])
   const [debouncedSliderValue, setDebouncedSliderValue] = useState<[number, number]>([0, 100])
-  const [updateDeck] = useUpdateDeckMutation()
-  const [removeDeck] = useRemoveDeckMutation()
-  const navigate = useNavigate()
   const [selectedDeck, setSelectedDeck] = useState<Deck>({} as Deck)
   const [isOpenEditDeck, setIsOpenEditDeck] = useState<boolean>(false)
   const [isOpenDeleteDeck, setIsOpenDeleteDeck] = useState<boolean>(false)
+  const debouncedNameToSearch = useDebounce<string>(nameToSearch, 800)
+  const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
+  const navigate = useNavigate()
+  const [createDeck] = useCreateDeckMutation()
+  const [updateDeck] = useUpdateDeckMutation()
+  const [removeDeck] = useRemoveDeckMutation()
   const { data } = useGetDecksQuery({
     name: debouncedNameToSearch,
     authorId: myDecks,
@@ -102,7 +101,9 @@ export const Decks: FC<PacksProps> = () => {
       <Table.Row key={deck.id}>
         <Table.DataCell>
           <div className={cNames.imageContainer} onClick={() => navigate(`/cards/${deck.id}`)}>
-            {deck.cover && <img className={cNames.image} src={deck.cover} alt="" />}
+            {deck.cover && (
+              <div className={cNames.image} style={{ backgroundImage: `url(${deck.cover})` }} />
+            )}
             {deck.name}
           </div>
         </Table.DataCell>

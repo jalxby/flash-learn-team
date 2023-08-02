@@ -26,11 +26,12 @@ export const EditPackModal: FC<EditPackModalProps> = ({
   trigger,
   isOpenEditDeck,
   setIsOpenEditDeck,
+  cover,
 }) => {
   const { handleSubmit, control } = useForm<Form>({
     resolver: zodResolver(deckSchema),
     mode: 'onSubmit',
-    values: { isPrivate, name: packName },
+    values: { isPrivate, name: packName, cover },
   })
   const onSubmitForm = handleSubmit(data => {
     onSubmit({ name: data.name, isPrivate: data.isPrivate, cover: data.cover })
@@ -46,7 +47,13 @@ export const EditPackModal: FC<EditPackModalProps> = ({
     >
       <form onSubmit={onSubmitForm}>
         <Modal.Body>
-          <ControlledFileInput name={'cover'} withPreview control={control}>
+          <ControlledFileInput
+            variant={'large'}
+            cover={cover}
+            name={'cover'}
+            withPreview
+            control={control}
+          >
             {onClick => (
               <Button type={'button'} variant={'secondary'} onClick={onClick}>
                 Change cover

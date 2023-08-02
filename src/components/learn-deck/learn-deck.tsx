@@ -12,9 +12,7 @@ type Props = {
   question: string
   attempts: string | number
   answer: string
-  loadNextQuestion: () => void
-  onChange: (value: GradeType) => void
-  value: string
+  loadNextQuestion: (grade: GradeType) => void
 }
 
 export const LearnDeck: FC<Props> = ({
@@ -23,17 +21,17 @@ export const LearnDeck: FC<Props> = ({
   attempts,
   answer,
   loadNextQuestion,
-  onChange,
-  value,
 }) => {
   const [showAnswer, setShowAnswer] = useState(false)
 
-  console.log(value)
   const classNames = {
     container: clsx(s.container),
     question: clsx(s.question),
     attempts: clsx(s.attempts),
     answer: clsx(s.answer),
+  }
+  const hideAnswer = () => {
+    setShowAnswer(false)
   }
 
   return (
@@ -59,10 +57,9 @@ export const LearnDeck: FC<Props> = ({
         </Button>
       ) : (
         <AnswerFeedback
+          hideAnswer={hideAnswer}
           answer={answer}
           loadNextQuestion={loadNextQuestion}
-          onChange={onChange}
-          value={value}
         />
       )}
     </Card>
@@ -71,13 +68,13 @@ export const LearnDeck: FC<Props> = ({
 
 type AnswerFeedbackPropsType = {
   answer: string
-  loadNextQuestion: () => void
-  onChange: (value: GradeType) => void
-  value: string
+  loadNextQuestion: (grade: GradeType) => void
+  hideAnswer: () => void
 }
 
 const AnswerFeedback: FC<AnswerFeedbackPropsType> = props => {
-  const { answer, loadNextQuestion, onChange, value } = props
+  const { answer, loadNextQuestion, hideAnswer } = props
+  const [value, setValue] = useState('1')
   const classNames = {
     answer: clsx(s.answer),
     feedback: clsx(s.feedback),
@@ -91,6 +88,10 @@ const AnswerFeedback: FC<AnswerFeedbackPropsType> = props => {
     { id: v4(), label: 'Confused', value: '4' },
     { id: v4(), label: 'Knew the answer', value: '5' },
   ]
+  const nextQuestion = () => {
+    hideAnswer()
+    loadNextQuestion(+value as GradeType)
+  }
 
   return (
     <>
@@ -104,10 +105,10 @@ const AnswerFeedback: FC<AnswerFeedbackPropsType> = props => {
       <RadioGroup
         items={items}
         className={classNames.radioGroup}
-        onChange={onChange}
+        onChange={setValue}
         value={value}
       />
-      <Button variant={'primary'} className={classNames.next} onClick={loadNextQuestion} fullWidth>
+      <Button variant={'primary'} className={classNames.next} onClick={nextQuestion} fullWidth>
         Next Question
       </Button>
     </>

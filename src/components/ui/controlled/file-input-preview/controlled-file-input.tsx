@@ -1,15 +1,17 @@
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { clsx } from 'clsx'
 import { FieldValues, useController, UseControllerProps } from 'react-hook-form'
 
 import mask from '@/assets/images/mask.png'
 import s from '@/components/ui/controlled/file-input-preview/file-input-preview.module.scss'
+import { useCreateBlob } from '@/helpers/hooks/useBlob.ts'
 
 type Props<T extends FieldValues> = {
   withPreview: boolean
   variant?: 'small' | 'large' | 'medium'
   children: (onClick: () => void) => JSX.Element
+  cover?: any
 } & Omit<UseControllerProps<T>, 'rules' | 'defaultValues' | 'onChange' | 'value' | 'type'>
 
 export const ControlledFileInput = <T extends FieldValues>({
@@ -18,6 +20,7 @@ export const ControlledFileInput = <T extends FieldValues>({
   withPreview,
   variant,
   children,
+  cover,
   ...rest
 }: Props<T>) => {
   const [selectedFile, setSelectedFile] = useState<File>()
@@ -28,7 +31,16 @@ export const ControlledFileInput = <T extends FieldValues>({
   const cNames = {
     size: clsx(`${s[variant ?? '']}`),
     input: clsx(s.fileInput),
+    image: clsx(),
   }
+
+  const { blob } = useCreateBlob(cover ?? mask)
+  const myFile = new File([blob ?? ''], 'cover.png', { type: 'image/png' })
+
+  useEffect(() => {
+    setSelectedFile(myFile)
+    onChange(myFile as any)
+  }, [blob])
   const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined)
@@ -49,10 +61,11 @@ export const ControlledFileInput = <T extends FieldValues>({
   return (
     <>
       {withPreview && (
-        <img
+        <div
           className={cNames.size}
-          src={`${selectedFile ? URL.createObjectURL(selectedFile) : mask}`}
-          alt="img_preview"
+          style={{
+            backgroundImage: `url(${selectedFile ? URL.createObjectURL(selectedFile) : 'mask'})`,
+          }}
         />
       )}
       <input

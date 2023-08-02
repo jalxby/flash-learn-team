@@ -1,4 +1,3 @@
-import { nanoid } from '@reduxjs/toolkit'
 import { Meta, StoryObj } from '@storybook/react'
 
 import { DeleteIcon } from '@/assets'
@@ -22,10 +21,8 @@ export const Default: Story = {
     title: 'Delete Pack',
     buttonTitle: 'Delete Pack',
     children: <DeleteIcon />,
-    id: nanoid(),
     bodyMessage: 'do you really want to delete?',
-    onClick: id => {
-      console.log(id)
-    },
+    onClick: () => {},
+    isOpen: false,
   },
 }
