@@ -91,7 +91,6 @@ export const decksAPI = commonApi.injectEndpoints({
           decksAPI.util.updateQueryData('getCards', { id: id }, draft => {
             const card = draft.items.find(card => card.id === cardId)
 
-            debugger
             if (card) card.grade = grade
           })
         )
