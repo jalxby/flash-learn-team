@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { Meta, StoryObj } from '@storybook/react'
 
 import { LearnDeck } from '@/components/learn-deck/learn-deck.tsx'
@@ -26,12 +24,8 @@ export const Default: Story = {
     attempts: 10,
     answer: 'This is how "This" works in JavaScript',
     loadNextQuestion: () => {},
-    onChange: () => {},
-    value: '',
   },
   render: ({ answer, attempts, question, loadNextQuestion, packName }) => {
-    const [value, setValue] = useState('value1')
-
     return (
       <LearnDeck
         packName={packName}
@@ -39,8 +33,6 @@ export const Default: Story = {
         attempts={attempts}
         answer={answer}
         loadNextQuestion={loadNextQuestion}
-        onChange={setValue}
-        value={value}
       />
     )
   },

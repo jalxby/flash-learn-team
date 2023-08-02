@@ -15,6 +15,9 @@ export const CardsTableActions: FC<Props> = ({ item }) => {
   const [deleteCard] = useDeleteCardMutation()
   const [updateCard] = useUpdateCardMutation()
   const { id, answer, question } = item
+  const onClickHandler = () => {
+    deleteCard({ id })
+  }
 
   return (
     <div className={s.container}>
@@ -26,10 +29,11 @@ export const CardsTableActions: FC<Props> = ({ item }) => {
 
       <DeleteDialog
         buttonTitle={'Delete Card'}
-        onClick={id => deleteCard({ id })}
+        onClick={onClickHandler}
         title={'Delete Card'}
         bodyMessage={`Do you really want to delete card?`}
-        id={item.id}
+        isOpen={false}
+        setIsOpen={() => {}}
       >
         <button>
           <DeleteIcon />
