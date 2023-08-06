@@ -19,7 +19,7 @@ import {
   TextField,
   Typography,
 } from '@/components'
-import { AddNewCard } from '@/components/ui/modal/add-new-card'
+import { AddNewCard, CardForm } from '@/components/ui/modal/add-new-card'
 import { CardsTableActions } from '@/components/ui/table-action-buttons/cards-table-actions.tsx'
 import { columns } from '@/pages/cards/table-columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
@@ -31,7 +31,6 @@ import {
 } from '@/services/decks/decks.api.ts'
 
 type Props = {}
-
 export const Cards: FC<Props> = () => {
   const [sort, setSort] = useState<Sort>(null)
   const [search, setSearch] = useState<string>('')
@@ -82,7 +81,17 @@ export const Cards: FC<Props> = () => {
     />
   )
   const addCard = isMyPack && (
-    <AddNewCard onSubmit={data => createCard({ id: deckId, ...data })}>
+    <AddNewCard
+      onSubmit={data => {
+        const form = new FormData()
+
+        form.append('question', String(data.question))
+        form.append('answer', String(data.answer))
+        form.append('questionImg', data.questionImg)
+        form.append('answerImg', data.answerImg)
+        createCard({ id: deckId, formData: form })
+      }}
+    >
       <Button variant={'primary'}>Add New Card</Button>
     </AddNewCard>
   )
