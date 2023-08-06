@@ -10,6 +10,7 @@ const initialState = {
   maxSlider: 100,
   isMyDecks: false,
 }
+
 const slice = createSlice({
   name: 'decksParams',
   initialState,
