@@ -1,3 +1,4 @@
+import { RootState } from '@/app/store.ts'
 import { commonApi } from '@/services/common/common.api.ts'
 import { GetArgs, Paginated } from '@/services/common/common.api.types.ts'
 import {
@@ -86,13 +87,26 @@ export const decksAPI = commonApi.injectEndpoints({
         url: `/v1/decks/${id}/learn`,
         body,
       }),
-      async onQueryStarted({ id, grade, cardId }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ id, grade, cardId }, { dispatch, queryFulfilled, getState }) {
+        const state = getState() as RootState
         const patchResult = dispatch(
-          decksAPI.util.updateQueryData('getCards', { id }, draft => {
-            const card = draft.items.find(card => card.id === cardId)
+          decksAPI.util.updateQueryData(
+            'getCards',
+            {
+              id,
+              itemsPerPage: +state.cardsParams.pageSize,
+              currentPage: state.cardsParams.page,
+              orderBy: state.cardsParams.orderBy,
+              answer: state.cardsParams.nameToSearch,
+            },
+            draft => {
+              const card = draft.items.find(card => {
+                return card.id === cardId
+              })
 
-            if (card) card.grade = grade
-          })
+              if (card) card.grade = grade
+            }
+          )
         )
 
         try {

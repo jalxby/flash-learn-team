@@ -1,4 +1,5 @@
 import { GradeType } from '@/components'
+import { Nullable } from '@/services/common/common.api.types.ts'
 
 export type Author = {
   id: string
@@ -34,8 +35,8 @@ export type ArgCreateDeck = FormData
 export type ArgUpdateDeck = { formData: ArgCreateDeck; id: string }
 export type CardsParams = {
   id: string
-  question?: string
-  answer?: string
+  question?: Nullable<string>
+  answer?: Nullable<string>
 }
 
 export type ArgCreateCard = { formData: FormData; id: string }

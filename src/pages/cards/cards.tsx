@@ -1,11 +1,13 @@
 import { ChangeEvent, FC, useState } from 'react'
 
 import { clsx } from 'clsx'
+import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDebounce } from 'usehooks-ts'
 
 import s from './cards.module.scss'
 
+import { useAppDispatch } from '@/app/hooks.ts'
 import { ArrowLeftIcon } from '@/assets'
 import {
   Button,
@@ -19,10 +21,17 @@ import {
   TextField,
   Typography,
 } from '@/components'
-import { AddNewCard, CardForm } from '@/components/ui/modal/add-new-card'
+import { AddNewCard } from '@/components/ui/modal/add-new-card'
 import { CardsTableActions } from '@/components/ui/table-action-buttons/cards-table-actions.tsx'
 import { columns } from '@/pages/cards/table-columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
+import {
+  selectCardNameToSearch,
+  selectCardsPage,
+  selectCardsPageSize,
+  selectCardsSort,
+} from '@/services/cards/cards.params.selectors.ts'
+import { cardsActions } from '@/services/cards/cards.params.slice.ts'
 import {
   useCreateCardMutation,
   useGetCardsQuery,
@@ -32,12 +41,31 @@ import {
 
 type Props = {}
 export const Cards: FC<Props> = () => {
+  const dispatch = useAppDispatch()
+
+  const search = useSelector(selectCardNameToSearch)
+  const setSearch = (name: string) => {
+    dispatch(cardsActions.setNameToSearch({ name }))
+  }
+  const page = useSelector(selectCardsPage)
+  const setPage = (page: number) => {
+    dispatch(cardsActions.setPage({ page }))
+  }
+  const pageSize = useSelector(selectCardsPageSize)
+  const setPageSize = (pageSize: string) => {
+    dispatch(cardsActions.setPageSize({ pageSize }))
+  }
   const [sort, setSort] = useState<Sort>(null)
-  const [search, setSearch] = useState<string>('')
-  const [page, setPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<string>('7')
   const debouncedNameToSearch = useDebounce<string>(search, 800)
-  const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
+  const orderBy = useSelector(selectCardsSort)
+
+  const sortHandler = (sort: Sort) => {
+    setSort(sort)
+    dispatch(
+      cardsActions.setSort({ orderBy: sort ? `${sort?.columnKey}-${sort?.direction}` : null })
+    )
+  }
+
   const { id: deckIdFromParams } = useParams()
   const deckId = deckIdFromParams ?? ''
   const { data: deck } = useGetDeckQuery({ id: deckId })
@@ -45,7 +73,7 @@ export const Cards: FC<Props> = () => {
     id: deckId,
     currentPage: page,
     itemsPerPage: +pageSize,
-    orderBy: sortDirection,
+    orderBy,
     answer: debouncedNameToSearch,
   })
   const { data: me } = useGetMeQuery()
@@ -142,7 +170,7 @@ export const Cards: FC<Props> = () => {
         {deck?.cover && <img className={cNames.image} src={deck?.cover} alt="deck-cover" />}
         <TextField onChange={onValueChange} inputType={'search'} className={cNames.textField} />
         <Table.Root className={s.tableRoot}>
-          <Table.Head columns={preparedColumns} sort={sort} onSort={setSort} />
+          <Table.Head columns={preparedColumns} sort={sort} onSort={sortHandler} />
           <Table.Body>{cards}</Table.Body>
         </Table.Root>
         <Pagination
