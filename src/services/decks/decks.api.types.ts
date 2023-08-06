@@ -38,15 +38,15 @@ export type CardsParams = {
   answer?: string
 }
 
-export type ArgCreateCard = {
-  id: string
-  question: string
-  answer: string
-  questionImg?: string
-  answerImg?: string
-  questionVideo?: string
-  answerVideo?: string
-}
+export type ArgCreateCard = { formData: FormData; id: string }
+//   id: string
+//   question: string
+//   answer: string
+//   questionImg?: string
+//   answerImg?: string
+//   questionVideo?: string
+//   answerVideo?: string
+// }
 
 export type Card = {
   userId: string
