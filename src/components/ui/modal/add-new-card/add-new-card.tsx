@@ -29,7 +29,6 @@ export const AddNewCard: FC<AddNewPackModalPropsType> = props => {
     mode: 'onSubmit',
   })
 
-  console.log(errors)
   const onSubmitForm = handleSubmit(data => {
     onSubmit({
       question: data.question,
