@@ -6,6 +6,7 @@ import { useDebounce } from 'usehooks-ts'
 
 import s from './decks.module.scss'
 
+import { useAppDispatch, useAppSelector } from '@/app/hooks.ts'
 import { EditIcon, PlayIcon } from '@/assets'
 import DeleteIcon from '@/assets/icons/DeleteIcon.tsx'
 import {
@@ -31,23 +32,53 @@ import {
   useUpdateDeckMutation,
 } from '@/services/decks/decks.api.ts'
 import { Deck } from '@/services/decks/decks.api.types.ts'
+import {
+  selectDeckNameToSearch,
+  selectDecksOrderBy,
+  selectDecksPage,
+  selectDecksPageSize,
+  selectDecksSort,
+  selectIsMyDecks,
+} from '@/services/decks/decks.params.selectors.ts'
+import { decksActions } from '@/services/decks/decks.params.slice.ts'
 
 type PacksProps = {}
 export const Decks: FC<PacksProps> = () => {
+  const dispatch = useAppDispatch()
   const { data: me } = useGetMeQuery()
   const myID = me?.id ? me?.id : ''
-  const [myDecks, setMyDecks] = useState('')
-  const [page, setPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<string>('7')
-  const [sort, setSort] = useState<Sort>(null)
-  const [nameToSearch, setNameToSearch] = useState('')
+  const myDecks = useAppSelector(selectIsMyDecks)
+  const setMyDecks = (isMy: string) => {
+    dispatch(decksActions.setIsMyDeck({ isMy }))
+  }
+  const page = useAppSelector(selectDecksPage)
+  const setPage = (page: number) => {
+    dispatch(decksActions.setPage({ page }))
+  }
+  const pageSize = useAppSelector(selectDecksPageSize)
+  const setPageSize = (pageSize: string) => {
+    dispatch(decksActions.setPageSize({ pageSize }))
+  }
+  const sort = useAppSelector(selectDecksSort)
+  const orderBy = useAppSelector(selectDecksOrderBy)
+
+  const setSort = (sort: Sort) => {
+    dispatch(decksActions.setSort({ sort }))
+    dispatch(
+      decksActions.setOrderBy({ orderBy: sort ? `${sort?.columnKey}-${sort?.direction}` : '' })
+    )
+  }
+
+  const nameToSearch = useAppSelector(selectDeckNameToSearch)
+  const setNameToSearch = (name: string) => {
+    dispatch(decksActions.setNameToSearch({ name }))
+  }
   const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100])
   const [debouncedSliderValue, setDebouncedSliderValue] = useState<[number, number]>([0, 100])
   const [selectedDeck, setSelectedDeck] = useState<Deck>({} as Deck)
   const [isOpenEditDeck, setIsOpenEditDeck] = useState<boolean>(false)
   const [isOpenDeleteDeck, setIsOpenDeleteDeck] = useState<boolean>(false)
   const debouncedNameToSearch = useDebounce<string>(nameToSearch, 800)
-  const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : ''
   const navigate = useNavigate()
   const [createDeck] = useCreateDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()
@@ -57,12 +88,11 @@ export const Decks: FC<PacksProps> = () => {
     authorId: myDecks,
     currentPage: page,
     itemsPerPage: +pageSize,
-    orderBy: sortDirection,
+    orderBy: orderBy ?? '',
     minCardsCount: `${debouncedSliderValue[0]}`,
     maxCardsCount: `${debouncedSliderValue[1]}`,
   })
 
-  console.log(sortDirection)
   const maxCardsCount = data ? data.maxCardsCount : 100
   const totalDecks = data ? data.pagination.totalItems : 0
   const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {

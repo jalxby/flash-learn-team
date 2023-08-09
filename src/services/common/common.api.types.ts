@@ -9,7 +9,7 @@ export type Pagination = {
   totalItems: number
 }
 export type GetArgs<T extends Record<string, any> = {}> = {
-  orderBy?: Nullable<string>
+  orderBy?: string
   currentPage?: number
   itemsPerPage?: number
 } & T

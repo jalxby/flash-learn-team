@@ -1,14 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { Sort } from '@/components'
+
 const initialState = {
   page: 1,
   pageSize: '7',
   sort: {} as Sort,
+  orderBy: '',
   nameToSearch: '',
   minSlider: 0,
   maxSlider: 100,
-  isMyDecks: false,
+  isMyDecks: '',
 }
 
 const slice = createSlice({
@@ -24,6 +26,9 @@ const slice = createSlice({
     setSort: (state, action: PayloadAction<{ sort: Sort }>) => {
       state.sort = action.payload.sort
     },
+    setOrderBy: (state, action: PayloadAction<{ orderBy: string }>) => {
+      state.orderBy = action.payload.orderBy
+    },
     setNameToSearch: (state, action: PayloadAction<{ name: string }>) => {
       state.nameToSearch = action.payload.name
     },
@@ -33,7 +38,7 @@ const slice = createSlice({
     setMaxSlider: (state, action: PayloadAction<{ value: number }>) => {
       state.maxSlider = action.payload.value
     },
-    setIsMyDeck: (state, action: PayloadAction<{ isMy: boolean }>) => {
+    setIsMyDeck: (state, action: PayloadAction<{ isMy: string }>) => {
       state.isMyDecks = action.payload.isMy
     },
   },

@@ -5,7 +5,8 @@ import { Sort } from '@/components'
 const initialState = {
   page: 1,
   pageSize: '7',
-  sort: null as null | Sort,
+  sort: {} as Sort,
+  orderBy: '',
   nameToSearch: '',
 }
 
@@ -21,6 +22,9 @@ const slice = createSlice({
     },
     setSort: (state, action: PayloadAction<{ sort: Sort }>) => {
       state.sort = action.payload.sort
+    },
+    setOrderBy: (state, action: PayloadAction<{ orderBy: string }>) => {
+      state.orderBy = action.payload.orderBy
     },
     setNameToSearch: (state, action: PayloadAction<{ name: string }>) => {
       state.nameToSearch = action.payload.name

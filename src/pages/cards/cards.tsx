@@ -27,6 +27,7 @@ import { columns } from '@/pages/cards/table-columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
 import {
   selectCardNameToSearch,
+  selectCardsOrderBy,
   selectCardsPage,
   selectCardsPageSize,
   selectCardsSort,
@@ -57,9 +58,12 @@ export const Cards: FC<Props> = () => {
   }
   const debouncedNameToSearch = useDebounce<string>(search, 800)
   const sort = useSelector(selectCardsSort)
-  const orderBy = sort ? `${sort?.columnKey}-${sort?.direction}` : ''
+  const orderBy = useSelector(selectCardsOrderBy)
   const sortHandler = (sort: Sort) => {
     dispatch(cardsActions.setSort({ sort }))
+    dispatch(
+      cardsActions.setOrderBy({ orderBy: sort ? `${sort?.columnKey}-${sort?.direction}` : '' })
+    )
   }
   const { id: deckIdFromParams } = useParams()
   const deckId = deckIdFromParams ?? ''
