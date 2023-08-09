@@ -47,7 +47,7 @@ export const Decks: FC<PacksProps> = () => {
   const [isOpenEditDeck, setIsOpenEditDeck] = useState<boolean>(false)
   const [isOpenDeleteDeck, setIsOpenDeleteDeck] = useState<boolean>(false)
   const debouncedNameToSearch = useDebounce<string>(nameToSearch, 800)
-  const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : undefined
+  const sortDirection = sort ? `${sort?.columnKey}-${sort?.direction}` : ''
   const navigate = useNavigate()
   const [createDeck] = useCreateDeckMutation()
   const [updateDeck] = useUpdateDeckMutation()

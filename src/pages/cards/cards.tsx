@@ -61,9 +61,7 @@ export const Cards: FC<Props> = () => {
 
   const sortHandler = (sort: Sort) => {
     setSort(sort)
-    dispatch(
-      cardsActions.setSort({ orderBy: sort ? `${sort?.columnKey}-${sort?.direction}` : null })
-    )
+    dispatch(cardsActions.setSort({ orderBy: sort ? `${sort?.columnKey}-${sort?.direction}` : '' }))
   }
 
   const { id: deckIdFromParams } = useParams()
@@ -76,6 +74,8 @@ export const Cards: FC<Props> = () => {
     orderBy,
     answer: debouncedNameToSearch,
   })
+
+  console.log(orderBy)
   const { data: me } = useGetMeQuery()
   const isMyDeck = me?.id === deck?.userId
   const [createCard] = useCreateCardMutation()
@@ -138,7 +138,7 @@ export const Cards: FC<Props> = () => {
       <Table.Row key={card.id}>
         <Table.DataCell>{card.question}</Table.DataCell>
         <Table.DataCell>{card.answer}</Table.DataCell>
-        <Table.DataCell>{card.updated}</Table.DataCell>
+        <Table.DataCell>{new Date(card.updated).toLocaleString()}</Table.DataCell>
         <Table.DataCell>
           <Grade onClick={updateGradeHandler} grade={card.grade} />
         </Table.DataCell>
