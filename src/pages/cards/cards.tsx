@@ -137,7 +137,7 @@ export const Cards: FC<Props> = () => {
       <Table.Row key={card.id}>
         <Table.DataCell>{card.question}</Table.DataCell>
         <Table.DataCell>{card.answer}</Table.DataCell>
-        <Table.DataCell>{new Date(card.updated).toLocaleString()}</Table.DataCell>
+        <Table.DataCell>{new Date(card.updated).toLocaleString('en-Gb')}</Table.DataCell>
         <Table.DataCell>
           <Grade onClick={updateGradeHandler} grade={card.grade} />
         </Table.DataCell>

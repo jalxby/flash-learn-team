@@ -140,7 +140,7 @@ export const Decks: FC<PacksProps> = () => {
           </div>
         </Table.DataCell>
         <Table.DataCell>{deck.cardsCount}</Table.DataCell>
-        <Table.DataCell>{deck.updated}</Table.DataCell>
+        <Table.DataCell>{new Date(deck.updated).toLocaleString('en-Gb')}</Table.DataCell>
         <Table.DataCell>{deck.author.name}</Table.DataCell>
         <Table.DataCell>
           <button onClick={() => navigate(`/learn/${deck.id}`)}>
