@@ -167,7 +167,12 @@ export const Cards: FC<Props> = () => {
           {learnDeck}
         </div>
         {deck?.cover && <img className={cNames.image} src={deck?.cover} alt="deck-cover" />}
-        <TextField onChange={onValueChange} inputType={'search'} className={cNames.textField} />
+        <TextField
+          onChange={onValueChange}
+          placeholder={'Input search'}
+          inputType={'search'}
+          className={cNames.textField}
+        />
         <Table.Root className={s.tableRoot}>
           <Table.Head columns={preparedColumns} sort={sort} onSort={sortHandler} />
           <Table.Body>{cards}</Table.Body>

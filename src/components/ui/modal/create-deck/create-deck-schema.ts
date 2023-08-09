@@ -8,7 +8,7 @@ export const deckSchema = z.object({
     .trim()
     .nonempty('Please enter a name for the pack')
     .min(3, 'Pack name must be at least 3 characters')
-    .max(25, 'Pack name must be at more 25 characters'),
+    .max(30, 'Pack name must be at more 30 characters'),
   isPrivate: z.boolean().optional(),
   cover: z
     .any()

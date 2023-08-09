@@ -20,6 +20,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
   ({ className, title, inputType, disabled, error, containerProps, ...rest }, ref) => {
     const [showPassword, setShowPassword] = useState(false)
     const color = disabled ? 'var(--color-dark-300)' : 'var(--color-light-100)'
+    const searchIconColor = disabled ? 'var(--color-dark-300)' : 'var(--color-dark-100)'
     const cNames = {
       input: clsx(
         s.input,
@@ -48,7 +49,7 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
     )
 
     const leftIcon = inputType === 'search' && (
-      <div className={cNames.search}>{<SearchIcon color={color} />}</div>
+      <div className={cNames.search}>{<SearchIcon color={searchIconColor} />}</div>
     )
 
     const errorMessage = error && (

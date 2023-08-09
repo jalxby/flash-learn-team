@@ -199,6 +199,7 @@ export const Decks: FC<PacksProps> = () => {
             onChange={onValueChange}
             title={''}
             inputType={'search'}
+            placeholder={'Input search'}
             className={s.text_field}
             value={nameToSearch}
           />
