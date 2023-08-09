@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, FC } from 'react'
 
 import { clsx } from 'clsx'
 import { useSelector } from 'react-redux'
@@ -55,15 +55,12 @@ export const Cards: FC<Props> = () => {
   const setPageSize = (pageSize: string) => {
     dispatch(cardsActions.setPageSize({ pageSize }))
   }
-  const [sort, setSort] = useState<Sort>(null)
   const debouncedNameToSearch = useDebounce<string>(search, 800)
-  const orderBy = useSelector(selectCardsSort)
-
+  const sort = useSelector(selectCardsSort)
+  const orderBy = sort ? `${sort?.columnKey}-${sort?.direction}` : ''
   const sortHandler = (sort: Sort) => {
-    setSort(sort)
-    dispatch(cardsActions.setSort({ orderBy: sort ? `${sort?.columnKey}-${sort?.direction}` : '' }))
+    dispatch(cardsActions.setSort({ sort }))
   }
-
   const { id: deckIdFromParams } = useParams()
   const deckId = deckIdFromParams ?? ''
   const { data: deck } = useGetDeckQuery({ id: deckId })
@@ -71,11 +68,10 @@ export const Cards: FC<Props> = () => {
     id: deckId,
     currentPage: page,
     itemsPerPage: +pageSize,
-    orderBy,
     answer: debouncedNameToSearch,
+    orderBy,
   })
 
-  console.log(orderBy)
   const { data: me } = useGetMeQuery()
   const isMyDeck = me?.id === deck?.userId
   const [createCard] = useCreateCardMutation()

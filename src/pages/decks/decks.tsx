@@ -61,6 +61,8 @@ export const Decks: FC<PacksProps> = () => {
     minCardsCount: `${debouncedSliderValue[0]}`,
     maxCardsCount: `${debouncedSliderValue[1]}`,
   })
+
+  console.log(sortDirection)
   const maxCardsCount = data ? data.maxCardsCount : 100
   const totalDecks = data ? data.pagination.totalItems : 0
   const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
