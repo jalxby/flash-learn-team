@@ -76,7 +76,7 @@ export const decksAPI = commonApi.injectEndpoints({
         return {
           method: 'POST',
           url: `/v1/decks/${id}/cards`,
-          body,
+          body: body.formData,
         }
       },
       invalidatesTags: ['UPDATE_CARDS'],
