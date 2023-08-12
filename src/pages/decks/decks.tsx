@@ -131,7 +131,7 @@ export const Decks: FC<PacksProps> = () => {
     }
 
     return (
-      <Table.Row key={deck.id}>
+      <Table.Row key={deck.id} className={s.row}>
         <Table.DataCell>
           <div className={cNames.imageContainer} onClick={() => navigate(`/cards/${deck.id}`)}>
             {deck.cover && (

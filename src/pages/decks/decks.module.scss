@@ -34,6 +34,10 @@
   display: flex;
   column-gap: 0.62rem;
   align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .image {
@@ -48,9 +52,15 @@
   background-size: cover;
   border-radius: 0.125rem;
 }
+
 .actions {
   display: flex;
   flex-direction: row;
-  align-items: center;
   column-gap: 0.62rem;
+  align-items: center;
+}
+.row {
+  &:hover {
+    background-color: var(--color-dark-100);
+  }
 }
