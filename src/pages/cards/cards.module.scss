@@ -72,6 +72,12 @@
 .cardContainer {
   display: flex;
   flex-direction: row;
-  column-gap: 20px;
+  column-gap: 1.3rem;
   align-items: center;
+}
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 0.62rem;
 }

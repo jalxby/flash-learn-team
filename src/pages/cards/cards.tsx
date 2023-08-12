@@ -111,6 +111,7 @@ export const Cards: FC<Props> = () => {
     menu: clsx(s.menuSection),
     cardImg: clsx(s.cardImage),
     container: clsx(s.cardContainer),
+    actions: clsx(s.actions),
   }
 
   const removeCardHandler = () => deleteCard({ id: selectedCard.id })
@@ -186,16 +187,20 @@ export const Cards: FC<Props> = () => {
         <Table.DataCell>
           <Grade onClick={updateGradeHandler} grade={card.grade} />
         </Table.DataCell>
-        {isMyDeck && (
-          <>
-            <button onClick={onClickEditHandler}>
-              <EditIcon />
-            </button>
-            <button onClick={onClickDeleteHandler}>
-              <DeleteIcon />
-            </button>
-          </>
-        )}
+        <Table.DataCell>
+          <div className={cNames.actions}>
+            {isMyDeck && (
+              <>
+                <button onClick={onClickEditHandler}>
+                  <EditIcon />
+                </button>
+                <button onClick={onClickDeleteHandler}>
+                  <DeleteIcon />
+                </button>
+              </>
+            )}
+          </div>
+        </Table.DataCell>
       </Table.Row>
     )
   })

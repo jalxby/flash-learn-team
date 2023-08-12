@@ -112,6 +112,7 @@ export const Decks: FC<PacksProps> = () => {
     root: clsx(s.wrapper),
     image: clsx(s.image),
     imageContainer: clsx(s.imageContainer),
+    actions: clsx(s.actions),
   }
 
   useEffect(() => {
@@ -143,19 +144,21 @@ export const Decks: FC<PacksProps> = () => {
         <Table.DataCell>{new Date(deck.updated).toLocaleString('en-Gb')}</Table.DataCell>
         <Table.DataCell>{deck.author.name}</Table.DataCell>
         <Table.DataCell>
-          <button onClick={() => navigate(`/learn/${deck.id}`)}>
-            <PlayIcon />
-          </button>
-          {myID === deck.author.id && (
-            <>
-              <button onClick={onClickEditHandler}>
-                <EditIcon />
-              </button>
-              <button onClick={onClickDeleteHandler}>
-                <DeleteIcon />
-              </button>
-            </>
-          )}
+          <div className={cNames.actions}>
+            <button onClick={() => navigate(`/learn/${deck.id}`)}>
+              <PlayIcon />
+            </button>
+            {myID === deck.author.id && (
+              <>
+                <button onClick={onClickEditHandler}>
+                  <EditIcon />
+                </button>
+                <button onClick={onClickDeleteHandler}>
+                  <DeleteIcon />
+                </button>
+              </>
+            )}
+          </div>
         </Table.DataCell>
       </Table.Row>
     )
