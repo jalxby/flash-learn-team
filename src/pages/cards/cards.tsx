@@ -187,20 +187,18 @@ export const Cards: FC<Props> = () => {
         <Table.DataCell>
           <Grade onClick={updateGradeHandler} grade={card.grade} />
         </Table.DataCell>
-        <Table.DataCell>
-          <div className={cNames.actions}>
-            {isMyDeck && (
-              <>
-                <button onClick={onClickEditHandler}>
-                  <EditIcon />
-                </button>
-                <button onClick={onClickDeleteHandler}>
-                  <DeleteIcon />
-                </button>
-              </>
-            )}
-          </div>
-        </Table.DataCell>
+        {isMyDeck && (
+          <Table.DataCell>
+            <div className={cNames.actions}>
+              <button onClick={onClickEditHandler}>
+                <EditIcon />
+              </button>
+              <button onClick={onClickDeleteHandler}>
+                <DeleteIcon />
+              </button>
+            </div>
+          </Table.DataCell>
+        )}
       </Table.Row>
     )
   })
