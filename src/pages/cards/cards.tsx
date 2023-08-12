@@ -109,6 +109,8 @@ export const Cards: FC<Props> = () => {
     wrapper: clsx(s.wrapper, 'container'),
     image: clsx(s.image),
     menu: clsx(s.menuSection),
+    cardImg: clsx(s.cardImage),
+    container: clsx(s.cardContainer),
   }
 
   const removeCardHandler = () => deleteCard({ id: selectedCard.id })
@@ -154,8 +156,32 @@ export const Cards: FC<Props> = () => {
 
     return (
       <Table.Row key={card.id}>
-        <Table.DataCell>{card.question}</Table.DataCell>
-        <Table.DataCell>{card.answer}</Table.DataCell>
+        <Table.DataCell>
+          {card.questionImg ? (
+            <div className={cNames.container}>
+              <div
+                className={cNames.cardImg}
+                style={{ backgroundImage: `url(${card.questionImg})` }}
+              />
+              {card.question}
+            </div>
+          ) : (
+            <>{card.question}</>
+          )}
+        </Table.DataCell>
+        <Table.DataCell>
+          {card.answerImg ? (
+            <div className={cNames.container}>
+              <div
+                className={cNames.cardImg}
+                style={{ backgroundImage: `url(${card.answerImg})` }}
+              />
+              {card.answer}
+            </div>
+          ) : (
+            <>{card.answer}</>
+          )}
+        </Table.DataCell>
         <Table.DataCell>{new Date(card.updated).toLocaleString('en-Gb')}</Table.DataCell>
         <Table.DataCell>
           <Grade onClick={updateGradeHandler} grade={card.grade} />
