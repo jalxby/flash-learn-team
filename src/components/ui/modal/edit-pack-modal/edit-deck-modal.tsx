@@ -19,7 +19,7 @@ type EditPackModalProps = {
 }
 
 type Form = z.infer<typeof deckSchema>
-export const EditPackModal: FC<EditPackModalProps> = ({
+export const EditDeckModal: FC<EditPackModalProps> = ({
   onSubmit,
   packName,
   isPrivate,

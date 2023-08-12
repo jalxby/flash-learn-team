@@ -5,7 +5,7 @@ import OpenPackMenuIcon from '@/assets/icons/OpenPackMenuIcon.tsx'
 import { DropdownMenu, Typography } from '@/components'
 import s from '@/components/ui/dropdown-menu/dropdown-menu.module.scss'
 import { MenuItem } from '@/components/ui/dropdown-menu/menu-item/menu-item.tsx'
-import { EditPackModal } from '@/components/ui/modal/edit-pack-modal/edit-pack-modal.tsx'
+import { EditDeckModal } from '@/components/ui/modal/edit-pack-modal/edit-deck-modal.tsx'
 
 type DeckEditMenuPropsType = {
   onEdit: () => void
@@ -21,7 +21,7 @@ export const DeckEditMenu: FC<DeckEditMenuPropsType> = props => {
         <LearnPackIcon />
         <Typography variant={'caption'}>Learn</Typography>
       </MenuItem>
-      <EditPackModal
+      <EditDeckModal
         trigger={
           <MenuItem onSelect={onEdit}>
             <PencilIcon />

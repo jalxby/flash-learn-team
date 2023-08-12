@@ -20,7 +20,7 @@ import {
   TextField,
   Typography,
 } from '@/components'
-import { EditPackModal } from '@/components/ui/modal/edit-pack-modal/edit-pack-modal.tsx'
+import { EditDeckModal } from '@/components/ui/modal/edit-pack-modal/edit-deck-modal.tsx'
 import { Slider } from '@/components/ui/slider'
 import { Tabs } from '@/components/ui/tabs'
 import { columns } from '@/pages/decks/columns.ts'
@@ -163,7 +163,7 @@ export const Decks: FC<PacksProps> = () => {
 
   return (
     <Page>
-      <EditPackModal
+      <EditDeckModal
         trigger={<></>}
         onSubmit={({ cover, name, isPrivate }) => {
           const form = new FormData()
@@ -175,7 +175,7 @@ export const Decks: FC<PacksProps> = () => {
         }}
         isPrivate={selectedDeck.isPrivate}
         packName={selectedDeck.name}
-        cover={selectedDeck.cover}
+        cover={selectedDeck.cover ?? ''}
         isOpenEditDeck={isOpenEditDeck}
         setIsOpenEditDeck={setIsOpenEditDeck}
       />
