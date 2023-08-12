@@ -4,10 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { editCard } from './edit-card.ts'
-
-import { Button, ControlledTextField, Select, Typography } from '@/components'
+import { Button, ControlledFileInput, ControlledTextField, Select, Typography } from '@/components'
 import { Modal } from '@/components/ui/modal'
+import { cardSchema } from '@/components/ui/modal/add-new-card/add-new-card.ts'
 
 export type EditCardModalPropsType = {
   children?: ReactNode
@@ -16,14 +15,16 @@ export type EditCardModalPropsType = {
   onSubmit?: (data: Form) => void
   isOpen?: boolean
   setIsOpen?: (isOpen: boolean) => void
+  questionImg?: string
+  answerImg?: string
 }
-type Form = z.infer<typeof editCard>
+type Form = z.infer<typeof cardSchema>
 
 export const EditCardModal: FC<EditCardModalPropsType> = props => {
-  const { children, onSubmit, question, answer, setIsOpen, isOpen } = props
+  const { children, onSubmit, question, answer, setIsOpen, isOpen, questionImg, answerImg } = props
   const [type, setType] = useState<string>('Text')
   const { handleSubmit, control } = useForm<Form>({
-    resolver: zodResolver(editCard),
+    resolver: zodResolver(cardSchema),
     mode: 'onSubmit',
     values: {
       question: question,
@@ -32,7 +33,13 @@ export const EditCardModal: FC<EditCardModalPropsType> = props => {
   })
 
   const onSubmitForm = handleSubmit(data => {
-    onSubmit && onSubmit({ question: data.question, answer: data.answer })
+    onSubmit &&
+      onSubmit({
+        question: data.question,
+        answer: data.answer,
+        questionImg: data.questionImg,
+        answerImg: data.answerImg,
+      })
     setIsOpen && setIsOpen(false)
   })
 
@@ -59,7 +66,34 @@ export const EditCardModal: FC<EditCardModalPropsType> = props => {
         />
       </>
     ) : (
-      <div>...Loading</div>
+      <>
+        <ControlledFileInput
+          name={'questionImg'}
+          withPreview
+          control={control}
+          variant={'large'}
+          cover={questionImg}
+        >
+          {onClick => (
+            <Button type={'button'} variant={'secondary'} onClick={onClick}>
+              Change cover
+            </Button>
+          )}
+        </ControlledFileInput>
+        <ControlledFileInput
+          name={'answerImg'}
+          withPreview
+          control={control}
+          variant={'large'}
+          cover={answerImg}
+        >
+          {onClick => (
+            <Button type={'button'} variant={'secondary'} onClick={onClick}>
+              Change cover
+            </Button>
+          )}
+        </ControlledFileInput>
+      </>
     )
 
   return (

@@ -8,7 +8,8 @@ import { useDebounce } from 'usehooks-ts'
 import s from './cards.module.scss'
 
 import { useAppDispatch } from '@/app/hooks.ts'
-import { ArrowLeftIcon } from '@/assets'
+import { ArrowLeftIcon, EditIcon } from '@/assets'
+import DeleteIcon from '@/assets/icons/DeleteIcon.tsx'
 import {
   Button,
   DeckEditMenu,
@@ -22,7 +23,7 @@ import {
   Typography,
 } from '@/components'
 import { AddNewCard, CardForm } from '@/components/ui/modal/add-new-card'
-import { CardsTableActions } from '@/components/ui/table-action-buttons/cards-table-actions.tsx'
+import { EditCardModal } from '@/components/ui/modal/edit-card'
 import { columns } from '@/pages/cards/table-columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
 import {
@@ -39,6 +40,7 @@ import {
   useGetDeckQuery,
   useUpdateCardGradeMutation,
 } from '@/services/decks/decks.api.ts'
+import { Card } from '@/services/decks/decks.api.types.ts'
 
 type Props = {}
 export const Cards: FC<Props> = () => {
@@ -87,6 +89,9 @@ export const Cards: FC<Props> = () => {
   const preparedColumns = isMyDeck ? columns : columns.filter(column => column.key !== 'actions')
   const navigate = useNavigate()
   const [isOpenEditCard, setIsOpenEditCard] = useState<boolean>(false)
+  const [selectedCard, setSelectedCard] = useState<Card>({} as Card)
+  const [isOpenDeleteCard, setIsOpenDeleteCard] = useState<boolean>(false)
+
   const navigateBack = () => {
     navigate(-1)
   }
@@ -133,6 +138,15 @@ export const Cards: FC<Props> = () => {
     const updateGradeHandler = (grade: GradeType) => {
       if (deckId) updateGrade({ id: deckId, grade, cardId: card.id })
     }
+    const onClickEditHandler = () => {
+      setSelectedCard(card)
+      setIsOpenEditCard(true)
+    }
+
+    const onClickDeleteHandler = () => {
+      setSelectedCard(card)
+      setIsOpenDeleteCard(true)
+    }
 
     return (
       <Table.Row key={card.id}>
@@ -143,9 +157,14 @@ export const Cards: FC<Props> = () => {
           <Grade onClick={updateGradeHandler} grade={card.grade} />
         </Table.DataCell>
         {isMyDeck && (
-          <Table.DataCell>
-            <CardsTableActions item={card} />
-          </Table.DataCell>
+          <>
+            <button onClick={onClickEditHandler}>
+              <EditIcon />
+            </button>
+            <button onClick={onClickDeleteHandler}>
+              <DeleteIcon />
+            </button>
+          </>
         )}
       </Table.Row>
     )
@@ -154,9 +173,16 @@ export const Cards: FC<Props> = () => {
   return (
     <Page>
       <EditCardModal
-        question={}
-        answer={}
-        onSubmit={}
+        question={selectedCard.question}
+        answer={selectedCard.answer}
+        onSubmit={({ question, answer, questionImg, answerImg }) => {
+          const form = new FormData()
+
+          form.append('question', question)
+          form.append('answer', answer)
+          form.append('questionImg', questionImg)
+          form.append('answerImg', answerImg)
+        }}
         isOpen={isOpenEditCard}
         setIsOpen={setIsOpenEditCard}
       ></EditCardModal>
