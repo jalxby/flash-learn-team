@@ -13,6 +13,7 @@ import DeleteIcon from '@/assets/icons/DeleteIcon.tsx'
 import {
   Button,
   DeckEditMenu,
+  DeleteDialog,
   Grade,
   GradeType,
   Page,
@@ -26,6 +27,7 @@ import { AddNewCard, CardForm } from '@/components/ui/modal/add-new-card'
 import { EditCardModal } from '@/components/ui/modal/edit-card'
 import { columns } from '@/pages/cards/table-columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
+import { useDeleteCardMutation } from '@/services/cards/cards.api.ts'
 import {
   selectCardNameToSearch,
   selectCardsOrderBy,
@@ -91,7 +93,7 @@ export const Cards: FC<Props> = () => {
   const [isOpenEditCard, setIsOpenEditCard] = useState<boolean>(false)
   const [selectedCard, setSelectedCard] = useState<Card>({} as Card)
   const [isOpenDeleteCard, setIsOpenDeleteCard] = useState<boolean>(false)
-
+  const [deleteCard] = useDeleteCardMutation()
   const navigateBack = () => {
     navigate(-1)
   }
@@ -108,6 +110,8 @@ export const Cards: FC<Props> = () => {
     image: clsx(s.image),
     menu: clsx(s.menuSection),
   }
+
+  const removeCardHandler = () => deleteCard({ id: selectedCard.id })
   const onSubmit = (data: CardForm) => {
     const form = new FormData()
 
@@ -186,6 +190,14 @@ export const Cards: FC<Props> = () => {
         isOpen={isOpenEditCard}
         setIsOpen={setIsOpenEditCard}
       ></EditCardModal>
+      <DeleteDialog
+        title={'Delete Card'}
+        bodyMessage={`Do you really want to delete "${selectedCard.question}"`}
+        buttonTitle={'Delete Card'}
+        onClick={removeCardHandler}
+        isOpen={isOpenDeleteCard}
+        setIsOpen={setIsOpenDeleteCard}
+      />
       <div className={cNames.wrapper}>
         <Button variant={'link'} onClick={navigateBack}>
           <Typography variant={'body2'} className={cNames.back}>
