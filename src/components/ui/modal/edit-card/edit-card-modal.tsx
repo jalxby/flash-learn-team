@@ -9,17 +9,18 @@ import { editCard } from './edit-card.ts'
 import { Button, ControlledTextField, Select, Typography } from '@/components'
 import { Modal } from '@/components/ui/modal'
 
-type EditCardModalPropsType = {
-  children: ReactNode
+export type EditCardModalPropsType = {
+  children?: ReactNode
   question: string
   answer: string
-  onSubmit: (data: Form) => void
+  onSubmit?: (data: Form) => void
+  isOpen?: boolean
+  setIsOpen?: (isOpen: boolean) => void
 }
 type Form = z.infer<typeof editCard>
 
-export const EditCard: FC<EditCardModalPropsType> = props => {
-  const { children, onSubmit, question, answer } = props
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+export const EditCardModal: FC<EditCardModalPropsType> = props => {
+  const { children, onSubmit, question, answer, setIsOpen, isOpen } = props
   const [type, setType] = useState<string>('Text')
   const { handleSubmit, control } = useForm<Form>({
     resolver: zodResolver(editCard),
@@ -31,9 +32,13 @@ export const EditCard: FC<EditCardModalPropsType> = props => {
   })
 
   const onSubmitForm = handleSubmit(data => {
-    onSubmit({ question: data.question, answer: data.answer })
-    setIsOpen(false)
+    onSubmit && onSubmit({ question: data.question, answer: data.answer })
+    setIsOpen && setIsOpen(false)
   })
+
+  const setIsOpenHandler = () => {
+    setIsOpen && setIsOpen(false)
+  }
 
   const questionType =
     type === 'Text' ? (
@@ -75,7 +80,7 @@ export const EditCard: FC<EditCardModalPropsType> = props => {
           <Button variant={'primary'} type={'submit'}>
             <Typography variant={'subtitle2'}>Save Changes</Typography>
           </Button>
-          <Button variant={'secondary'} onClick={() => setIsOpen(false)}>
+          <Button variant={'secondary'} onClick={setIsOpenHandler}>
             <Typography variant={'subtitle2'}>Cancel</Typography>
           </Button>
         </Modal.Footer>

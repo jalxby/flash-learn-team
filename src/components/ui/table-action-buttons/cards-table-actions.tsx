@@ -4,7 +4,7 @@ import s from './table-action-buttons.module.scss'
 
 import { DeleteIcon, EditIcon } from '@/assets'
 import { DeleteDialog } from '@/components/ui/modal/delete-dialog/delete-dialog.tsx'
-import { EditCard } from '@/components/ui/modal/edit-card'
+import { EditCardModal } from '@/components/ui/modal/edit-card'
 import { useDeleteCardMutation, useUpdateCardMutation } from '@/services/cards/cards.api.ts'
 import { Card } from '@/services/decks/decks.api.types.ts'
 
@@ -21,11 +21,15 @@ export const CardsTableActions: FC<Props> = ({ item }) => {
 
   return (
     <div className={s.container}>
-      <EditCard question={question} answer={answer} onSubmit={data => updateCard({ id, ...data })}>
+      <EditCardModal
+        question={question}
+        answer={answer}
+        onSubmit={data => updateCard({ id, ...data })}
+      >
         <button>
           <EditIcon />
         </button>
-      </EditCard>
+      </EditCardModal>
 
       <DeleteDialog
         buttonTitle={'Delete Card'}

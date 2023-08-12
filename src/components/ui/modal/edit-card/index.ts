@@ -1,1 +1,1 @@
-export * from './edit-card.tsx'
+export * from './edit-card-modal'

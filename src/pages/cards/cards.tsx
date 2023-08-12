@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 
 import { clsx } from 'clsx'
 import { useSelector } from 'react-redux'
@@ -86,6 +86,7 @@ export const Cards: FC<Props> = () => {
   const pSize = rawCards ? rawCards.pagination.itemsPerPage : 0
   const preparedColumns = isMyDeck ? columns : columns.filter(column => column.key !== 'actions')
   const navigate = useNavigate()
+  const [isOpenEditCard, setIsOpenEditCard] = useState<boolean>(false)
   const navigateBack = () => {
     navigate(-1)
   }
@@ -152,6 +153,13 @@ export const Cards: FC<Props> = () => {
 
   return (
     <Page>
+      <EditCardModal
+        question={}
+        answer={}
+        onSubmit={}
+        isOpen={isOpenEditCard}
+        setIsOpen={setIsOpenEditCard}
+      ></EditCardModal>
       <div className={cNames.wrapper}>
         <Button variant={'link'} onClick={navigateBack}>
           <Typography variant={'body2'} className={cNames.back}>
