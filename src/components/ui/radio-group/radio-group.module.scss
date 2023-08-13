@@ -60,8 +60,17 @@ button {
   font-size: 15px;
   line-height: 1;
   color: white;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
+
 .container {
   display: flex;
   align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
