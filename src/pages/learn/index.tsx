@@ -12,10 +12,6 @@ export const Learn = () => {
   const { data: deck } = useGetDeckQuery({ id: id ?? '' })
   const [updateGrade] = useUpdateCardGradeMutation()
   const { data: randomCard } = useLearnCardQuery({ id: id ?? '' })
-  const card = randomCard
-
-  console.log('randomCard', randomCard)
-  console.log('card', card)
 
   return (
     <Page>
