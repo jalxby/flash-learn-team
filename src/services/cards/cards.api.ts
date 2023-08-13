@@ -13,7 +13,7 @@ export const cardsAPI = commonApi.injectEndpoints({
       query: ({ id, ...body }) => ({
         method: 'PATCH',
         url: `v1/cards/${id}`,
-        body,
+        body: body.data,
       }),
       invalidatesTags: ['UPDATE_CARDS'],
     }),

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import { clsx } from 'clsx'
 import { useSelector } from 'react-redux'
@@ -25,9 +25,10 @@ import {
 } from '@/components'
 import { AddNewCard, CardForm } from '@/components/ui/modal/add-new-card'
 import { EditCardModal } from '@/components/ui/modal/edit-card'
+import { createFormData } from '@/helpers/createFormData.ts'
 import { columns } from '@/pages/cards/table-columns.ts'
 import { useGetMeQuery } from '@/services/auth/auth.api.ts'
-import { useDeleteCardMutation } from '@/services/cards/cards.api.ts'
+import { useDeleteCardMutation, useUpdateCardMutation } from '@/services/cards/cards.api.ts'
 import {
   selectCardNameToSearch,
   selectCardsOrderBy,
@@ -44,8 +45,7 @@ import {
 } from '@/services/decks/decks.api.ts'
 import { Card } from '@/services/decks/decks.api.types.ts'
 
-type Props = {}
-export const Cards: FC<Props> = () => {
+export const Cards = () => {
   const dispatch = useAppDispatch()
 
   const search = useSelector(selectCardNameToSearch)
@@ -94,6 +94,7 @@ export const Cards: FC<Props> = () => {
   const [selectedCard, setSelectedCard] = useState<Card>({} as Card)
   const [isOpenDeleteCard, setIsOpenDeleteCard] = useState<boolean>(false)
   const [deleteCard] = useDeleteCardMutation()
+  const [updateCard] = useUpdateCardMutation()
   const navigateBack = () => {
     navigate(-1)
   }
@@ -115,15 +116,20 @@ export const Cards: FC<Props> = () => {
   }
 
   const removeCardHandler = () => deleteCard({ id: selectedCard.id })
-  const onSubmit = (data: CardForm) => {
-    const form = new FormData()
 
-    form.append('question', String(data.question))
-    form.append('answer', String(data.answer))
-    form.append('questionImg', data.questionImg)
-    form.append('answerImg', data.answerImg)
-    createCard({ id: deckId, formData: form })
+  const onAddCard = (data: CardForm) => {
+    const formData = createFormData(data)
+
+    console.log(formData)
+    createCard({ id: deckId, formData: formData })
   }
+
+  const onEditCard = (data: CardForm) => {
+    const formData = createFormData(data)
+
+    updateCard({ id: selectedCard.id, data: formData })
+  }
+
   const editMenu = isMyPack && (
     <DeckEditMenu
       onEdit={() => console.log('onEdit called')}
@@ -131,7 +137,7 @@ export const Cards: FC<Props> = () => {
     />
   )
   const addCard = isMyPack && (
-    <AddNewCard onSubmit={onSubmit}>
+    <AddNewCard onSubmit={onAddCard}>
       <Button variant={'primary'}>Add New Card</Button>
     </AddNewCard>
   )
@@ -208,14 +214,7 @@ export const Cards: FC<Props> = () => {
       <EditCardModal
         question={selectedCard.question}
         answer={selectedCard.answer}
-        onSubmit={({ question, answer, questionImg, answerImg }) => {
-          const form = new FormData()
-
-          form.append('question', question)
-          form.append('answer', answer)
-          form.append('questionImg', questionImg)
-          form.append('answerImg', answerImg)
-        }}
+        onSubmit={onEditCard}
         isOpen={isOpenEditCard}
         setIsOpen={setIsOpenEditCard}
       ></EditCardModal>
