@@ -96,7 +96,7 @@ export const Cards = () => {
   const [deleteCard] = useDeleteCardMutation()
   const [updateCard] = useUpdateCardMutation()
   const navigateBack = () => {
-    navigate(-1)
+    navigate('/')
   }
   const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.currentTarget.value)
