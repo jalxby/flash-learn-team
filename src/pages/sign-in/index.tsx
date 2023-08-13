@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -16,7 +14,6 @@ export const SignIn = () => {
     signIn(data)
       .unwrap()
       .then(() => {
-        navigate('/')
         toast.success('you are sign in successful')
       })
       .catch(error => {
@@ -24,11 +21,7 @@ export const SignIn = () => {
       })
   }
 
-  useEffect(() => {
-    if (!me) return
-
-    navigate('/')
-  }, [me])
+  if (me) navigate('/')
 
   return (
     <Page>
