@@ -2,21 +2,21 @@ import { FC } from 'react'
 
 import * as RadioGroup from '@radix-ui/react-radio-group'
 
-import s from '@/components/ui/radio-group/radio-group.module.scss'
+import s from './radio-group.module.scss'
 
-export type RadioGroupItemPropsType = {
+type Props = {
   label: string
   id: string
   value: string
 }
 
-export const RadioGroupItem: FC<RadioGroupItemPropsType> = ({ label, id, value }) => {
+export const RadioGroupItem: FC<Props> = ({ label, id, value }) => {
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div className={s.container}>
       <RadioGroup.Item className={s.item} value={value} id={id}>
         <RadioGroup.Indicator className={s.indicator} />
       </RadioGroup.Item>
-      <label className={s.label} htmlFor="r1">
+      <label className={s.label} htmlFor={id}>
         {label}
       </label>
     </div>
