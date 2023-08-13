@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Layout } from '@/components'
@@ -66,7 +64,5 @@ const router = createBrowserRouter([
 ])
 
 export function App() {
-  const [] = useState(4)
-
   return <RouterProvider router={router} />
 }

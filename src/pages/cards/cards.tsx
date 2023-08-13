@@ -242,24 +242,28 @@ export const Cards: FC<Props> = () => {
           {learnDeck}
         </div>
         {deck?.cover && <img className={cNames.image} src={deck?.cover} alt="deck-cover" />}
-        <TextField
-          onChange={onValueChange}
-          placeholder={'Input search'}
-          inputType={'search'}
-          className={cNames.textField}
-        />
-        <Table.Root className={s.tableRoot}>
-          <Table.Head columns={preparedColumns} sort={sort} onSort={sortHandler} />
-          <Table.Body>{cards}</Table.Body>
-        </Table.Root>
-        <Pagination
-          currentPage={currentPage}
-          totalCount={totalCount}
-          pageSize={pSize}
-          siblingCount={3}
-          onPageChange={setPage}
-          onPageSizeChange={setPageSize}
-        />
+        {deck?.cardsCount && (
+          <>
+            <TextField
+              onChange={onValueChange}
+              placeholder={'Input search'}
+              inputType={'search'}
+              className={cNames.textField}
+            />
+            <Table.Root className={s.tableRoot}>
+              <Table.Head columns={preparedColumns} sort={sort} onSort={sortHandler} />
+              <Table.Body>{cards}</Table.Body>
+            </Table.Root>
+            <Pagination
+              currentPage={currentPage}
+              totalCount={totalCount}
+              pageSize={pSize}
+              siblingCount={3}
+              onPageChange={setPage}
+              onPageSizeChange={setPageSize}
+            />
+          </>
+        )}
       </div>
     </Page>
   )

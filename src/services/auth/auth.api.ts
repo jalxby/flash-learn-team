@@ -17,7 +17,7 @@ export const authAPI = commonApi.injectEndpoints({
           url: 'v1/auth/me',
         }
       },
-      extraOptions: { maxRetries: false },
+      extraOptions: { maxRetries: 0 },
       providesTags: ['ME'],
     }),
     signOut: builder.mutation<void, void>({

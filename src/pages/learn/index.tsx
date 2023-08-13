@@ -8,10 +8,14 @@ import {
 } from '@/services/decks/decks.api.ts'
 
 export const Learn = () => {
-  const { id } = useParams<{ id: string }>()
+  const { id } = useParams()
   const { data: deck } = useGetDeckQuery({ id: id ?? '' })
-  const { data: randomCard } = useLearnCardQuery({ id: id ?? '' })
   const [updateGrade] = useUpdateCardGradeMutation()
+  const { data: randomCard } = useLearnCardQuery({ id: id ?? '' })
+  const card = randomCard
+
+  console.log('randomCard', randomCard)
+  console.log('card', card)
 
   return (
     <Page>
