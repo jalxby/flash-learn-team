@@ -14,7 +14,7 @@ export const SignIn = () => {
     signIn(data)
       .unwrap()
       .then(() => {
-        toast.success('you are sign in successful')
+        toast.success('you are sign in successfully')
       })
       .catch(error => {
         toast.error(error.data.message)
