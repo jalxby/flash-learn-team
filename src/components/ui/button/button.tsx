@@ -23,7 +23,7 @@ const Button = <T extends ElementType = 'button'>(
     ...rest
   } = props
 
-  const classNames = {
+  const cNames = {
     root: clsx(
       variant === 'primary' && s.primary,
       variant === 'secondary' && s.secondary,
@@ -35,7 +35,7 @@ const Button = <T extends ElementType = 'button'>(
     ),
   }
 
-  return <Component ref={ref} disabled={disabled} className={classNames.root} {...rest} />
+  return <Component ref={ref} disabled={disabled} className={cNames.root} {...rest} />
 }
 
 export default forwardRef(Button)

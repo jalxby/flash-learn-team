@@ -105,7 +105,11 @@ export const Decks: FC<PacksProps> = () => {
     setSliderValue([0, maxCardsCount])
     setDebouncedSliderValue([0, maxCardsCount])
   }
-  const removeDeckHandler = () => removeDeck({ id: selectedDeck.id })
+  const removeDeckHandler = () => {
+    debugger
+    removeDeck({ id: selectedDeck.id })
+  }
+
   const cNames = {
     container: clsx(s.container, 'container'),
     title: clsx(s.pageTitle),

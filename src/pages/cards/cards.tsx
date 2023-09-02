@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 
 import { clsx } from 'clsx'
 import { useSelector } from 'react-redux'
@@ -44,8 +44,10 @@ import {
   useUpdateCardGradeMutation,
 } from '@/services/decks/decks.api.ts'
 import { Card } from '@/services/decks/decks.api.types.ts'
-
-export const Cards = () => {
+type Props = {
+  removeDeckHandler: () => void
+}
+export const Cards: FC<Props> = ({ removeDeckHandler }) => {
   const dispatch = useAppDispatch()
 
   const search = useSelector(selectCardNameToSearch)
@@ -120,7 +122,6 @@ export const Cards = () => {
   const onAddCard = (data: CardForm) => {
     const formData = createFormData(data)
 
-    console.log(formData)
     createCard({ id: deckId, formData: formData })
   }
 
@@ -131,10 +132,7 @@ export const Cards = () => {
   }
 
   const editMenu = isMyPack && (
-    <DeckEditMenu
-      onEdit={() => console.log('onEdit called')}
-      onDelete={() => console.log('onDelete called')}
-    />
+    <DeckEditMenu onEdit={() => console.log('onEdit called')} onDelete={removeDeckHandler} />
   )
   const addCard = isMyPack && (
     <AddNewCard onSubmit={onAddCard}>
