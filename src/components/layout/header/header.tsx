@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 
 import s from './header.module.scss'
 
-import { Logo } from '@/assets'
 import { AvatarDropdown, Button } from '@/components'
 import { useGetMeQuery } from '@/services/auth'
 import { UserType } from '@/services/auth/auth.api.types.ts'
@@ -24,9 +23,7 @@ export const Header: FC<Props> = ({ onSignOut, userData }) => {
   return (
     <header className={cNames.header}>
       <div className={cNames.container}>
-        <Link to={'/'}>
-          <Logo />
-        </Link>
+        <Link to={'/'}>{'LOGO'}</Link>
         {!userData && (
           <Button as={'a'} href={'/sign-in'}>
             Sign In
