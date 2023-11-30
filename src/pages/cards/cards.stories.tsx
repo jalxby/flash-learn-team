@@ -20,10 +20,7 @@ const meta = {
     ),
   ],
   tags: ['autodocs'],
-  args: {
-    userId: '1',
-    img: 'https://www.patterns.dev/img/reactjs/react-logo@3x.svg',
-  },
+  args: {},
 } satisfies Meta<typeof Cards>
 
 export default meta

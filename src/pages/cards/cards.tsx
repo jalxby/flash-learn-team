@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import { clsx } from 'clsx'
 import { useSelector } from 'react-redux'
@@ -41,13 +41,12 @@ import {
   useCreateCardMutation,
   useGetCardsQuery,
   useGetDeckQuery,
+  useRemoveDeckMutation,
   useUpdateCardGradeMutation,
 } from '@/services/decks/decks.api.ts'
 import { Card } from '@/services/decks/decks.api.types.ts'
-type Props = {
-  removeDeckHandler: () => void
-}
-export const Cards: FC<Props> = ({ removeDeckHandler }) => {
+
+export const Cards = () => {
   const dispatch = useAppDispatch()
 
   const search = useSelector(selectCardNameToSearch)
@@ -97,6 +96,7 @@ export const Cards: FC<Props> = ({ removeDeckHandler }) => {
   const [isOpenDeleteCard, setIsOpenDeleteCard] = useState<boolean>(false)
   const [deleteCard] = useDeleteCardMutation()
   const [updateCard] = useUpdateCardMutation()
+  const [deleteDeck] = useRemoveDeckMutation()
   const navigateBack = () => {
     navigate('/')
   }
@@ -132,7 +132,10 @@ export const Cards: FC<Props> = ({ removeDeckHandler }) => {
   }
 
   const editMenu = isMyPack && (
-    <DeckEditMenu onEdit={() => console.log('onEdit called')} onDelete={removeDeckHandler} />
+    <DeckEditMenu
+      onEdit={() => console.log('onEdit called')}
+      onDelete={() => deleteDeck({ id: deckId })}
+    />
   )
   const addCard = isMyPack && (
     <AddNewCard onSubmit={onAddCard}>
